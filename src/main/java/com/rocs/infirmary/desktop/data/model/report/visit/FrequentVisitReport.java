@@ -1,8 +1,6 @@
-package com.rocs.infirmary.desktop.data.model.reports.visit;
+package com.rocs.infirmary.desktop.data.model.report.visit;
 
-import com.rocs.infirmary.desktop.data.model.reports.Report;
-
-import java.util.Date;
+import com.rocs.infirmary.desktop.data.model.report.Report;
 
 public class FrequentVisitReport extends Report {
     private int visitCount;

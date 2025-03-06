@@ -1,4 +1,4 @@
-package com.rocs.infirmary.desktop.data.model.reports.lowstock;
+package com.rocs.infirmary.desktop.data.model.report.lowstock;
 
 public class LowStockReport {
     private String description;

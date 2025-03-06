@@ -1,9 +1,9 @@
 package com.rocs.infirmary.desktop.app.facade.dashboard;
 
-import com.rocs.infirmary.desktop.data.model.reports.ailment.CommonAilmentsReport;
-import com.rocs.infirmary.desktop.data.model.reports.lowstock.LowStockReport;
-import com.rocs.infirmary.desktop.data.model.reports.visit.FrequentVisitReport;
-import com.rocs.infirmary.desktop.data.model.reports.medication.MedicationTrendReport;
+import com.rocs.infirmary.desktop.data.model.report.ailment.CommonAilmentsReport;
+import com.rocs.infirmary.desktop.data.model.report.lowstock.LowStockReport;
+import com.rocs.infirmary.desktop.data.model.report.visit.FrequentVisitReport;
+import com.rocs.infirmary.desktop.data.model.report.medication.MedicationTrendReport;
 
 import java.util.Date;
 import java.util.List;

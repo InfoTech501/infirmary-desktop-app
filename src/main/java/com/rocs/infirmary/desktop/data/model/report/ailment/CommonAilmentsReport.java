@@ -1,7 +1,7 @@
-package com.rocs.infirmary.desktop.data.model.reports.ailment;
+package com.rocs.infirmary.desktop.data.model.report.ailment;
 
 import com.rocs.infirmary.desktop.data.model.person.Person;
-import com.rocs.infirmary.desktop.data.model.reports.Report;
+import com.rocs.infirmary.desktop.data.model.report.Report;
 
 import java.util.List;
 

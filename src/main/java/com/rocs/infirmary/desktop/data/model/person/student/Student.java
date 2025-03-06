@@ -9,42 +9,14 @@ public class Student extends Person {
     private int studentSectionId;
     private int studentId;
     private int studentGuardianId;
-    private  long lrn;
+    private long lrn;
     private String symptoms;
-
     private String temperatureReadings;
-
     private Date visitDate;
-
     private String treatment;
-    private String ailment;
-
-    public int getStudentId() {
-        return studentId;
-    }
 
     public void setStudentId(int studentId) {
         this.studentId = studentId;
-    }
-
-    public int getStudentSectionId() {
-        return studentSectionId;
-    }
-
-    public void setStudentSectionId(int studentSectionId) {
-        this.studentSectionId = studentSectionId;
-    }
-
-    public int getStudentGuardianId() {
-        return studentGuardianId;
-    }
-
-    public void setStudentGuardianId(int studentGuardianId) {
-        this.studentGuardianId = studentGuardianId;
-    }
-
-    public long getLrn() {
-        return lrn;
     }
 
     public void setLrn(long lrn) {
@@ -83,11 +55,4 @@ public class Student extends Person {
         this.treatment = treatment;
     }
 
-    public String getAilment() {
-        return ailment;
-    }
-
-    public void setAilment(String ailment) {
-        this.ailment = ailment;
-    }
 }

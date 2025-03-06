@@ -1,6 +1,6 @@
-package com.rocs.infirmary.desktop.data.model.reports.medication;
+package com.rocs.infirmary.desktop.data.model.report.medication;
 
-import com.rocs.infirmary.desktop.data.model.reports.Report;
+import com.rocs.infirmary.desktop.data.model.report.Report;
 
 public class MedicationTrendReport extends Report {
 
