@@ -50,8 +50,8 @@ public class DashboardDaoImpl implements DashboardDao {
                 "JOIN PERSON p ON st.PERSON_ID = p.ID " +
                 "LEFT JOIN SECTION s ON st.SECTION_SECTION_ID = s.SECTION_ID " +
                 "WHERE mr.VISIT_DATE BETWEEN ? AND ? " +
-                "AND (s.GRADE_LEVEL = ? OR ? IS NULL) " +
-                "AND (s.SECTION = ? OR ? IS NULL) " +
+                "AND (UPPER(s.GRADE_LEVEL) = UPPER(?) OR ? IS NULL) " +
+                "AND (UPPER(s.SECTION) = UPPER(?) OR ? IS NULL) " +
                 "GROUP BY a.description, s.section, s.grade_level, p.FIRST_NAME, p.LAST_NAME, p.AGE, s.STRAND";
 
         try (Connection connection = ConnectionHelper.getConnection();
