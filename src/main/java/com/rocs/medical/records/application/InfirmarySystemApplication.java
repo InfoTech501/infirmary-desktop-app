@@ -2,10 +2,8 @@ package com.rocs.medical.records.application;
 
 import com.rocs.medical.records.application.app.facade.commonAilmentsReport.CommonAilmentsReportFacade;
 import com.rocs.medical.records.application.app.facade.commonAilmentsReport.impl.CommonAilmentsReportFacadeImpl;
-import com.rocs.medical.records.application.app.facade.lowStockMedicine.LowStockMedicineFacade;
-import com.rocs.medical.records.application.app.facade.lowStockMedicine.impl.LowStockMedicineFacadeImpl;
 import com.rocs.medical.records.application.app.facade.medicalRecord.impl.StudentMedicalRecordFacadeImpl;
-import com.rocs.medical.records.application.model.inventory.LowStockItem;
+import com.rocs.medical.records.application.app.facade.medicneInfirmary.impl.MedicineFacadeImpl;
 import com.rocs.medical.records.application.model.reports.CommonAilmentsReport;
 import com.rocs.medical.records.application.model.person.Person;
 
@@ -13,16 +11,11 @@ import com.rocs.medical.records.application.app.facade.reportMedicationTrend.Rep
 import com.rocs.medical.records.application.app.facade.reportMedicationTrend.impl.ReportMedicationTrendFacadeImpl;
 import com.rocs.medical.records.application.model.reports.MedicationTrendReport;
 
-import com.rocs.medical.records.application.app.facade.frequentVisitReport.FrequentVisitReportFacade;
-import com.rocs.medical.records.application.app.facade.frequentVisitReport.impl.FrequentVisitReportFacadeImpl;
-import com.rocs.medical.records.application.model.reports.FrequentVisitReport;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
-
 
 public class InfirmarySystemApplication {
     public static void main(String[] args) {
@@ -33,9 +26,7 @@ public class InfirmarySystemApplication {
         System.out.println("1 - Common Ailments Report");
         System.out.println("2 - Medication Trend Report");
         System.out.println("3 - Retrieve Student Medical Record");
-        System.out.println("4 - Frequent Visit Report");
-        System.out.println("5 - Check Low Stock Medicine");
-
+        System.out.println("4 - Delete Medicine From Inventory");
         System.out.println("Enter your choice: ");
         int choice = scanner.nextInt();
 
@@ -111,38 +102,37 @@ public class InfirmarySystemApplication {
             }
 
             case 4: {
-                scanner.nextLine();
-                FrequentVisitReportFacade frequentVisitReportFacade = new FrequentVisitReportFacadeImpl();
-
                 try {
-                    System.out.println("Frequent Visit Report");
+                    scanner.nextLine();
 
-                    Date frequentVisitStartDate = getValidInputDate(scanner, dateFormat, "Enter start date (yyyy-MM-dd): ");
-                    Date frequentVisitEndDate = getValidInputDate(scanner, dateFormat, "Enter end date (yyyy-MM-dd): ");
-                    System.out.print("Enter grade level for Frequent Visit: ");
-                    String frequentVisitGradeLevel = scanner.nextLine().trim();
+                    MedicineFacadeImpl medicineFacade = new MedicineFacadeImpl();
 
-                    List<FrequentVisitReport> reports = frequentVisitReportFacade.generateReport(frequentVisitStartDate, frequentVisitEndDate, frequentVisitGradeLevel);
-                    frequentVisitReportFacade.handleFrequentVisit(reports, frequentVisitStartDate, frequentVisitEndDate, frequentVisitGradeLevel);
+                    System.out.println("Enter Medicine ID to delete: ");
+                    String medicineId = scanner.nextLine();
+
+                    System.out.println("Are you sure you want to delete Medicine ID " + medicineId + "? (Confirm/Cancel): ");
+                    String confirmation = scanner.nextLine().trim().toLowerCase();
+
+                    if (confirmation.equals("Confirm")) {
+                        boolean isDeleted = medicineFacade.deleteMedicineById(medicineId);
+
+                        if (isDeleted) {
+                            System.out.println("Medicine with ID " + medicineId + " has been successfully deleted.");
+                        } else {
+                            System.out.println("Failed to delete medicine. Medicine ID may not exist.");
+                        }
+                    } else {
+                        System.out.println("Deletion canceled.");
+                    }
 
                 } catch (RuntimeException e) {
-                    System.err.println("Report generation failed: " + e.getMessage());
+                    System.err.println("Error deleting medicine: " + e.getMessage());
                 }
                 break;
+            }
 
-            }
-            case 5:{
-                LowStockMedicineFacade lowStockMedicineFacade = new LowStockMedicineFacadeImpl();
-                try {
-                    List<LowStockItem> lowStockItems = lowStockMedicineFacade.checkLowStockAndNotify();
-                } catch (RuntimeException e) {
-                    System.err.println("Error checking low stock items: " + e.getMessage());
-                }
-                break;
-            }
-            default:
-                System.out.println("Invalid choice. Please select a valid option.");
-                break;
+
+
 
 
         }
