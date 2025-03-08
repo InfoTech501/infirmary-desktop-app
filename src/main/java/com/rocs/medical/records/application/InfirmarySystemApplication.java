@@ -17,6 +17,11 @@ import com.rocs.medical.records.application.app.facade.frequentVisitReport.Frequ
 import com.rocs.medical.records.application.app.facade.frequentVisitReport.impl.FrequentVisitReportFacadeImpl;
 import com.rocs.medical.records.application.model.reports.FrequentVisitReport;
 
+import com.rocs.medical.records.application.app.facade.deleteMedicalRecord.StudentMedicalRecordsFacade;
+import com.rocs.medical.records.application.app.facade.deleteMedicalRecord.impl.StudentMedicalRecordsFacadeImpl;
+import com.rocs.medical.records.application.model.deleteMedicalRecord.StudentMedicalRecords;
+
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -35,6 +40,8 @@ public class InfirmarySystemApplication {
         System.out.println("3 - Retrieve Student Medical Record");
         System.out.println("4 - Frequent Visit Report");
         System.out.println("5 - Check Low Stock Medicine");
+        System.out.println("6 - Delete Medical Record");
+
 
         System.out.println("Enter your choice: ");
         int choice = scanner.nextInt();
@@ -42,11 +49,11 @@ public class InfirmarySystemApplication {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         dateFormat.setLenient(false);
 
-        switch (choice){
+        switch (choice) {
             case 1: {
                 CommonAilmentsReportFacade ailmentsReportFacade = new CommonAilmentsReportFacadeImpl();
 
-                try{
+                try {
                     scanner.nextLine();
                     System.out.println("Common Ailments Report");
 
@@ -73,7 +80,7 @@ public class InfirmarySystemApplication {
                 scanner.nextLine();
                 ReportMedicationTrendFacade medicationTrendFacade = new ReportMedicationTrendFacadeImpl();
 
-                try{
+                try {
                     System.out.println("\nWelcome to Medication Trend Report");
 
                     Date startDate = getValidInputDate(scanner, dateFormat, "Please enter start date (yyyy-MM-dd): ");
@@ -91,7 +98,7 @@ public class InfirmarySystemApplication {
 
 
             case 3: {
-                try{
+                try {
                     scanner.nextLine();
 
                     StudentMedicalRecordFacadeImpl studentMedical = new StudentMedicalRecordFacadeImpl();
@@ -100,8 +107,6 @@ public class InfirmarySystemApplication {
                     long LRN = scanner.nextLong();
 
                     studentMedical.findMedicalInformationByLRN(LRN);
-
-
 
 
                 } catch (RuntimeException e) {
@@ -131,7 +136,7 @@ public class InfirmarySystemApplication {
                 break;
 
             }
-            case 5:{
+            case 5: {
                 LowStockMedicineFacade lowStockMedicineFacade = new LowStockMedicineFacadeImpl();
                 try {
                     List<LowStockItem> lowStockItems = lowStockMedicineFacade.checkLowStockAndNotify();
@@ -140,15 +145,40 @@ public class InfirmarySystemApplication {
                 }
                 break;
             }
+
+
+            case 6: {
+
+                StudentMedicalRecordsFacadeImpl StudentMedicalRecordsFacade = new StudentMedicalRecordsFacadeImpl();
+                Scanner sc = new Scanner(System.in);
+
+                System.out.print("Enter the id of the item to delete: ");
+                String id = sc.nextLine();
+
+                if (id == null) {
+                    System.out.println("Item to delete not found.");
+                } else {
+                    boolean result = StudentMedicalRecordsFacade.deleteStudentMedicalRecordById(id);
+
+                    if (result) {
+                        System.out.println("Item successfully deleted.");
+                    } else {
+                        System.out.println("Item cannot be deleted.");
+                    }
+
+                }
+                break;
+            }
+
             default:
                 System.out.println("Invalid choice. Please select a valid option.");
                 break;
 
-
         }
 
-
     }
+
+
 
     private static void displayCommonAilmentsReport(List<CommonAilmentsReport> reports, Date startDate, Date endDate, String gradeLevel, String section) {
         if (reports == null || reports.isEmpty()) {
