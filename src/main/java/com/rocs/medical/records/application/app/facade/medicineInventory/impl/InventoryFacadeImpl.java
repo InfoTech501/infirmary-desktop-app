@@ -12,8 +12,8 @@ public class InventoryFacadeImpl implements InventoryFacade {
     private InventoryDao inventoryDao = new InventoryDaoImpl();
 
     @Override
-    public List<Inventory> getInventoryItems() {
-        return this.inventoryDao.getInventoryItems();
+    public List<Inventory> findAllMedicine() {
+        return this.inventoryDao.getAllMedicine();
     }
 
 

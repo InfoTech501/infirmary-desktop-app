@@ -5,7 +5,9 @@ import java.sql.Timestamp;
 public class Inventory {
 
     private int inventoryId;
+
     private String medicineId;
+
     private String itemType;
 
     private int quantity;

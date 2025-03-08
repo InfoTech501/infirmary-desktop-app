@@ -12,7 +12,7 @@ import java.util.List;
 
 public class InventoryDaoImpl implements InventoryDao {
     @Override
-    public List<Inventory> getInventoryItems() {
+    public List<Inventory> getAllMedicine() {
         List<Inventory> inventoryList = new ArrayList<>();
 
 

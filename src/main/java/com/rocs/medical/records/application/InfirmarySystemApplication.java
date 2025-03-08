@@ -48,11 +48,11 @@ public class InfirmarySystemApplication {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         dateFormat.setLenient(false);
 
-        switch (choice){
+        switch (choice) {
             case 1: {
                 CommonAilmentsReportFacade ailmentsReportFacade = new CommonAilmentsReportFacadeImpl();
 
-                try{
+                try {
                     scanner.nextLine();
                     System.out.println("Common Ailments Report");
 
@@ -79,7 +79,7 @@ public class InfirmarySystemApplication {
                 scanner.nextLine();
                 ReportMedicationTrendFacade medicationTrendFacade = new ReportMedicationTrendFacadeImpl();
 
-                try{
+                try {
                     System.out.println("\nWelcome to Medication Trend Report");
 
                     Date startDate = getValidInputDate(scanner, dateFormat, "Please enter start date (yyyy-MM-dd): ");
@@ -97,7 +97,7 @@ public class InfirmarySystemApplication {
 
 
             case 3: {
-                try{
+                try {
                     scanner.nextLine();
 
                     StudentMedicalRecordFacadeImpl studentMedical = new StudentMedicalRecordFacadeImpl();
@@ -106,8 +106,6 @@ public class InfirmarySystemApplication {
                     long LRN = scanner.nextLong();
 
                     studentMedical.findMedicalInformationByLRN(LRN);
-
-
 
 
                 } catch (RuntimeException e) {
@@ -137,7 +135,7 @@ public class InfirmarySystemApplication {
                 break;
 
             }
-            case 5:{
+            case 5: {
                 LowStockMedicineFacade lowStockMedicineFacade = new LowStockMedicineFacadeImpl();
                 try {
                     List<LowStockItem> lowStockItems = lowStockMedicineFacade.checkLowStockAndNotify();
@@ -146,27 +144,31 @@ public class InfirmarySystemApplication {
                 }
                 break;
             }
+
             case 6: {
                 InventoryFacade inventoryFacade = new InventoryFacadeImpl();
-                List<Inventory> inventoryItems = inventoryFacade.getInventoryItems();
+                List<Inventory> inventoryItems = inventoryFacade.findAllMedicine();
 
                 if (inventoryItems.isEmpty()) {
                     System.out.println("The list of items is empty.");
                 } else {
-                    System.out.println("LIST OF ITEMS:");
-                    System.out.println();
+                    System.out.println("LIST OF ITEMS:");{
                     for (Inventory inventory : inventoryItems) {
-                        System.out.println("Name of Medicine:     " +inventory.getItemName());
-                        System.out.println("Item Type:            " +inventory.getItemType());
-                        System.out.println("Description:          " +inventory.getDescription());
-                        System.out.println("Stock Level:          " +inventory.getQuantity());
-                        System.out.println("Expiry date:          " +inventory.getExpirationDate());
-                        System.out.println();
+                        System.out.println("Name of Medicine:  " + inventory.getItemName() +
+                                "\nItem Type:    " + inventory.getItemType() +
+                                "\nDescription:  " + inventory.getDescription() +
+                                "\nStock Level:  " + inventory.getQuantity() +
+                                "\nExpiry date:  " + inventory.getExpirationDate() + "\n");
                     }
-                }
 
-                break;
+
+                }
             }
+
+            break;
+        }
+
+
 
             default:
                 System.out.println("Invalid choice. Please select a valid option.");

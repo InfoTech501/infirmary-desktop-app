@@ -7,5 +7,5 @@ import java.util.List;
 public interface InventoryDao {
 
 
-    List<Inventory> getInventoryItems();
+    List<Inventory> getAllMedicine();
 }
