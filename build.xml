@@ -1,5 +1,6 @@
-<project name="infirmary-application" default="build" xmlns:ivy="antlib:org.apache.ivy.ant">
-
+<project name="infirmary-desktop-app"
+         default="build"
+         xmlns:ivy="antlib:org.apache.ivy.ant">
     <property file="build.properties"/>
 
     <property name="build.dir" location="build"/>
@@ -7,12 +8,16 @@
     <property name="dist.dir" location="${build.dir}/dist"/>
     <property name="src.dir" location="src/main/java"/>
     <property name="doc.dir" location="${build.dir}/doc"/>
-    <property name="temp.dirs" value="build/"/>
+    <property name="ivy.reports.dir"  location="${build.dir}/ivy-reports"/>
+    <property name="test.src.dir" location="src/test/java"/>
+    <property name="test.classes.dir" location="${build.dir}/test-classes"/>
+    <property name="test.reports.dir"  location="${build.dir}/test-reports"/>
+    <property name="ivy.cache.dir" location="${build.dir}/ivy-cache"/>
 
 
     <!--    clean    -->
     <target name="clean" description="Remove temporary directories">
-        <echo>Cleaning temporary dirs...</echo>
+        <echo>Cleaning directories...</echo>
         <delete includeemptydirs="true">
             <fileset dir="." includes="${temp.dirs}"/>
         </delete>
@@ -20,20 +25,58 @@
 
     <!--    initialize    -->
     <target name="init" depends="clean" description="Create directories">
+        <ivy:resolve />
+        <ivy:report todir="${ivy.reports.dir}" graph="false" xml="false" />
+        <ivy:cachepath pathid="compile.path" conf="compile"/>
+        <ivy:cachepath pathid="runtime.path" conf="runtime"/>
+        <ivy:cachepath pathid="test.path"    conf="test"/>
         <mkdir dir="${classes.dir}"/>
         <mkdir dir="${dist.dir}"/>
-    </target>
-
-    <!--    resolve     -->
-    <target name="resolve-dependencies">
-        <echo>Resolving dependencies...</echo>
-        <ivy:retrieve/>
+        <mkdir dir="${test.classes.dir}"/>
+        <mkdir dir="${test.reports.dir}"/>
     </target>
 
     <!--    compile    -->
-    <target name="compile" depends="resolve-dependencies, init" description="Compiles the java project.">
+    <target name="compile" depends="init" description="Compiles the java project.">
         <echo>Compiling...</echo>
         <javac srcdir="${src.dir}" destdir="${classes.dir}" includeantruntime="false" debug="true"/>
+    </target>
+
+    <target name="compile-tests" depends="compile">
+        <javac srcdir="${test.src.dir}" destdir="${test.classes.dir}" includeantruntime="false" debug="true">
+            <classpath>
+                <path refid="test.path"/>
+                <pathelement path="${classes.dir}"/>
+            </classpath>
+        </javac>
+    </target>
+
+    <!-- <path id="junit.libs">
+        <fileset dir="${ant.home}/lib/junit"/>
+    </path> -->
+
+    <path id="junit.libs">
+        <fileset dir="${ivy.cache.dir}">
+            <include name="**/junit-*.jar"/>
+        </fileset>
+    </path>
+
+    <!--Run unit tests-->
+    <target name="test" depends="compile-tests" description="run unit tests">
+        <junitlauncher printsummary="true" haltonfailure="yes">
+            <classpath>
+                <path refid="test.path"/>
+                <path refid="junit.libs"/>
+                <pathelement path="${classes.dir}"/>
+                <pathelement path="${test.classes.dir}"/>
+                <pathelement path="${test.reports.dir}"/>
+            </classpath>
+            <testclasses outputdir="${test.reports.dir}">
+                <fileset dir="${test.classes.dir}"/>
+                <listener type="legacy-brief" sendSysOut="true"/>
+                <listener type="legacy-xml" sendSysErr="true" sendSysOut="true"/>
+            </testclasses>
+        </junitlauncher>
     </target>
 
     <!--    build   -->
@@ -43,17 +86,16 @@
 
     <!--    generate javaDOC    -->
     <target name="generate-javadoc">
-        <javadoc packagenames="com.rocs.medical.records.application.*"
+        <javadoc packagenames="com.rocs.infirmary.desktop.*"
                  sourcepath="${src.dir}"
                  destdir="${doc.dir}"
                  version="${version}"
                  windowtitle="Infirmary Application Documentation">
 
-            <group title="Data layer" packages="com.rocs.medical.records.application.data.*"/>
-            <group title="Model layer" packages="com.rocs.medical.records.application.model.*"/>
-            <group title="Facade layer" packages="com.rocs.medical.records.application.app.facade.*"/>
+            <group title="Data layer" packages="com.rocs.infirmary.desktop.data.*"/>
+            <group title="Facade layer" packages="com.rocs.infirmary.desktop.app.facade.*"/>
 
-            <doctitle><![CDATA[Infirmary Application Documentation - ${version}]]></doctitle>
+            <doctitle><![CDATA[Infirmary Desktop Application Documentation - ${version}]]></doctitle>
             <bottom>
                 <![CDATA[Copyright © ${copyright.year}. All Rights Reserved.]]>
             </bottom>
@@ -63,22 +105,28 @@
 
     <!--    build JAR   -->
     <target name="build-jar" description="Creates a jar file for the project">
-        <jar destfile="${dist.dir}/infirmary-application.jar"
+        <jar destfile="${dist.dir}/infirmary-desktop-app.jar"
              basedir="${classes.dir}">
             <manifest>
                 <attribute name="Main-Class"
-                           value="com.rocs.medical.records.application.InfirmarySystemApplication"/>
+                           value="com.rocs.infirmary.desktop.InfirmarySystemApplication"/>
             </manifest>
         </jar>
     </target>
 
     <!--    run JAR    -->
     <target name="run" description="Run the application">
-        <java jar="${dist.dir}/infirmary-application.jar" fork="true"/>
+        <java jar="${dist.dir}/infirmary-desktop-app.jar" fork="true"/>
     </target>
 
-    <target name="ivy-test" description="test ivy">
-        <ivy:settings />
+    <!--    resolve     -->
+    <target name="resolve">
+        <echo>Resolving dependencies...</echo>
+        <ivy:retrieve/>
+        <ivy:resolve />
     </target>
 
+    <target name="ci" depends="resolve, compile, test, build-jar" description="CI build target">
+        <echo>CI build completed successfully</echo>
+    </target>
 </project>
