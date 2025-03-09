@@ -126,7 +126,7 @@
         <ivy:resolve />
     </target>
 
-    <target name="ci" depends="resolve, compile, test, build-jar" description="CI build target">
-        <echo>CI build completed successfully</echo>
+    <target name="ci-target" depends="resolve, compile, test, build-jar" description="ci build target">
+        <echo>CI build completed</echo>
     </target>
 </project>
