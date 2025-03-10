@@ -110,8 +110,8 @@ public class InfirmarySystemApplication {
                         System.out.println("Treatment             : " + record.getTreatment());
                     }
                 } catch (RuntimeException e) {
-                    System.out.println("Error generating: " + e.getMessage());
-                    System.err.println(e.getMessage());
+                    System.out.println("No Student Found!");
+
                 }
                 break;
             }
