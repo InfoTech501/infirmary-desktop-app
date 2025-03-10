@@ -61,6 +61,13 @@
         </fileset>
     </path>
 
+    <path id="test.path">
+        <fileset dir="${test.classes.dir}"/>
+        <fileset dir="${ivy.cache.dir}">
+            <include name="**/junit-*.jar"/>
+        </fileset>
+    </path>
+
     <!--Run unit tests-->
     <target name="test" depends="compile-tests" description="run unit tests">
         <junitlauncher printsummary="true" haltonfailure="yes">
@@ -126,7 +133,7 @@
         <ivy:resolve />
     </target>
 
-    <target name="ci-target" depends="resolve, compile, test, build-jar" description="ci build target">
+    <target name="ci-target" depends="compile, test, build-jar" description="ci build target">
         <echo>CI build completed</echo>
     </target>
 </project>
