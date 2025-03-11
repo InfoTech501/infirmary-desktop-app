@@ -1,4 +1,5 @@
 package com.rocs.infirmary.desktop.data.dao.medicine.inventory.impl;
+
 import com.rocs.infirmary.desktop.data.connection.ConnectionHelper;
 import com.rocs.infirmary.desktop.data.dao.medicine.inventory.MedicineInventoryDao;
 import com.rocs.infirmary.desktop.data.dao.utils.queryconstants.medicine.inventory.QueryConstants;
@@ -79,4 +80,3 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
         return false;
     }
 }
-
