@@ -23,8 +23,8 @@ public class DashboardDaoImpl implements DashboardDao {
     public List<LowStockReport> getAllLowStockMedicine() {
         List<LowStockReport> lowStockItems = new ArrayList<>();
 
-        QueryConstants queryConstant = new QueryConstants();
-        String query = queryConstant.getAllLowStockMedicineQuery();
+        QueryConstants queryConstants = new QueryConstants();
+        String query = queryConstants.getAllLowStockMedicineQuery();
 
         try (Connection connection = ConnectionHelper.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
@@ -43,8 +43,8 @@ public class DashboardDaoImpl implements DashboardDao {
     @Override
     public List<CommonAilmentsReport> getCommonAilmentReport(Date startDate, Date endDate, String gradeLevel, String section) {
         List<CommonAilmentsReport> reportList = new ArrayList<>();
-        QueryConstants queryConstant = new QueryConstants();
-        String sql = queryConstant.getAllCommonAilmentReportQuery();
+        QueryConstants queryConstants = new QueryConstants();
+        String sql = queryConstants.getAllCommonAilmentReportQuery();
 
         try (Connection connection = ConnectionHelper.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -88,9 +88,9 @@ public class DashboardDaoImpl implements DashboardDao {
     public List<FrequentVisitReport> getFrequentVisitReports(String gradeLevel, Date startDate, Date endDate) {
         List<FrequentVisitReport> reportsList = new ArrayList<>();
 
-        QueryConstants queryConstant = new QueryConstants();
+        QueryConstants queryConstants = new QueryConstants();
 
-        String sql = queryConstant.getFrequentVisitReportsQuery();
+        String sql = queryConstants.getFrequentVisitReportsQuery();
 
         try (Connection conn = ConnectionHelper.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -121,9 +121,9 @@ public class DashboardDaoImpl implements DashboardDao {
     public List<MedicationTrendReport> getMedicationTrendReport(Date startDate, Date endDate) {
         List<MedicationTrendReport> reportList = new ArrayList<>();
 
-        QueryConstants queryConstant = new QueryConstants();
+        QueryConstants queryConstants = new QueryConstants();
 
-        String sql = queryConstant.getAllMedicationTrendReport();
+        String sql = queryConstants.getAllMedicationTrendReport();
 
         try (Connection connection = ConnectionHelper.getConnection();
              PreparedStatement stmt = connection.prepareStatement(sql)){

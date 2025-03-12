@@ -21,9 +21,9 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
        Student studentMedicalRecord = null;
         try (Connection con = ConnectionHelper.getConnection()) {
 
-            QueryConstants queryContraints  = new QueryConstants();
+            QueryConstants queryConstants  = new QueryConstants();
 
-            String sql = queryContraints.getAllMedicalInformationByLRN();
+            String sql = queryConstants.getAllMedicalInformationByLRN();
 
             PreparedStatement stmt = con.prepareStatement(sql);
 
