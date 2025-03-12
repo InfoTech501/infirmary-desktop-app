@@ -1,7 +1,7 @@
 package com.rocs.infirmary.desktop.data.dao.report.dashboard.impl;
 import com.rocs.infirmary.desktop.data.connection.ConnectionHelper;
 import com.rocs.infirmary.desktop.data.dao.report.dashboard.DashboardDao;
-import com.rocs.infirmary.desktop.data.dao.utils.querycontraints.report.dashboard.QueryContraints;
+import com.rocs.infirmary.desktop.data.dao.utils.querycontraints.report.dashboard.QueryConstants;
 import com.rocs.infirmary.desktop.data.model.person.Person;
 import com.rocs.infirmary.desktop.data.model.report.ailment.CommonAilmentsReport;
 import com.rocs.infirmary.desktop.data.model.report.lowstock.LowStockReport;
@@ -23,8 +23,8 @@ public class DashboardDaoImpl implements DashboardDao {
     public List<LowStockReport> getAllLowStockMedicine() {
         List<LowStockReport> lowStockItems = new ArrayList<>();
 
-        QueryContraints queryConstant = new QueryContraints();
-        String query = queryConstant.getGetAllLowStockMedicineQuery();
+        QueryConstants queryConstant = new QueryConstants();
+        String query = queryConstant.getAllLowStockMedicineQuery();
 
         try (Connection connection = ConnectionHelper.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
@@ -43,8 +43,8 @@ public class DashboardDaoImpl implements DashboardDao {
     @Override
     public List<CommonAilmentsReport> getCommonAilmentReport(Date startDate, Date endDate, String gradeLevel, String section) {
         List<CommonAilmentsReport> reportList = new ArrayList<>();
-        QueryContraints queryConstant = new QueryContraints();
-        String sql = queryConstant.getGetCommonAilmentReportQuery();
+        QueryConstants queryConstant = new QueryConstants();
+        String sql = queryConstant.getAllCommonAilmentReportQuery();
 
         try (Connection connection = ConnectionHelper.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -88,9 +88,9 @@ public class DashboardDaoImpl implements DashboardDao {
     public List<FrequentVisitReport> getFrequentVisitReports(String gradeLevel, Date startDate, Date endDate) {
         List<FrequentVisitReport> reportsList = new ArrayList<>();
 
-        QueryContraints queryConstant = new QueryContraints();
+        QueryConstants queryConstant = new QueryConstants();
 
-        String sql = queryConstant.getGetFrequentVisitReportsQuery();
+        String sql = queryConstant.getFrequentVisitReportsQuery();
 
         try (Connection conn = ConnectionHelper.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -121,9 +121,9 @@ public class DashboardDaoImpl implements DashboardDao {
     public List<MedicationTrendReport> getMedicationTrendReport(Date startDate, Date endDate) {
         List<MedicationTrendReport> reportList = new ArrayList<>();
 
-        QueryContraints queryConstant = new QueryContraints();
+        QueryConstants queryConstant = new QueryConstants();
 
-        String sql = queryConstant.getGetMedicationTrendReport();
+        String sql = queryConstant.getAllMedicationTrendReport();
 
         try (Connection connection = ConnectionHelper.getConnection();
              PreparedStatement stmt = connection.prepareStatement(sql)){

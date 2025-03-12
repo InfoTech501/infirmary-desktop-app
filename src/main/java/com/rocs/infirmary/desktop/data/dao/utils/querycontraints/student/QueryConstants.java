@@ -1,8 +1,8 @@
 package com.rocs.infirmary.desktop.data.dao.utils.querycontraints.student;
 
-public class  QueryContraints {
+public class QueryConstants {
 
-    private final String getMedicalInformationByLRN = "SELECT " +
+    private final String GET_ALL_MEDICAL_INFORMATION_BY_LRN = "SELECT " +
             "s.id AS student_id, " +
             "s.LRN, " +
             "p.first_name, " +
@@ -19,7 +19,7 @@ public class  QueryContraints {
             "LEFT JOIN medical_record mr ON s.id = mr.student_id " +
             "WHERE s.LRN = ?";
 
-    public String getGetMedicalInformationByLRN() {
-        return getMedicalInformationByLRN;
+    public String getAllMedicalInformationByLRN() {
+        return GET_ALL_MEDICAL_INFORMATION_BY_LRN;
     }
 }

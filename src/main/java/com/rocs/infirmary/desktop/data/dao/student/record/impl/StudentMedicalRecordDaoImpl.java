@@ -1,7 +1,7 @@
 package com.rocs.infirmary.desktop.data.dao.student.record.impl;
 
 import com.rocs.infirmary.desktop.data.connection.ConnectionHelper;
-import com.rocs.infirmary.desktop.data.dao.utils.querycontraints.student.QueryContraints;
+import com.rocs.infirmary.desktop.data.dao.utils.querycontraints.student.QueryConstants;
 import com.rocs.infirmary.desktop.data.model.person.student.Student;
 import com.rocs.infirmary.desktop.data.dao.student.record.StudentMedicalRecordDao;
 
@@ -21,9 +21,9 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
        Student studentMedicalRecord = null;
         try (Connection con = ConnectionHelper.getConnection()) {
 
-            QueryContraints queryContraints  = new QueryContraints();
+            QueryConstants queryContraints  = new QueryConstants();
 
-            String sql = queryContraints.getGetMedicalInformationByLRN();
+            String sql = queryContraints.getAllMedicalInformationByLRN();
 
             PreparedStatement stmt = con.prepareStatement(sql);
 
