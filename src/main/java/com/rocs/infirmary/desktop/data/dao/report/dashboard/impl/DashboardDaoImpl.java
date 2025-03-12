@@ -1,7 +1,7 @@
 package com.rocs.infirmary.desktop.data.dao.report.dashboard.impl;
 import com.rocs.infirmary.desktop.data.connection.ConnectionHelper;
 import com.rocs.infirmary.desktop.data.dao.report.dashboard.DashboardDao;
-import com.rocs.infirmary.desktop.data.dao.utils.querycontraints.report.dashboard.QueryConstants;
+import com.rocs.infirmary.desktop.data.dao.utils.queryconstants.report.dashboard.QueryConstants;
 import com.rocs.infirmary.desktop.data.model.person.Person;
 import com.rocs.infirmary.desktop.data.model.report.ailment.CommonAilmentsReport;
 import com.rocs.infirmary.desktop.data.model.report.lowstock.LowStockReport;

@@ -1,4 +1,4 @@
-package com.rocs.infirmary.desktop.data.dao.utils.querycontraints.report.dashboard;
+package com.rocs.infirmary.desktop.data.dao.utils.queryconstants.report.dashboard;
 
 public class QueryConstants {
 

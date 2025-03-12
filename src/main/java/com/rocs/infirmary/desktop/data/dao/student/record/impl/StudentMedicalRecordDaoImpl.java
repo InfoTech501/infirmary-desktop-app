@@ -1,7 +1,7 @@
 package com.rocs.infirmary.desktop.data.dao.student.record.impl;
 
 import com.rocs.infirmary.desktop.data.connection.ConnectionHelper;
-import com.rocs.infirmary.desktop.data.dao.utils.querycontraints.student.QueryConstants;
+import com.rocs.infirmary.desktop.data.dao.utils.queryconstants.student.QueryConstants;
 import com.rocs.infirmary.desktop.data.model.person.student.Student;
 import com.rocs.infirmary.desktop.data.dao.student.record.StudentMedicalRecordDao;
 

@@ -1,4 +1,4 @@
-package com.rocs.infirmary.desktop.data.dao.utils.querycontraints.student;
+package com.rocs.infirmary.desktop.data.dao.utils.queryconstants.student;
 
 public class QueryConstants {
 
