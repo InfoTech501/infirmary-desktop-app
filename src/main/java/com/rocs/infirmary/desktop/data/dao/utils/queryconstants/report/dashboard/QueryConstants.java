@@ -11,8 +11,8 @@ public class QueryConstants {
             "JOIN PERSON p ON st.PERSON_ID = p.ID " +
             "LEFT JOIN SECTION s ON st.SECTION_SECTION_ID = s.SECTION_ID " +
             "WHERE mr.VISIT_DATE BETWEEN ? AND ? " +
-            "AND (s.GRADE_LEVEL = ? OR ? IS NULL) " +
-            "AND (s.SECTION = ? OR ? IS NULL) " +
+            "AND (UPPER(s.GRADE_LEVEL) = UPPER(?) OR ? IS NULL) " +
+            "AND (UPPER(s.SECTION) = UPPER(?) OR ? IS NULL) " +
             "GROUP BY a.description, s.section, s.grade_level, p.FIRST_NAME, p.LAST_NAME, p.AGE, s.STRAND";
 
     private final String GET_FREQUENT_VISIT_REPORT_QUERY = "SELECT mr.student_id, p.first_name, p.last_name, s.grade_level, mr.visit_date, mr.symptoms, COUNT(*) AS visit_count\n" +
