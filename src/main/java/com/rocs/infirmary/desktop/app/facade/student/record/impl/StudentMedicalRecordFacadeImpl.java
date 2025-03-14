@@ -11,6 +11,17 @@ public class StudentMedicalRecordFacadeImpl implements StudentMedicalRecordFacad
     public Student findMedicalInformationByLRN(long LRN) {
         return this.studentMedRecord.getMedicalInformationByLRN(LRN);
     }
+
+    public static class CreateMedicalRecordsFacadeImpl implements CreateMedicalRecordsFacade {
+
+        private final StudentMedicalRecordDao.CreateMedicalRecordsDao medicalRecordsDao = new StudentMedicalRecordDaoImpl.CreateMedicalRecordsDaoImpl();
+
+        @Override
+        public boolean AddStudentMedicalRecord(Student.StudentMedicalRecords record) {
+            return medicalRecordsDao.createMedicalRecord(record);
+        }
+
+    }
 }
 
 
