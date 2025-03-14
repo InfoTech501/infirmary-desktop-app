@@ -12,7 +12,8 @@
     <property name="test.src.dir" location="src/test/java"/>
     <property name="test.classes.dir" location="${build.dir}/test-classes"/>
     <property name="test.reports.dir"  location="${build.dir}/test-reports"/>
-    <property name="ivy.cache.dir" location="${build.dir}/ivy-cache"/>
+    <property name="local.junit.lib"  location="${ant.home}/lib/junit"/>
+
 
     <!--    clean    -->
     <target name="clean" description="Remove temporary directories">
@@ -23,15 +24,15 @@
     </target>
 
     <!--    initialize    -->
-    <target name="init" depends="clean" description="Create directories">
+    <target name="init" depends="clean, resolve" description="Create directories">
         <echo>Making directories...</echo>
         <mkdir dir="${classes.dir}"/>
         <mkdir dir="${dist.dir}"/>
         <mkdir dir="${test.classes.dir}"/>
         <mkdir dir="${test.reports.dir}"/>
+        <mkdir dir="${local.junit.lib}"/>
+        <mkdir dir="${test.src.dir}"/>
 
-        <echo>Resolving dependencies...</echo>
-        <ivy:resolve />
         <ivy:report todir="${ivy.reports.dir}" graph="false" xml="false" />
         <ivy:cachepath pathid="compile.path" conf="compile"/>
         <ivy:cachepath pathid="runtime.path" conf="runtime"/>
@@ -45,6 +46,7 @@
     </target>
 
     <target name="compile-tests" depends="compile">
+        <echo>Compiling tests...</echo>
         <javac srcdir="${test.src.dir}" destdir="${test.classes.dir}" includeantruntime="false" debug="true">
             <classpath>
                 <path refid="test.path"/>
@@ -54,9 +56,7 @@
     </target>
 
     <path id="junit.libs">
-        <fileset dir="${ivy.cache.dir}">
-            <include name="**/junit-*.jar"/>
-        </fileset>
+        <fileset dir="${ant.home}/lib/junit"/>
     </path>
 
     <!--Run unit tests-->
@@ -103,7 +103,7 @@
 
     <!--    build JAR   -->
     <target name="build-jar" description="Creates a jar file for the project">
-        <jar destfile="${dist.dir}/infirmary-desktop-app.jar"
+        <jar destfile="${dist.dir}/${dist.app.name}"
              basedir="${classes.dir}">
             <manifest>
                 <attribute name="Main-Class"
@@ -114,13 +114,13 @@
 
     <!--    run JAR    -->
     <target name="run" description="Run the application">
-        <java jar="${dist.dir}/infirmary-desktop-app.jar" fork="true"/>
+        <java jar="${dist.dir}/${dist.app.name}" fork="true"/>
     </target>
 
     <!--    resolve     -->
     <target name="resolve">
         <echo>Resolving dependencies...</echo>
-        <ivy:retrieve/>
         <ivy:resolve />
+        <ivy:retrieve/>
     </target>
 </project>
