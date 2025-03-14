@@ -15,6 +15,7 @@ public class Student extends Person {
     private Date visitDate;
     private String treatment;
 
+
     public void setStudentId(int studentId) {
         this.studentId = studentId;
     }
