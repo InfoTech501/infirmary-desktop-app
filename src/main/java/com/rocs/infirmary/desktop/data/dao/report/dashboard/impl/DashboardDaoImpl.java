@@ -17,7 +17,6 @@ import java.util.List;
 
 /**
  * The DashboardDaoImpl class implements the DashboardDao interface
- * it provides methods for interacting with the infirmary database.
  * It includes methods for notification of stock level of medicine and reports on common ailments, frequent visit, and medication trend.
  */
 public class DashboardDaoImpl implements DashboardDao {

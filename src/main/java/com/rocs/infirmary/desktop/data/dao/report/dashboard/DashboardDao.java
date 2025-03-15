@@ -22,12 +22,14 @@ public interface DashboardDao {
      * @return list of CommonAilmentsReport object such as common ailments, occurrences, affected people, grade level, and strand.
      */
     List<CommonAilmentsReport> getCommonAilmentReport(Date startDate, Date endDate, String gradeLevel, String section);
+
     /**
      * * This retrieves the Frequent visit report using the grade level of the student, start date, and end date.
-     * * @param gradeLevel - The grade level of the students.
-     * * @param startDate -  The start of the report date period.
-     * * @param endDate - The end of the report date period.
-     * * @return list of FrequentVisitReport object like studentId, firstName, lastName, gradeLevel, symptoms, visitCount, and visitDate.
+     *
+     * @param gradeLevel - The grade level of the students.
+     * @param startDate -  The start of the report date period.
+     * @param endDate - The end of the report date period.
+     * @return list of FrequentVisitReport object like studentId, firstName, lastName, gradeLevel, symptoms, visitCount, and visitDate.
      * */
     List<FrequentVisitReport> getFrequentVisitReports(String gradeLevel, Date startDate, Date endDate);
 
