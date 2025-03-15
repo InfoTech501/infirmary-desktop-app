@@ -10,6 +10,8 @@ public class Medicine extends Inventory{
 
     private String itemName;
 
+    private String description;
+
     private Timestamp expirationDate;
 
 
@@ -22,7 +24,16 @@ public class Medicine extends Inventory{
 
 
     public String getItemName(){ return itemName; }
-    public void setItemName (String itemName) { this.itemName = itemName; }
+    public void setItemName(String itemName) { this.itemName = itemName; }
+
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
 
     public Timestamp getExpirationDate(){ return expirationDate; }

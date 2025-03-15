@@ -179,9 +179,10 @@ public class InfirmarySystemApplication {
                 } else {
                     System.out.println("LIST OF ITEMS:");{
                         for (Medicine medicine : medicineInventoryItems) {
-                            System.out.println("Name of Medicine:  " + medicine.getDescription() +
+                            System.out.println("Name of Medicine:  " + medicine.getItemName() +
                                     "\nItem Type:    " + medicine.getItemType() +
-                                    "\nStock Level:  " + medicine.getQuantityAvailable() +
+                                    "\nDescription:  " + medicine.getDescription() +
+                                    "\nStock Level:  " + medicine.getQuantity() +
                                     "\nExpiry date:  " + medicine.getExpirationDate() + "\n");
                         }
                     }

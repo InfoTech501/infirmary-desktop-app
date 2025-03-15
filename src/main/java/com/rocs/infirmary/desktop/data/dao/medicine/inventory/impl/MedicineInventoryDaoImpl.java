@@ -30,7 +30,8 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
                 medicine.setInventoryId(rs.getInt("INVENTORY_ID"));
                 medicine.setMedicineId(rs.getString("MEDICINE_ID"));
                 medicine.setItemType(rs.getString("ITEM_TYPE"));
-                medicine.setQuantityAvailable(rs.getInt("QUANTITY_AVAILABLE"));
+                medicine.setQuantityAvailable(rs.getInt("QUANTITY"));
+                medicine.setItemName(rs.getString("ITEM_NAME"));
                 medicine.setDescription(rs.getString("DESCRIPTION"));
                 medicine.setExpirationDate(rs.getTimestamp("EXPIRATION_DATE"));
 

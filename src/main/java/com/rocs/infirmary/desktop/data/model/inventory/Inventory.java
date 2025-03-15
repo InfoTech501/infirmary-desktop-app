@@ -2,8 +2,7 @@ package com.rocs.infirmary.desktop.data.model.inventory;
 
 public class Inventory {
     private int inventoryId;
-    private String description;
-    private int quantityAvailable;
+    private int quantity;
     private String medicineId;
     private String itemType;
 
@@ -17,20 +16,13 @@ public class Inventory {
         this.inventoryId = inventoryId;
     }
 
-    public String getDescription() {
-        return description;
+
+    public int getQuantity() {
+        return quantity;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public int getQuantityAvailable() {
-        return quantityAvailable;
-    }
-
-    public void setQuantityAvailable(int quantityAvailable) {
-        this.quantityAvailable = quantityAvailable;
+    public void setQuantityAvailable(int quantity) {
+        this.quantity = quantity;
     }
 
     public String getMedicineId() {return medicineId; }
