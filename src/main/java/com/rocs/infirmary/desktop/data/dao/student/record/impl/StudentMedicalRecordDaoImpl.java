@@ -1,6 +1,7 @@
 package com.rocs.infirmary.desktop.data.dao.student.record.impl;
 
 import com.rocs.infirmary.desktop.data.connection.ConnectionHelper;
+import com.rocs.infirmary.desktop.data.dao.utils.queryconstants.student.QueryConstants;
 import com.rocs.infirmary.desktop.data.model.person.student.Student;
 import com.rocs.infirmary.desktop.data.dao.student.record.StudentMedicalRecordDao;
 
@@ -24,24 +25,9 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
        Student studentMedicalRecord = null;
         try (Connection con = ConnectionHelper.getConnection()) {
 
-            String sql = "SELECT " +
-                    "s.id AS student_id, " +
-                    "s.LRN, " +
-                    "p.first_name, " +
-                    "p.middle_name, " +
-                    "p.last_name, " +
-                    "p.age, " +
-                    "p.gender, " +
-                    "mr.symptoms, " +
-                    "mr.temperature_readings, " +
-                    "mr.visit_date AS visit_date, " +
-                    "mr.treatment " +
-                    "FROM student s " +
-                    "JOIN person p ON s.person_id = p.id " +
-                    "LEFT JOIN medical_record mr ON s.id = mr.student_id " +
-                    "WHERE s.LRN = ?";
+            QueryConstants queryConstants  = new QueryConstants();
 
-
+            String sql = queryConstants.getAllMedicalInformationByLRN();
 
             PreparedStatement stmt = con.prepareStatement(sql);
 
