@@ -2,6 +2,9 @@ package com.rocs.infirmary.desktop;
 
 import com.rocs.infirmary.desktop.app.facade.dashboard.DashboardFacade;
 import com.rocs.infirmary.desktop.app.facade.dashboard.impl.DashboardFacadeImpl;
+import com.rocs.infirmary.desktop.app.facade.medicine.inventory.MedicineInventoryFacade;
+import com.rocs.infirmary.desktop.app.facade.medicine.inventory.impl.MedicineInventoryFacadeImpl;
+import com.rocs.infirmary.desktop.data.model.inventory.MedicineInventory;
 import com.rocs.infirmary.desktop.data.model.person.student.Student;
 import com.rocs.infirmary.desktop.data.model.person.Person;
 import com.rocs.infirmary.desktop.data.model.report.ailment.CommonAilmentsReport;
@@ -19,7 +22,7 @@ import java.util.Scanner;
 
 public class InfirmarySystemApplication {
     public static void main(String[] args) {
-
+        MedicineInventoryFacade medicineInventoryFacade = new MedicineInventoryFacadeImpl();
         Scanner scanner = new Scanner(System.in);
         System.out.println("Welcome to Infirmary System Application");
         System.out.println("Please select which report:");
@@ -28,6 +31,7 @@ public class InfirmarySystemApplication {
         System.out.println("3 - Retrieve Student Medical Record");
         System.out.println("4 - Frequent Visit Report");
         System.out.println("5 - Check Low Stock Medicine");
+        System.out.println("6 - Add in Medicine");
 
         System.out.println("Enter your choice: ");
         int choice = scanner.nextInt();
@@ -163,6 +167,38 @@ public class InfirmarySystemApplication {
                 } catch (RuntimeException e) {
                     System.out.println("Error checking low stock items: " + e.getMessage());
                 }
+                break;
+            }
+            case 6: {
+                scanner.nextLine();
+
+                System.out.println("Adding an Medicine");
+                System.out.println("Enter Medicine Medicine Id: ");
+                String medicine_id = scanner.nextLine();
+                System.out.println("Enter Medicine Item Type: ");
+                String item_type = scanner.nextLine();
+                System.out.println("Enter Medicine Description: ");
+                String description = scanner.nextLine();
+                System.out.println("Enter Medicine  Inventory Id: ");
+                int inventory_id = scanner.nextInt();
+                System.out.println("Enter Medicine Quantity Available : ");
+                int quantity_available = scanner.nextInt();
+
+                MedicineInventory medicineInventory = new MedicineInventory();
+                medicineInventory.setInventory_id(inventory_id);
+                medicineInventory.setMedicine_id(medicine_id);
+                medicineInventory.setItem_type(item_type);
+                medicineInventory.setDescription(description);
+                medicineInventory.setQuantity_available(quantity_available);
+
+                boolean result = medicineInventoryFacade.addMedicine(medicineInventory);
+
+                if(result) {
+                    System.out.println("Successfully Added in Inventory.");
+                } else {
+                    System.out.println("Cannot be added in Inventory.");
+                }
+
                 break;
             }
             default:
