@@ -4,6 +4,11 @@ import com.rocs.infirmary.desktop.app.facade.medicine.inventory.MedicineInventor
 import com.rocs.infirmary.desktop.data.dao.medicine.inventory.impl.MedicineInventoryDaoImpl;
 import com.rocs.infirmary.desktop.data.model.inventory.medicine.Medicine;
 
+
+/**
+ * The MedicineInventoryFacadeImpl class is an implementation of the MedicineInventoryFacade interface.
+ *
+ */
 import java.util.List;
 public class MedicineInventoryFacadeImpl implements MedicineInventoryFacade {
 
