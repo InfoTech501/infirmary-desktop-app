@@ -20,9 +20,6 @@ public class DashboardFacadeImpl implements DashboardFacade {
     /** The data access object for Dashboard. */
     private final DashboardDao dashboard = new DashboardDaoImpl();
 
-    /**
-     * It provides the functionality to check for low stock items and send notifications.
-     */
     @Override
     public List<LowStockReport> findAllLowStockMedicine() {
         List<LowStockReport> lowStockItems = dashboard.getAllLowStockMedicine();
