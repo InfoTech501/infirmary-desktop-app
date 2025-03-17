@@ -21,7 +21,9 @@ import java.util.List;
  */
 public class DashboardDaoImpl implements DashboardDao {
 
-
+    /**
+     * It provides the actual data access logic for retrieving low stock items from the database.
+     */
     @Override
     public List<LowStockReport> getAllLowStockMedicine() {
         List<LowStockReport> lowStockItems = new ArrayList<>();
