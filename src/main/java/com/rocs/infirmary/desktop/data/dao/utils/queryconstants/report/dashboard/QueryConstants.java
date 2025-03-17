@@ -20,7 +20,7 @@ public class QueryConstants {
             "JOIN student st ON mr.student_id = st.id\n" +
             "JOIN section s ON st.section_section_id = s.section_id\n" +
             "JOIN person p ON st.person_id = p.id\n" +
-            "WHERE s.grade_level = ? " +
+            "WHERE LOWER(s.grade_level) = LOWER(?) " +
             "AND mr.visit_date BETWEEN ? AND ?\n" +
             "GROUP BY mr.student_id, p.first_name, p.last_name, s.grade_level, mr.visit_date, mr.symptoms";
 
