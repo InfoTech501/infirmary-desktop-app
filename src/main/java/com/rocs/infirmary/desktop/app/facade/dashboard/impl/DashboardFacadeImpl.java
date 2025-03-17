@@ -11,8 +11,15 @@ import com.rocs.infirmary.desktop.data.model.report.medication.MedicationTrendRe
 import java.util.Date;
 import java.util.List;
 
+/**
+ * The DashboardFacadeImpl class is an implementation of the DashboardFacade interface.
+ * It provides methods for managing reports and notification.
+ */
 public class DashboardFacadeImpl implements DashboardFacade {
+
+    /** The data access object for Dashboard. */
     private final DashboardDao dashboard = new DashboardDaoImpl();
+
     @Override
     public List<LowStockReport> findAllLowStockMedicine() {
         List<LowStockReport> lowStockItems = dashboard.getAllLowStockMedicine();
