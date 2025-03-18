@@ -123,5 +123,4 @@
         <ivy:resolve />
         <ivy:retrieve/>
     </target>
-
 </project>
