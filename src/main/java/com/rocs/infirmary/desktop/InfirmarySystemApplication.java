@@ -156,11 +156,11 @@ public class InfirmarySystemApplication {
                         System.out.println("Total no. of Visit: " + reports.size());
                         for (FrequentVisitReport report : reports) {
                             System.out.println("\nStudent First Name: " + report.getFirstName());
-                            System.out.println("\nStudent Last Name: " + report.getLastName());
-                            System.out.println("\nVisit Date: " + report.getVisitDate());
-                            System.out.println("\nGrade Level: " + report.getGradeLevel());
-                            System.out.println("\nHealth Concern: " + report.getSymptoms());
-                            System.out.println("\nTotal Visit: " + report.getVisitCount());
+                            System.out.println("Student Last Name: " + report.getLastName());
+                            System.out.println("Visit Date: " + report.getVisitDate());
+                            System.out.println("Grade Level: " + report.getGradeLevel());
+                            System.out.println("Health Concern: " + report.getSymptoms());
+                            System.out.println("Total Visit: " + report.getVisitCount());
                         }
                     }
 
