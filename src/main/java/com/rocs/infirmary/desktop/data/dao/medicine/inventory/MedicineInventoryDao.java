@@ -6,8 +6,7 @@ public interface MedicineInventoryDao {
 
 
     List<Medicine> getAllMedicine();
-
-    /*
-     * return list of Medicine with details such as medicine name, description, quantity, and expiration date.
+     /*
+     * return list of Medicine and inventory objects with details such as medicine name, description, quantity, and expiration date.
      */
 }
