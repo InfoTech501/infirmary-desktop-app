@@ -3,6 +3,7 @@ package com.rocs.infirmary.desktop.data.dao.report.dashboard.impl;
 import com.rocs.infirmary.desktop.data.connection.ConnectionHelper;
 import com.rocs.infirmary.desktop.data.dao.report.dashboard.DashboardDao;
 import com.rocs.infirmary.desktop.data.model.report.visit.FrequentVisitReport;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -42,6 +43,10 @@ public class DashboardDaoImplTest {
         when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
     }
 
+    @AfterEach
+    public void tearDown() {
+        connectionHelper.close();
+    }
 
     @Test
     public void testGetFrequentVisitReports() throws SQLException {
