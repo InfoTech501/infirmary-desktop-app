@@ -33,6 +33,7 @@ public class InfirmarySystemApplication {
         System.out.println("4 - Frequent Visit Report");
         System.out.println("5 - Check Low Stock Medicine");
         System.out.println("6 - View Medicine Inventory List");
+        System.out.println("7 - Read Student Medical Record");
 
         System.out.println("Enter your choice: ");
         int choice = scanner.nextInt();
@@ -79,7 +80,7 @@ public class InfirmarySystemApplication {
                     if (medicationTrendReportList == null || medicationTrendReportList.isEmpty()) {
                         System.out.println("No data available for the selected criteria.");
                         return;
-                    }else{
+                    } else {
                         System.out.println("\nMedication Trend report");
                         System.out.println("Period date: " + displayFormat.format(startDate) + " to " + displayFormat.format(endDate));
                         System.out.println("\nTotal no. of medicine usage within the period date: " + medicationTrendReportList.size());
@@ -129,24 +130,37 @@ public class InfirmarySystemApplication {
                     SimpleDateFormat displayFormat = new SimpleDateFormat("MMMM dd, yyyy");
                     Date frequentVisitStartDate = getValidInputDate(scanner, dateFormat, "Enter start date (yyyy-MM-dd): ");
                     Date frequentVisitEndDate = getValidInputDate(scanner, dateFormat, "Enter end date (yyyy-MM-dd): ");
-                    System.out.print("Enter grade level for Frequent Visit: ");
-                    String frequentVisitGradeLevel = scanner.nextLine().trim();
+
+                    String frequentVisitGradeLevel;
+                    while (true) {
+                        System.out.println("Select Grade Level for Frequent Visit \n(1 = Grade 11, 2 = Grade 12): ");
+                        String gradeInput = scanner.nextLine().trim();
+                        if (gradeInput.equals("1")) {
+                            frequentVisitGradeLevel = "Grade 11";
+                            break;
+                        }else if(gradeInput.equals("2")) {
+                            frequentVisitGradeLevel = "Grade 12";
+                            break;
+                        }else{
+                            System.out.println("Invalid Input. Please Enter 1 or 2");
+                        }
+                    }
 
                     List<FrequentVisitReport> reports = dashboardFacade.generateFrequentVisitReport(frequentVisitStartDate, frequentVisitEndDate, frequentVisitGradeLevel);
 
                     if (reports == null || reports.isEmpty()) {
                         System.out.println("No data available for the selected criteria.");
-                    }else{
+                    } else {
                         System.out.println("Frequent Visit Report");
                         System.out.println("Period of Date: " + displayFormat.format(frequentVisitStartDate) + " to " + displayFormat.format(frequentVisitEndDate));
                         System.out.println("Total no. of Visit: " + reports.size());
                         for (FrequentVisitReport report : reports) {
                             System.out.println("\nStudent First Name: " + report.getFirstName());
-                            System.out.println("\nStudent Last Name: " + report.getLastName());
-                            System.out.println("\nVisit Date: " + report.getVisitDate());
-                            System.out.println("\nGrade Level: " + report.getGradeLevel());
-                            System.out.println("\nHealth Concern: " + report.getSymptoms());
-                            System.out.println("\nTotal Visit: " + report.getVisitCount());
+                            System.out.println("Student Last Name: " + report.getLastName());
+                            System.out.println("Visit Date: " + report.getVisitDate());
+                            System.out.println("Grade Level: " + report.getGradeLevel());
+                            System.out.println("Health Concern: " + report.getSymptoms());
+                            System.out.println("Total Visit: " + report.getVisitCount());
                         }
                     }
 
@@ -177,7 +191,8 @@ public class InfirmarySystemApplication {
                 if (medicineInventoryItems.isEmpty()) {
                     System.out.println("The list of items is empty.");
                 } else {
-                    System.out.println("LIST OF ITEMS:");{
+                    System.out.println("LIST OF ITEMS:");
+                    {
                         for (Medicine medicine : medicineInventoryItems) {
                             System.out.println("Name of Medicine:  " + medicine.getItemName() +
                                     "\nItem Type:    " + medicine.getItemType() +
@@ -187,15 +202,35 @@ public class InfirmarySystemApplication {
                         }
                     }
                 }
+                break;
+            }
+            case 7: {
 
+                StudentMedicalRecordFacadeImpl studentMedical = new StudentMedicalRecordFacadeImpl();
+                List<Student> medicalRecords = studentMedical.readAllStudentMedicalRecords();
+
+                for (Student record : medicalRecords) {
+                    System.out.println();
+                    System.out.println("Firstname             : " + record.getFirstName());
+                    System.out.println("Middlename            : " + record.getMiddleName());
+                    System.out.println("Lastname              : " + record.getLastName());
+                    System.out.println("Age                   : " + record.getAge());
+                    System.out.println("Gender                : " + record.getGender());
+                    System.out.println("Symptoms              : " + record.getSymptoms());
+                    System.out.println("Temperature Readings  : " + record.getTemperatureReadings());
+                    System.out.println("Visit Date            : " + record.getVisitDate());
+                    System.out.println("Treatment             : " + record.getTreatment());
+
+                    System.out.println();
+                }
                 break;
             }
 
-            default:
-                System.out.println("Invalid choice. Please select a valid option.");
-                break;
-        }
-    }
+                default:
+                    System.out.println("Invalid choice. Please select a valid option.");
+                    break;
+                }
+            }
 
     private static void displayCommonAilmentsReport(List<CommonAilmentsReport> reports, Date startDate, Date endDate, String gradeLevel, String section) {
         if (reports == null || reports.isEmpty()) {

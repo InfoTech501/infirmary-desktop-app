@@ -2,7 +2,7 @@ package com.rocs.infirmary.desktop.data.dao.utils.queryconstants.report.dashboar
 
 public class QueryConstants {
 
-    private final String GET_ALL_LOW_STOCK_MEDICINE_QUERY = "SELECT description, quantity_available FROM inventory WHERE quantity_available < 20";
+    private final String GET_ALL_LOW_STOCK_MEDICINE_QUERY = "SELECT m.item_name, quantity FROM inventory i join medicine m on m.medicine_id = i.medicine_id WHERE quantity < 20";
 
     private final String GET_ALL_COMMON_AILMENTS_REPORT_QUERY = "SELECT a.description as AILMENT, COUNT(*) as occurrence_count, s.SECTION, s.GRADE_LEVEL, p.FIRST_NAME, p.LAST_NAME, p.AGE, s.STRAND " +
             "FROM MEDICAL_RECORD mr " +
@@ -24,13 +24,13 @@ public class QueryConstants {
             "AND mr.visit_date BETWEEN ? AND ?\n" +
             "GROUP BY mr.student_id, p.first_name, p.last_name, s.grade_level, mr.visit_date, mr.symptoms";
 
-    private final  String GET_ALL_MEDICATION_TREND_REPORT = "SELECT i.medicine_id, COUNT (*) AS usage, m.item_name, i.quantity_available " +
+    private final  String GET_ALL_MEDICATION_TREND_REPORT = "SELECT i.medicine_id, COUNT (*) AS usage, m.item_name, i.quantity " +
             "FROM medicine_administered ma " +
             "JOIN medicine m ON m.medicine_id = ma.medicine_id " +
             "JOIN inventory i ON i.medicine_id = ma.medicine_id " +
             "JOIN medical_record mr ON mr.id = ma.med_record_id " +
             "WHERE mr.visit_date BETWEEN ? AND ? " +
-            "GROUP BY i.medicine_id, m.item_name, i.quantity_available";
+            "GROUP BY i.medicine_id, m.item_name, i.quantity";
 
     public String getAllLowStockMedicineQuery() {
         return GET_ALL_LOW_STOCK_MEDICINE_QUERY;
