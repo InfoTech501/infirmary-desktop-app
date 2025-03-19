@@ -1,9 +1,12 @@
 package com.rocs.infirmary.desktop.app.facade.dashboard.impl;
 
+<<<<<<< HEAD
 import com.rocs.infirmary.desktop.data.dao.report.dashboard.DashboardReports;
 import com.rocs.infirmary.desktop.data.model.report.ailment.CommonAilmentsReport;
 import com.rocs.infirmary.desktop.data.model.report.lowstock.LowStockReport;
 import com.rocs.infirmary.desktop.data.model.report.medication.MedicationTrendReport;
+=======
+>>>>>>> d7d2944 (IA-4 Create Medicine Inventory)
 import com.rocs.infirmary.desktop.data.model.report.visit.FrequentVisitReport;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,11 +34,14 @@ public class DashboardFacadeImplTest {
 
     private List<FrequentVisitReport> frequentVisitReportList;
 
+<<<<<<< HEAD
     private List<MedicationTrendReport> medicationTrendReportsList;
 
     private List<LowStockReport> lowStockReportList;
     private List<CommonAilmentsReport> commonAilmentsReportList;
 
+=======
+>>>>>>> d7d2944 (IA-4 Create Medicine Inventory)
     @BeforeEach
     public void setUp() {
         frequentVisitReportList = new ArrayList<>();
@@ -48,6 +54,7 @@ public class DashboardFacadeImplTest {
         frequentVisitReport.setSymptoms("Test Symptoms");
         frequentVisitReport.setVisitCount(5);
         frequentVisitReportList.add(frequentVisitReport);
+<<<<<<< HEAD
 
         medicationTrendReportsList = new ArrayList<>();
         MedicationTrendReport medicationTrendReport = new MedicationTrendReport();
@@ -71,6 +78,8 @@ public class DashboardFacadeImplTest {
         commonailmentReport.setStrand("HUMSS");
         commonAilmentsReportList.add(commonailmentReport);
 
+=======
+>>>>>>> d7d2944 (IA-4 Create Medicine Inventory)
     }
 
     @Test
@@ -93,6 +102,7 @@ public class DashboardFacadeImplTest {
 
         verify(dashboard, times(1)).generateFrequentVisitReport(any(Date.class), any(Date.class), anyString());
     }
+<<<<<<< HEAD
 
     @Test
     public void testGenerateMedicationReport() {
@@ -150,4 +160,6 @@ public class DashboardFacadeImplTest {
         verify(dashboard, times(1)).generateCommonAilmentReport(any(Date.class), any(Date.class), anyString(), anyString());
     }
 
+=======
+>>>>>>> d7d2944 (IA-4 Create Medicine Inventory)
 }

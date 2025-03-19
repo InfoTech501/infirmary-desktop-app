@@ -1,10 +1,14 @@
 package com.rocs.infirmary.desktop.data.dao.report.dashboard.impl;
 
 import com.rocs.infirmary.desktop.data.connection.ConnectionHelper;
+<<<<<<< HEAD
 import com.rocs.infirmary.desktop.data.dao.report.dashboard.DashboardReports;
 import com.rocs.infirmary.desktop.data.model.report.ailment.CommonAilmentsReport;
 import com.rocs.infirmary.desktop.data.model.report.lowstock.LowStockReport;
 import com.rocs.infirmary.desktop.data.model.report.medication.MedicationTrendReport;
+=======
+import com.rocs.infirmary.desktop.data.dao.report.dashboard.DashboardDao;
+>>>>>>> d7d2944 (IA-4 Create Medicine Inventory)
 import com.rocs.infirmary.desktop.data.model.report.visit.FrequentVisitReport;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -71,6 +75,7 @@ public class DashboardDaoImplTest {
 
 
     }
+<<<<<<< HEAD
 
     @Test
     public void testGetMedicationTrendReport() throws SQLException {
@@ -151,4 +156,6 @@ public class DashboardDaoImplTest {
         assertNotNull(report.getAffectedPeople().get(0));
 
     }
+=======
+>>>>>>> d7d2944 (IA-4 Create Medicine Inventory)
 }
