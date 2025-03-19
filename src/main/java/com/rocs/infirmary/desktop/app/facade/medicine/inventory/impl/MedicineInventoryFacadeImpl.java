@@ -7,9 +7,9 @@ import com.rocs.infirmary.desktop.data.model.inventory.medicine.Medicine;
 import java.util.List;
 
 
-    /**
-    * The MedicineInventoryFacadeImpl class is an implementation of the MedicineInventoryFacade interface.
-    */
+/**
+ * The MedicineInventoryFacadeImpl class is an implementation of the MedicineInventoryFacade interface.
+ */
 public class MedicineInventoryFacadeImpl implements MedicineInventoryFacade {
 
     private MedicineInventoryDao medicineInventoryDao = new MedicineInventoryDaoImpl();

@@ -12,7 +12,7 @@ import java.util.ArrayList;
 /**
  * The MedicineInventoryDaoImpl class is an implementation of the MedicineInventoryDao interface.
  * This class includes methods for setting values of both medicine and inventory objects.
- * Inlcudes method for calling the query constants and connection helper.
+ * Includes method for calling the query constants and connection helper.
  */
 public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
     @Override
