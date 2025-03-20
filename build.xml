@@ -78,7 +78,7 @@
     </target>
 
     <!--    build   -->
-    <target name="build" depends="test" description="Builds the project">
+    <target name="build" depends="compile" description="Builds the project">
         <echo>Building...</echo>
     </target>
 

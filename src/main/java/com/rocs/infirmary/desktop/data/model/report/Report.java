@@ -35,13 +35,17 @@ public class Report {
         this.strand = strand;
     }
 
-    public void setStudentId(int studentId) { this.studentId = studentId; }
+    public void setStudentId(int studentId) {
+        this.studentId = studentId;
+    }
 
     public String getFirstName() {
         return firstName;
     }
 
-    public void setFirstName(String firstName) { this.firstName = firstName; }
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 
     public String getLastName() {
         return lastName;

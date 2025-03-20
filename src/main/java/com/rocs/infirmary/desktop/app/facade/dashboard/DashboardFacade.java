@@ -12,11 +12,7 @@ import java.util.List;
  * The DashboardFacade interface defines methods for managing reports and notification.
  */
 public interface DashboardFacade {
-    /**
-     * Checks for low stock items and sends notifications for each item.
-     *
-     * @return a list of LowStockItem objects that are low in stock.
-     */
+
     List<LowStockReport> findAllLowStockMedicine();
 
     /**
