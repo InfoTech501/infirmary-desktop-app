@@ -41,5 +41,7 @@ public class Medicine extends Inventory{
         this.expirationDate = expirationDate;
     }
 
+    public void setExpirationDate(int expirationDate) {
+    }
 }
 

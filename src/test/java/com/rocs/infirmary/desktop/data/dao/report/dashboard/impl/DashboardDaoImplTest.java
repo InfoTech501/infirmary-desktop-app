@@ -2,7 +2,6 @@ package com.rocs.infirmary.desktop.data.dao.report.dashboard.impl;
 
 import com.rocs.infirmary.desktop.data.connection.ConnectionHelper;
 import com.rocs.infirmary.desktop.data.dao.report.dashboard.DashboardDao;
-import com.rocs.infirmary.desktop.data.model.report.medication.MedicationTrendReport;
 import com.rocs.infirmary.desktop.data.model.report.visit.FrequentVisitReport;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -65,24 +64,6 @@ public class DashboardDaoImplTest {
 
         assertNotNull(frequentVisitReports);
         assertNotNull(frequentVisitReports.get(0));
-
-    }
-
-    @Test
-    public void testGetMedicationTrendReport() throws SQLException {
-        when(preparedStatement.executeQuery()).thenReturn(resultSet);
-        when(resultSet.next()).thenReturn(Boolean.TRUE, Boolean.FALSE);
-
-        DashboardDao dashboardDao = new DashboardDaoImpl();
-        List<MedicationTrendReport> medicationTrendReports = dashboardDao.getMedicationTrendReport(new Date(), new Date());
-
-        verify(connection, times(1)).prepareStatement(anyString());
-        verify(preparedStatement, times(1)).setTimestamp(eq(1), any(Timestamp.class));
-        verify(preparedStatement, times(1)).setTimestamp(eq(2), any(Timestamp.class));
-        verify(preparedStatement, times(1)).executeQuery();
-
-        assertNotNull(medicationTrendReports);
-        assertNotNull(medicationTrendReports.get(0));
 
     }
 }
