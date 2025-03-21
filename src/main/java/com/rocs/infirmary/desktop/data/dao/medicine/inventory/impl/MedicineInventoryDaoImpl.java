@@ -22,7 +22,7 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
 
 
         QueryConstants queryConstants = new QueryConstants();
-        String sql = queryConstants.getLIST_ALL_MEDICINE_INVENTORY_QUERY();
+        String sql= queryConstants.getLIST_ALL_MEDICINE_INVENTORY_QUERY();
 
 
         try (Connection con = ConnectionHelper.getConnection();
@@ -72,7 +72,6 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
             stmt.executeUpdate();
             return true;
 
-
         } catch (SQLException e) {
             System.out.println("An SQL Exception occurred: " + e.getMessage());
         }
@@ -80,4 +79,5 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
         return false;
     }
 }
+
 
