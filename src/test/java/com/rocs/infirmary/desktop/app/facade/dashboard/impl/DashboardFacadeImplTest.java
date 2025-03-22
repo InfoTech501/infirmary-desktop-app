@@ -28,7 +28,7 @@ public class DashboardFacadeImplTest {
         commonAilmentsReportList = new ArrayList<>();
         CommonAilmentsReport report = new CommonAilmentsReport();
         report.setAilment("Headache");
-        report.setOccurrences(10);
+        report.setOccurrences(1);
         report.setGradeLevel("Grade 11");
         report.setStrand("HUMSS");
 
@@ -47,7 +47,7 @@ public class DashboardFacadeImplTest {
 
         CommonAilmentsReport report = result.get(0);
         assertEquals("Headache", report.getAilment());
-        assertEquals(10, report.getOccurrences());
+        assertEquals(1, report.getOccurrences());
         assertEquals("Grade 11", report.getGradeLevel());
         assertEquals("HUMSS", report.getStrand());
 
