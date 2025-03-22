@@ -2,13 +2,11 @@ package com.rocs.infirmary.desktop.data.dao.student.record.impl;
 
 import com.rocs.infirmary.desktop.data.connection.ConnectionHelper;
 import com.rocs.infirmary.desktop.data.dao.utils.queryconstants.student.QueryConstants;
+import com.rocs.infirmary.desktop.data.model.person.student.MedicalRecord;
 import com.rocs.infirmary.desktop.data.model.person.student.Student;
 import com.rocs.infirmary.desktop.data.dao.student.record.StudentMedicalRecordDao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,10 +20,10 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
 
     public Student getMedicalInformationByLRN(long LRN) {
 
-       Student studentMedicalRecord = null;
+        Student studentMedicalRecord = null;
         try (Connection con = ConnectionHelper.getConnection()) {
 
-            QueryConstants queryConstants  = new QueryConstants();
+            QueryConstants queryConstants = new QueryConstants();
 
             String sql = queryConstants.getAllMedicalInformationByLRN();
 
@@ -36,7 +34,7 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
             ResultSet rs = stmt.executeQuery();
 
 
-            if(rs.next()) {
+            if (rs.next()) {
                 studentMedicalRecord = new Student();
                 studentMedicalRecord.setStudentId(rs.getInt("student_id"));
                 studentMedicalRecord.setLrn(rs.getLong("LRN"));
@@ -50,10 +48,10 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
                 studentMedicalRecord.setVisitDate(rs.getDate("visit_date"));
                 studentMedicalRecord.setTreatment(rs.getString("treatment"));
             }
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return  studentMedicalRecord;
+        return studentMedicalRecord;
 
 
     }
@@ -63,7 +61,7 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
         List<Student> medicalRecords = new ArrayList<>();
         try (Connection con = ConnectionHelper.getConnection()) {
 
-            QueryConstants queryConstants  = new QueryConstants();
+            QueryConstants queryConstants = new QueryConstants();
 
             String sql = queryConstants.getAllStudentMedicalRecords();
 
@@ -90,6 +88,68 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
         }
 
         return medicalRecords;
+    }
+
+    @Override
+    public boolean createMedicalRecord(MedicalRecord medicalRecords) {
+        try (Connection con = ConnectionHelper.getConnection()) {
+            QueryConstants queryConstants = new QueryConstants();
+            String sql = queryConstants.getInsertMedicalRecord();
+
+            try (PreparedStatement stmt = con.prepareStatement(sql)) {
+                stmt.setLong(1, medicalRecords.getStudentId());
+                stmt.setString(2, medicalRecords.getSymptoms());
+                if (medicalRecords.getVisitDate() != null) {
+                    stmt.setTimestamp(3, medicalRecords.getVisitDate());
+                } else {
+                    stmt.setTimestamp(3, null);
+                }
+                stmt.setString(4, medicalRecords.getTemperatureReadings());
+                stmt.setString(5, medicalRecords.getTreatment());
+                stmt.setLong(6, medicalRecords.getNurseInChargeId());
+                Long ailmentId = medicalRecords.getAilmentId();
+                if (ailmentId == null) {
+                    stmt.setNull(7, Types.INTEGER);
+                } else {
+                    stmt.setLong(7, ailmentId);
+                }
+                Long medHistoryId = medicalRecords.getMedHistoryId();
+                if (medHistoryId == null) {
+                    stmt.setNull(8, Types.INTEGER);
+                } else {
+                    stmt.setLong(8, medHistoryId);
+                }
+
+                int rowsAffected = stmt.executeUpdate();
+                return rowsAffected > 0;
+            } catch (SQLException e) {
+                return false;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public Student getStudentById(long studentId) {
+        Student student = null;
+        try (Connection con = ConnectionHelper.getConnection()) {
+            QueryConstants queryConstants = new QueryConstants();
+            String sql = queryConstants.getStudentById();
+            try (PreparedStatement stmt = con.prepareStatement(sql)) {
+                stmt.setLong(1, studentId);
+                ResultSet rs = stmt.executeQuery();
+                if (rs.next()) {
+                    student = new Student();
+                    student.setFirstName(rs.getString("first_name"));
+                    student.setMiddleName(rs.getString("middle_name"));
+                    student.setLastName(rs.getString("last_name"));
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error fetching student by ID", e);
+        }
+        return student;
     }
 }
 
