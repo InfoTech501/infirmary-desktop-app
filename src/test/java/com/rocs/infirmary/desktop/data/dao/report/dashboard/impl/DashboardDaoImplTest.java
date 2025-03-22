@@ -58,8 +58,8 @@ public class DashboardDaoImplTest {
     public void testGetCommonAilmentReport() throws SQLException {
 
         when(resultSet.next()).thenReturn(true).thenReturn(false);
-        when(resultSet.getString("AILMENT")).thenReturn("Headache");
-        when(resultSet.getInt("OCCURRENCE_COUNT")).thenReturn(1);
+        when(resultSet.getString("AILMENT")).thenReturn("Severe Headache");
+        when(resultSet.getInt("OCCURRENCE_COUNT")).thenReturn(10);
         when(resultSet.getString("GRADE_LEVEL")).thenReturn("11");
         when(resultSet.getString("STRAND")).thenReturn("HUMSS");
         when(resultSet.getString("FIRST_NAME")).thenReturn("John");
