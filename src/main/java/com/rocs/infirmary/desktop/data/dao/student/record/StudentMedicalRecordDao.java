@@ -10,4 +10,7 @@ public interface StudentMedicalRecordDao {
     Student getMedicalInformationByLRN(long LRN);
 
     List<Student> getAllStudentMedicalRecords();
+
+    Student deleteStudentMedicalRecordById (String Id);
+
 }

@@ -30,6 +30,11 @@ public class StudentMedicalRecordFacadeImpl implements StudentMedicalRecordFacad
 
         return medicalRecords;
     }
+
+   @Override
+    public Student deleteStudentMedicalRecordById(String Id) {
+        return this.studentMedRecord.deleteStudentMedicalRecordById(Id);
+    }
 }
 
 
