@@ -56,4 +56,10 @@ public class Student extends Person {
         this.treatment = treatment;
     }
 
+    public int getStudentId() { return studentId;
+    }
+
+    public long getLrn(){
+        return lrn;
+    }
 }

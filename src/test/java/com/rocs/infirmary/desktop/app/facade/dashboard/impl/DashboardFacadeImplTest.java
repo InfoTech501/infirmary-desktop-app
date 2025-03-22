@@ -1,5 +1,6 @@
 package com.rocs.infirmary.desktop.app.facade.dashboard.impl;
 
+import com.rocs.infirmary.desktop.data.model.report.ailment.CommonAilmentsReport;
 import com.rocs.infirmary.desktop.data.dao.report.dashboard.DashboardDao;
 import com.rocs.infirmary.desktop.data.model.report.lowstock.LowStockReport;
 import com.rocs.infirmary.desktop.data.model.report.medication.MedicationTrendReport;
@@ -16,8 +17,7 @@ import java.util.Date;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -26,10 +26,13 @@ public class DashboardFacadeImplTest {
     @Mock
     private DashboardFacadeImpl dashboard;
 
+    private List<CommonAilmentsReport> commonAilmentsReportList;
+  
     @Mock
     private DashboardDao dashboardDao;
 
     private List<FrequentVisitReport> frequentVisitReportList;
+
 
     private List<MedicationTrendReport> medicationTrendReportsList;
 
@@ -37,6 +40,16 @@ public class DashboardFacadeImplTest {
 
     @BeforeEach
     public void setUp() {
+
+        commonAilmentsReportList = new ArrayList<>();
+        CommonAilmentsReport report = new CommonAilmentsReport();
+        report.setAilment("Headache");
+        report.setOccurrences(1);
+        report.setGradeLevel("Grade 11");
+        report.setStrand("HUMSS");
+
+        commonAilmentsReportList.add(report);
+
         frequentVisitReportList = new ArrayList<>();
         FrequentVisitReport frequentVisitReport = new FrequentVisitReport();
         frequentVisitReport.setStudentId(1);
@@ -61,28 +74,29 @@ public class DashboardFacadeImplTest {
         lowStockReport.setQuantityAvailable(20);
         lowStockReportList.add(lowStockReport);
 
+
     }
 
     @Test
-    public void testGenerateFrequentVisitReport() {
-        when(dashboard.generateFrequentVisitReport(any(Date.class), any(Date.class), anyString()))
-                .thenReturn(frequentVisitReportList);
+    public void testGenerateCommonAilmentReport() {
+        when(dashboard.generateCommonAilmentReport(any(Date.class), any(Date.class), anyString(), anyString()))
+                .thenReturn(commonAilmentsReportList);
 
-        List<FrequentVisitReport> result = dashboard.generateFrequentVisitReport(new Date(), new Date(), "Grade 11");
+        List<CommonAilmentsReport> result = dashboard.generateCommonAilmentReport(new Date(), new Date(), "Grade 11", "HUMSS");
 
         assertNotNull(result);
         assertEquals(1, result.size());
 
-        FrequentVisitReport report = result.get(0);
-        assertEquals("Test FirstName", report.getFirstName());
-        assertEquals("Test LastName", report.getLastName());
-        assertEquals("Test GradeLevel", report.getGradeLevel());
-        assertNotNull(report.getVisitDate());
-        assertEquals("Test Symptoms", report.getSymptoms());
-        assertEquals(5, report.getVisitCount());
+        CommonAilmentsReport report = result.get(0);
+        assertEquals("Headache", report.getAilment());
+        assertEquals(1, report.getOccurrences());
+        assertEquals("Grade 11", report.getGradeLevel());
+        assertEquals("HUMSS", report.getStrand());
 
-        verify(dashboard, times(1)).generateFrequentVisitReport(any(Date.class), any(Date.class), anyString());
+        verify(dashboard, times(1)).generateCommonAilmentReport(any(Date.class), any(Date.class), anyString(), anyString());
     }
+
+}
 
     @Test
     public void testGenerateMedicationReport() {
@@ -121,3 +135,4 @@ public class DashboardFacadeImplTest {
     }
 
 }
+
