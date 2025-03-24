@@ -1,10 +1,10 @@
 package com.rocs.infirmary.desktop.app.facade.dashboard.impl;
 
 import com.rocs.infirmary.desktop.data.dao.report.dashboard.DashboardDao;
+import com.rocs.infirmary.desktop.data.model.report.ailment.CommonAilmentsReport;
 import com.rocs.infirmary.desktop.data.model.report.lowstock.LowStockReport;
 import com.rocs.infirmary.desktop.data.model.report.medication.MedicationTrendReport;
 import com.rocs.infirmary.desktop.data.model.report.visit.FrequentVisitReport;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,6 +26,7 @@ public class DashboardFacadeImplTest {
     @Mock
     private DashboardFacadeImpl dashboard;
 
+    private List<CommonAilmentsReport> commonAilmentsReportList;
     @Mock
     private DashboardDao dashboardDao;
 
@@ -60,6 +61,15 @@ public class DashboardFacadeImplTest {
         lowStockReport.setDescription("Test MedicineName");
         lowStockReport.setQuantityAvailable(20);
         lowStockReportList.add(lowStockReport);
+
+
+        commonAilmentsReportList = new ArrayList<>();
+        CommonAilmentsReport report = new CommonAilmentsReport();
+        report.setAilment("Headache");
+        report.setOccurrences(10);
+        report.setGradeLevel("Grade 11");
+        report.setStrand("HUMSS");
+        commonAilmentsReportList.add(report);
 
     }
 
@@ -118,6 +128,26 @@ public class DashboardFacadeImplTest {
         assertEquals(20, report.getQuantityAvailable());
 
         verify(dashboardDao, times(1)).getAllLowStockMedicine();
+    }
+
+
+    @Test
+    public void testGenerateCommonAilmentReport() {
+        when(dashboard.generateCommonAilmentReport(any(Date.class), any(Date.class), anyString(), anyString()))
+                .thenReturn(commonAilmentsReportList);
+
+        List<CommonAilmentsReport> result = dashboard.generateCommonAilmentReport(new Date(), new Date(), "Grade 11", "HUMSS");
+
+        assertNotNull(result);
+        assertEquals(1, result.size());
+
+        CommonAilmentsReport report = result.get(0);
+        assertEquals("Headache", report.getAilment());
+        assertEquals(10, report.getOccurrences());
+        assertEquals("Grade 11", report.getGradeLevel());
+        assertEquals("HUMSS", report.getStrand());
+
+        verify(dashboard, times(1)).generateCommonAilmentReport(any(Date.class), any(Date.class), anyString(), anyString());
     }
 
 }

@@ -2,6 +2,7 @@ package com.rocs.infirmary.desktop.data.dao.report.dashboard.impl;
 
 import com.rocs.infirmary.desktop.data.connection.ConnectionHelper;
 import com.rocs.infirmary.desktop.data.dao.report.dashboard.DashboardDao;
+import com.rocs.infirmary.desktop.data.model.report.ailment.CommonAilmentsReport;
 import com.rocs.infirmary.desktop.data.model.report.lowstock.LowStockReport;
 import com.rocs.infirmary.desktop.data.model.report.medication.MedicationTrendReport;
 import com.rocs.infirmary.desktop.data.model.report.visit.FrequentVisitReport;
@@ -34,7 +35,7 @@ public class DashboardDaoImplTest {
 
     @Mock
     private ResultSet resultSet;
-    
+
     private static MockedStatic<ConnectionHelper> connectionHelper;
 
     @BeforeEach
@@ -109,4 +110,37 @@ public class DashboardDaoImplTest {
         verify(preparedStatement, times(1)).executeQuery();
     }
 
+    @Test
+    public void testGetCommonAilmentReport() throws SQLException {
+        when(preparedStatement.executeQuery()).thenReturn(resultSet);
+        when(resultSet.next()).thenReturn(true).thenReturn(false);
+        when(resultSet.getString("AILMENT")).thenReturn("Severe Headache");
+        when(resultSet.getInt("OCCURRENCE_COUNT")).thenReturn(10);
+        when(resultSet.getString("GRADE_LEVEL")).thenReturn("11");
+        when(resultSet.getString("STRAND")).thenReturn("HUMSS");
+        when(resultSet.getString("FIRST_NAME")).thenReturn("John");
+        when(resultSet.getString("LAST_NAME")).thenReturn("Doe");
+        when(resultSet.getInt("AGE")).thenReturn(18);
+
+
+        DashboardDao dashboardDao = new DashboardDaoImpl();
+        List<CommonAilmentsReport> reportList = dashboardDao.getCommonAilmentReport(new Date(), new Date(), "11", "HUMSS");
+
+
+        verify(connection, times(1)).prepareStatement(anyString());
+        verify(preparedStatement, times(1)).setTimestamp(eq(1), any(Timestamp.class));
+        verify(preparedStatement, times(1)).setTimestamp(eq(2), any(Timestamp.class));
+        verify(preparedStatement, times(1)).setString(eq(3), eq("11"));
+        verify(preparedStatement, times(1)).setString(eq(4), eq("11"));
+        verify(preparedStatement, times(1)).setString(eq(5), eq("HUMSS"));
+        verify(preparedStatement, times(1)).setString(eq(6), eq("HUMSS"));
+        verify(preparedStatement, times(1)).executeQuery();
+
+        assertNotNull(reportList);
+        assertNotNull(reportList.get(0));
+
+        CommonAilmentsReport report = reportList.get(0);
+        assertNotNull(report.getAffectedPeople());
+        assertNotNull(report.getAffectedPeople().get(0));
+    }
 }
