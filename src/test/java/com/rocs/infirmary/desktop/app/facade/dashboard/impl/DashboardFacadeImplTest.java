@@ -26,7 +26,7 @@ public class DashboardFacadeImplTest {
     @Mock
     private DashboardFacadeImpl dashboard;
 
-    private List<CommonAilmentsReport> commonAilmentsReportList;
+
     @Mock
     private DashboardDao dashboardDao;
 
@@ -35,6 +35,7 @@ public class DashboardFacadeImplTest {
     private List<MedicationTrendReport> medicationTrendReportsList;
 
     private List<LowStockReport> lowStockReportList;
+    private List<CommonAilmentsReport> commonAilmentsReportList;
 
     @BeforeEach
     public void setUp() {
