@@ -1,11 +1,10 @@
 package com.rocs.infirmary.desktop.app.facade.dashboard.impl;
 
-import com.rocs.infirmary.desktop.data.model.report.ailment.CommonAilmentsReport;
 import com.rocs.infirmary.desktop.data.dao.report.dashboard.DashboardDao;
+import com.rocs.infirmary.desktop.data.model.report.ailment.CommonAilmentsReport;
 import com.rocs.infirmary.desktop.data.model.report.lowstock.LowStockReport;
 import com.rocs.infirmary.desktop.data.model.report.medication.MedicationTrendReport;
 import com.rocs.infirmary.desktop.data.model.report.visit.FrequentVisitReport;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,8 +15,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -26,13 +27,11 @@ public class DashboardFacadeImplTest {
     @Mock
     private DashboardFacadeImpl dashboard;
 
-    private List<CommonAilmentsReport> commonAilmentsReportList;
-  
     @Mock
     private DashboardDao dashboardDao;
 
     private List<FrequentVisitReport> frequentVisitReportList;
-
+    private List<CommonAilmentsReport> commonAilmentsReportList;
 
     private List<MedicationTrendReport> medicationTrendReportsList;
 
@@ -40,7 +39,6 @@ public class DashboardFacadeImplTest {
 
     @BeforeEach
     public void setUp() {
-
         commonAilmentsReportList = new ArrayList<>();
         CommonAilmentsReport report = new CommonAilmentsReport();
         report.setAilment("Headache");
@@ -49,7 +47,6 @@ public class DashboardFacadeImplTest {
         report.setStrand("HUMSS");
 
         commonAilmentsReportList.add(report);
-
         frequentVisitReportList = new ArrayList<>();
         FrequentVisitReport frequentVisitReport = new FrequentVisitReport();
         frequentVisitReport.setStudentId(1);
@@ -74,7 +71,6 @@ public class DashboardFacadeImplTest {
         lowStockReport.setQuantityAvailable(20);
         lowStockReportList.add(lowStockReport);
 
-
     }
 
     @Test
@@ -95,8 +91,6 @@ public class DashboardFacadeImplTest {
 
         verify(dashboard, times(1)).generateCommonAilmentReport(any(Date.class), any(Date.class), anyString(), anyString());
     }
-
-}
 
     @Test
     public void testGenerateMedicationReport() {
@@ -135,4 +129,3 @@ public class DashboardFacadeImplTest {
     }
 
 }
-
