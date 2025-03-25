@@ -8,7 +8,7 @@ import com.rocs.infirmary.desktop.data.model.report.medication.MedicationTrendRe
 import java.util.Date;
 import java.util.List;
 
-public interface DashboardDao {
+public interface DashboardReports {
     /**
      * Retrieves a list of inventory items that are low in stock.
      *

@@ -1,6 +1,6 @@
 package com.rocs.infirmary.desktop.app.facade.dashboard.impl;
 
-import com.rocs.infirmary.desktop.data.dao.report.dashboard.DashboardDao;
+import com.rocs.infirmary.desktop.data.dao.report.dashboard.DashboardReports;
 import com.rocs.infirmary.desktop.data.model.report.lowstock.LowStockReport;
 import com.rocs.infirmary.desktop.data.model.report.medication.MedicationTrendReport;
 import com.rocs.infirmary.desktop.data.model.report.visit.FrequentVisitReport;
@@ -27,7 +27,7 @@ public class DashboardFacadeImplTest {
     private DashboardFacadeImpl dashboard;
 
     @Mock
-    private DashboardDao dashboardDao;
+    private DashboardReports dashboardDao;
 
     private List<FrequentVisitReport> frequentVisitReportList;
 

@@ -1,7 +1,7 @@
 package com.rocs.infirmary.desktop.data.dao.report.dashboard.impl;
 
 import com.rocs.infirmary.desktop.data.connection.ConnectionHelper;
-import com.rocs.infirmary.desktop.data.dao.report.dashboard.DashboardDao;
+import com.rocs.infirmary.desktop.data.dao.report.dashboard.DashboardReports;
 import com.rocs.infirmary.desktop.data.model.report.lowstock.LowStockReport;
 import com.rocs.infirmary.desktop.data.model.report.medication.MedicationTrendReport;
 import com.rocs.infirmary.desktop.data.model.report.visit.FrequentVisitReport;
@@ -56,7 +56,7 @@ public class DashboardDaoImplTest {
         when(preparedStatement.executeQuery()).thenReturn(resultSet);
         when(resultSet.next()).thenReturn(Boolean.TRUE, Boolean.FALSE);
 
-        DashboardDao dashboardDao = new DashboardDaoImpl();
+        DashboardReports dashboardDao = new DashboardReportsImpl();
         List<FrequentVisitReport> frequentVisitReports = dashboardDao.getFrequentVisitReports("Grade 11", new Date(), new Date());
 
         verify(connection, times(1)).prepareStatement(anyString());
@@ -75,7 +75,7 @@ public class DashboardDaoImplTest {
         when(preparedStatement.executeQuery()).thenReturn(resultSet);
         when(resultSet.next()).thenReturn(Boolean.TRUE, Boolean.FALSE);
 
-        DashboardDao dashboardDao = new DashboardDaoImpl();
+        DashboardReports dashboardDao = new DashboardReportsImpl();
         List<MedicationTrendReport> medicationTrendReports = dashboardDao.getMedicationTrendReport(new Date(), new Date());
 
         verify(connection, times(1)).prepareStatement(anyString());
@@ -95,7 +95,7 @@ public class DashboardDaoImplTest {
         when(resultSet.getString("item_name")).thenReturn("Test MedicineName");
         when(resultSet.getInt("quantity")).thenReturn(20);
 
-        DashboardDao dashboardDao = new DashboardDaoImpl();
+        DashboardReports dashboardDao = new DashboardReportsImpl();
         List<LowStockReport> lowStockReports = dashboardDao.getAllLowStockMedicine();
 
         assertNotNull(lowStockReports);
