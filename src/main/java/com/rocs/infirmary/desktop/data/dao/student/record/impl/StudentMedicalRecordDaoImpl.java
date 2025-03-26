@@ -22,10 +22,10 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
 
     public Student getMedicalInformationByLRN(long LRN) {
 
-       Student studentMedicalRecord = null;
+        Student studentMedicalRecord = null;
         try (Connection con = ConnectionHelper.getConnection()) {
 
-            QueryConstants queryConstants  = new QueryConstants();
+            QueryConstants queryConstants = new QueryConstants();
 
             String sql = queryConstants.getAllMedicalInformationByLRN();
 
@@ -36,7 +36,7 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
             ResultSet rs = stmt.executeQuery();
 
 
-            if(rs.next()) {
+            if (rs.next()) {
                 studentMedicalRecord = new Student();
                 studentMedicalRecord.setStudentId(rs.getInt("student_id"));
                 studentMedicalRecord.setLrn(rs.getLong("LRN"));
@@ -50,10 +50,10 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
                 studentMedicalRecord.setVisitDate(rs.getDate("visit_date"));
                 studentMedicalRecord.setTreatment(rs.getString("treatment"));
             }
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return  studentMedicalRecord;
+        return studentMedicalRecord;
 
 
     }
@@ -63,7 +63,7 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
         List<Student> medicalRecords = new ArrayList<>();
         try (Connection con = ConnectionHelper.getConnection()) {
 
-            QueryConstants queryConstants  = new QueryConstants();
+            QueryConstants queryConstants = new QueryConstants();
 
             String sql = queryConstants.getAllStudentMedicalRecords();
 
@@ -90,6 +90,41 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
         }
 
         return medicalRecords;
+    }
+
+    @Override
+    public boolean updateStudentMedicalRecords(Student student) {
+
+        try (Connection con = ConnectionHelper.getConnection()) {
+            QueryConstants queryConstants = new  QueryConstants();
+            String sql = queryConstants.getAllMedicalInformationByLRN();
+
+            PreparedStatement stmt = con.prepareStatement(sql "SYMPTOMS = ?, ADDED_REMERKS = ?, TEMPERATURE_READINGS = ?, VISIT_DATE = ?, TREATMENT = ?, LRN = ?, MEDICATIONS_ADMINISTERED = ?");
+            stmt.setLong(1, LRN);
+            ResultSet rs = stmt.executeQuery();
+
+
+            if (rs.next()) {
+                Student studentMedicalRecord = new Student();
+
+
+                studentMedicalRecord.setSymptoms(rs.getString("symptoms"));
+                studentMedicalRecord.setAddedRemerks(rs.getString("added_remerks"));
+                studentMedicalRecord.setTemperatureReadings(rs.getString("temperature_readings"));
+                studentMedicalRecord.setVisitDate(rs.getDate("visit_date"));
+                studentMedicalRecord.setTreatment(rs.getString("treatment"));
+                studentMedicalRecord.setLrn(rs.getLong("lrn"));
+                studentMedicalRecord.setMedicationsAdministered(rs.getString("medicationsadministered"));
+
+                int affectedRows = studentMedicalRecord.executeUpdate();
+                return affectedRows > 0;
+            } catch(SQLException e){
+                System.out.println("An SQL Exception occurred." + e.getMessage());
+                return false;
+            }
+        }
+
+
     }
 }
 

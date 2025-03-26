@@ -2,6 +2,7 @@ package com.rocs.infirmary.desktop;
 
 import com.rocs.infirmary.desktop.app.facade.dashboard.DashboardFacade;
 import com.rocs.infirmary.desktop.app.facade.dashboard.impl.DashboardFacadeImpl;
+import com.rocs.infirmary.desktop.app.facade.student.record.StudentMedicalRecordFacade;
 import com.rocs.infirmary.desktop.data.model.person.student.Student;
 import com.rocs.infirmary.desktop.data.model.person.Person;
 import com.rocs.infirmary.desktop.data.model.report.ailment.CommonAilmentsReport;
@@ -34,6 +35,7 @@ public class InfirmarySystemApplication {
         System.out.println("5 - Check Low Stock Medicine");
         System.out.println("6 - View Medicine Inventory List");
         System.out.println("7 - Read Student Medical Record");
+        System.out.println("8 - Update Student Medical Record");
 
         System.out.println("Enter your choice: ");
         int choice = scanner.nextInt();
@@ -230,7 +232,72 @@ public class InfirmarySystemApplication {
                     System.out.println("Invalid choice. Please select a valid option.");
                     break;
                 }
+
+
+        case 8: {
+
+
+
+            scanner.nextLine();
+                        System.out.println("Enter the Student LRN to update: ");
+                        long LRN = scanner.nextLong();
+                         Student student = studentMedicalRecordFacade.getUpdateMedicalByLRN(lrn);
+                        if (updatemedical == null) {
+                            System.out.println("UpdateMedical to update not found.");
+                        } else {
+                            System.out.println("Updating an updatemedical");
+                            System.out.println("Enter updatemedical studentid: ");
+                            int studentid = scanner.nextLine();
+                            System.out.println("Enter updatemedical ailmentid: ");
+                            int ailmentid = scanner.nextLine();
+                            System.out.println("Enter updatemedical medhistoryid: ");
+                            String medhistoryid = scanner.nextLine();;
+                            System.out.println("Enter updatemedical nurseinchargeid:");
+                            int nurseinchargeid = scanner.nextLine();
+                            System.out.println("Enter updatemedical symptoms: ");
+                            String symptoms = scanner.nextLine();
+                            System.out.println("Enter updatemedical temperaturereadings: ");
+                            int temperaturereadings = scanner.nextLine();
+                            System.out.println("Enter updatemedical visitdate: ");
+                            int visitdate = scanner.nextLine();
+                            System.out.println("Enter updatemedical treatment: ");
+                            String treatment = scanner.nextLine();
+
+                            StudentMedicalRecord updateStudentMedicalRecord = new StudentMedicalRecord;
+                            updateUpdateMedical.setId(id);
+                            updateUpdateMedical.setStudentId(studentid);
+                            updateUpdateMedical.setAilmentId(ailmentid);
+                            updateUpdateMedical.setMedHistoryId(medhistoryid);
+                            updateUpdateMedical.setNurseInChargeId(nurseinchargeid);
+                            updateUpdateMedical.setSymptoms(symptoms);
+                            updateUpdateMedical.setTemperatureReadings(temperaturereadings);
+                            updateUpdateMedical.setVisitDate(visitdate);
+                            updateUpdateMedical.setTreatment(treatment);
+
+                            boolean result = updatestudentmedicalrecordFacade.updateUpdateStudentMedicalRecord(updateUpdateStudentMedicalRecord);
+
+                            if (result) {
+                                System.out.println("UpdateMedical successfully updated.");
+
+                            } else {
+                                System.out.println("UpdateMedical failed.");
+
+                            }
+
+                        }
+
+
+                    }
+
+                }
             }
+
+
+
+
+
+
+
 
     private static void displayCommonAilmentsReport(List<CommonAilmentsReport> reports, Date startDate, Date endDate, String gradeLevel, String section) {
         if (reports == null || reports.isEmpty()) {
@@ -286,4 +353,3 @@ public class InfirmarySystemApplication {
             }
         }
     }
-}

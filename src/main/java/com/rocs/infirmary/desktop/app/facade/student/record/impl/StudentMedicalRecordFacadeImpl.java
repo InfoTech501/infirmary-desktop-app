@@ -17,7 +17,9 @@ import java.util.List;
 
 public class StudentMedicalRecordFacadeImpl implements StudentMedicalRecordFacade {
 
-    /** The data access object for Student Medical Record. */
+    /**
+     * The data access object for Student Medical Record.
+     */
     private final StudentMedicalRecordDao studentMedRecord = new StudentMedicalRecordDaoImpl();
 
     public Student findMedicalInformationByLRN(long LRN) {
@@ -27,11 +29,15 @@ public class StudentMedicalRecordFacadeImpl implements StudentMedicalRecordFacad
     @Override
     public List<Student> readAllStudentMedicalRecords() {
         List<Student> medicalRecords = this.studentMedRecord.getAllStudentMedicalRecords();
-
         return medicalRecords;
     }
-}
 
+    @Override
+    public boolean updateStudentMedicalRecords(Student student) {
+        return this.studentMedRecord.updateStudentMedicalRecords(student);
+    }
+
+}
 
 
 

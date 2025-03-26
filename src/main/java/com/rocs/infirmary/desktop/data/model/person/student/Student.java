@@ -11,9 +11,11 @@ public class Student extends Person {
     private int studentGuardianId;
     private  long lrn;
     private String symptoms;
+    private String addedremerks;
     private String temperatureReadings;
     private Date visitDate;
     private String treatment;
+    private String medicationsadministered;
 
 
     public void setStudentId(int studentId) {
@@ -31,6 +33,15 @@ public class Student extends Person {
     public void setSymptoms(String symptoms) {
         this.symptoms = symptoms;
     }
+
+    public String getAddedRemerks() {
+        return addedremerks;
+    }
+
+    public void setAddedRemerks(String addedremerks) {
+        this.addedremerks = addedremerks;
+    }
+
 
     public String getTemperatureReadings() {
         return temperatureReadings;
@@ -55,5 +66,9 @@ public class Student extends Person {
     public void setTreatment(String treatment) {
         this.treatment = treatment;
     }
+
+    public String getMedicationsAdministered() { return medicationsadministered; }
+
+    public void  setMedicationsadministered(String medicationsadministered) { this.medicationsadministered = medicationsadministered; }
 
 }

@@ -1,6 +1,7 @@
 package com.rocs.infirmary.desktop.app.facade.student.record;
 
 
+import com.rocs.infirmary.desktop.data.dao.student.record.StudentMedicalRecordDao;
 import com.rocs.infirmary.desktop.data.model.person.student.Student;
 
 
@@ -26,4 +27,9 @@ public interface StudentMedicalRecordFacade {
      * @return A list of student medical records, or an empty list if no records are found.
      */
     List<Student> readAllStudentMedicalRecords();
+
+
+
+
+    boolean updateStudentMedicalRecords(Student student);
 }
