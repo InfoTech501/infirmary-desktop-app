@@ -142,5 +142,6 @@ public class DashboardDaoImplTest {
         CommonAilmentsReport report = reportList.get(0);
         assertNotNull(report.getAffectedPeople());
         assertNotNull(report.getAffectedPeople().get(0));
+
     }
 }
