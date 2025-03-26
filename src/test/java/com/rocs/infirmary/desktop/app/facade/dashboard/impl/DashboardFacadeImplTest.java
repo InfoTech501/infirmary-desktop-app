@@ -1,10 +1,11 @@
 package com.rocs.infirmary.desktop.app.facade.dashboard.impl;
 
-import com.rocs.infirmary.desktop.data.dao.report.dashboard.DashboardDao;
+import com.rocs.infirmary.desktop.data.dao.report.dashboard.DashboardReports;
 import com.rocs.infirmary.desktop.data.model.report.ailment.CommonAilmentsReport;
 import com.rocs.infirmary.desktop.data.model.report.lowstock.LowStockReport;
 import com.rocs.infirmary.desktop.data.model.report.medication.MedicationTrendReport;
 import com.rocs.infirmary.desktop.data.model.report.visit.FrequentVisitReport;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,11 +16,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
+
 
 @ExtendWith(MockitoExtension.class)
 public class DashboardFacadeImplTest {
@@ -27,9 +28,8 @@ public class DashboardFacadeImplTest {
     @Mock
     private DashboardFacadeImpl dashboard;
 
-
     @Mock
-    private DashboardDao dashboardDao;
+    private DashboardReports dashboardDao;
 
     private List<FrequentVisitReport> frequentVisitReportList;
 
