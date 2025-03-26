@@ -1,6 +1,9 @@
 package com.rocs.infirmary.desktop.app.facade.medicine.inventory;
 
 import com.rocs.infirmary.desktop.data.model.inventory.medicine.Medicine;
+
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 
@@ -14,4 +17,6 @@ public interface MedicineInventoryFacade {
 
     List<Medicine> findAllMedicine();
 
+
+    boolean addMedicine(Medicine medicine);
 }

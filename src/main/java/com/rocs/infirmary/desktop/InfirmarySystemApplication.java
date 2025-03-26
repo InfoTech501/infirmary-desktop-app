@@ -14,6 +14,7 @@ import com.rocs.infirmary.desktop.app.facade.medicine.inventory.impl.MedicineInv
 import com.rocs.infirmary.desktop.data.model.inventory.medicine.Medicine;
 
 
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -23,6 +24,8 @@ import java.util.Scanner;
 
 public class InfirmarySystemApplication {
     public static void main(String[] args) {
+
+        MedicineInventoryFacade medicineInventoryFacade = new MedicineInventoryFacadeImpl();
 
         Scanner scanner = new Scanner(System.in);
         System.out.println("Welcome to Infirmary System Application");
@@ -34,6 +37,7 @@ public class InfirmarySystemApplication {
         System.out.println("5 - Check Low Stock Medicine");
         System.out.println("6 - View Medicine Inventory List");
         System.out.println("7 - Read Student Medical Record");
+        System.out.println("8 - Add Medicine Inventory");
 
         System.out.println("Enter your choice: ");
         int choice = scanner.nextInt();
@@ -223,6 +227,36 @@ public class InfirmarySystemApplication {
 
                     System.out.println();
                 }
+                break;
+            }
+
+            case 8:{
+                scanner.nextLine();
+
+                System.out.println("Adding an Medicine");
+                System.out.println("Enter Medicine Medicine Id: " );
+                String medicine_id = scanner.nextLine();
+                System.out.println("Enter Medicine Item Name: ");
+                String item_name = scanner.nextLine();
+                System.out.println("Enter Medicine Description: ");
+                String description = scanner.nextLine();
+                System.out.println("Enter Expiration DAte(yyyy-mm-dd)");
+                Timestamp expiration_Date = Timestamp.valueOf(scanner.nextLine());
+
+                Medicine medicine = new Medicine();
+                medicine.setMedicineId(medicine_id);
+                medicine.setItemName(item_name);
+                medicine.setDescription(description);
+                medicine.setExpirationDate(expiration_Date);
+
+                boolean result = medicineInventoryFacade.addMedicine(medicine);
+
+                if(result) {
+                    System.out.println("Successfully Added in Medicine.");
+                } else {
+                    System.out.println("Cannot be added in Medicine.");
+                }
+
                 break;
             }
 

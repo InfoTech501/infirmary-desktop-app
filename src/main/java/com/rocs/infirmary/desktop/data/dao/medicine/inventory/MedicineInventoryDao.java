@@ -1,10 +1,9 @@
 package com.rocs.infirmary.desktop.data.dao.medicine.inventory;
-
 import com.rocs.infirmary.desktop.data.model.inventory.medicine.Medicine;
+
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
-
-
-
 public interface MedicineInventoryDao {
 
 /*
@@ -12,4 +11,5 @@ public interface MedicineInventoryDao {
 */
     List<Medicine> getAllMedicine();
 
+    boolean addMedicine(Medicine medicine);
 }

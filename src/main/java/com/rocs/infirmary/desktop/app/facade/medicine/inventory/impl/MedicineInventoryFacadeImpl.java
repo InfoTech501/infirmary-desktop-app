@@ -4,6 +4,9 @@ import com.rocs.infirmary.desktop.data.dao.medicine.inventory.MedicineInventoryD
 import com.rocs.infirmary.desktop.app.facade.medicine.inventory.MedicineInventoryFacade;
 import com.rocs.infirmary.desktop.data.dao.medicine.inventory.impl.MedicineInventoryDaoImpl;
 import com.rocs.infirmary.desktop.data.model.inventory.medicine.Medicine;
+
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 
@@ -18,5 +21,11 @@ public class MedicineInventoryFacadeImpl implements MedicineInventoryFacade {
     public List<Medicine> findAllMedicine() {
         return this.medicineInventoryDao.getAllMedicine();
     }
+
+    @Override
+    public boolean addMedicine(Medicine medicine) {
+        return this.medicineInventoryDao.addMedicine(medicine);
+    }
+
 
 }
