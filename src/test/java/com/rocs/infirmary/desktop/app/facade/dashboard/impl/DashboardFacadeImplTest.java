@@ -5,7 +5,6 @@ import com.rocs.infirmary.desktop.data.model.report.ailment.CommonAilmentsReport
 import com.rocs.infirmary.desktop.data.model.report.lowstock.LowStockReport;
 import com.rocs.infirmary.desktop.data.model.report.medication.MedicationTrendReport;
 import com.rocs.infirmary.desktop.data.model.report.visit.FrequentVisitReport;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -66,12 +65,12 @@ public class DashboardFacadeImplTest {
 
 
         commonAilmentsReportList = new ArrayList<>();
-        CommonAilmentsReport report = new CommonAilmentsReport();
-        report.setAilment("Headache");
-        report.setOccurrences(1);
-        report.setGradeLevel("Grade 11");
-        report.setStrand("HUMSS");
-        commonAilmentsReportList.add(report);
+        CommonAilmentsReport commonailmentReport = new CommonAilmentsReport();
+        commonailmentReport.setAilment("Headache");
+        commonailmentReport.setOccurrences(1);
+        commonailmentReport.setGradeLevel("Grade 11");
+        commonailmentReport.setStrand("HUMSS");
+        commonAilmentsReportList.add(commonailmentReport);
 
     }
 
