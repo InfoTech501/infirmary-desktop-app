@@ -22,10 +22,10 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
 
     public Student getMedicalInformationByLRN(long LRN) {
 
-       Student studentMedicalRecord = null;
+        Student studentMedicalRecord = null;
         try (Connection con = ConnectionHelper.getConnection()) {
 
-            QueryConstants queryConstants  = new QueryConstants();
+            QueryConstants queryConstants = new QueryConstants();
 
             String sql = queryConstants.getAllMedicalInformationByLRN();
 
@@ -36,7 +36,7 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
             ResultSet rs = stmt.executeQuery();
 
 
-            if(rs.next()) {
+            if (rs.next()) {
                 studentMedicalRecord = new Student();
                 studentMedicalRecord.setStudentId(rs.getInt("student_id"));
                 studentMedicalRecord.setLrn(rs.getLong("LRN"));
@@ -50,10 +50,10 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
                 studentMedicalRecord.setVisitDate(rs.getDate("visit_date"));
                 studentMedicalRecord.setTreatment(rs.getString("treatment"));
             }
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return  studentMedicalRecord;
+        return studentMedicalRecord;
 
 
     }
@@ -63,7 +63,7 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
         List<Student> medicalRecords = new ArrayList<>();
         try (Connection con = ConnectionHelper.getConnection()) {
 
-            QueryConstants queryConstants  = new QueryConstants();
+            QueryConstants queryConstants = new QueryConstants();
 
             String sql = queryConstants.getAllStudentMedicalRecords();
 
@@ -91,7 +91,69 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
 
         return medicalRecords;
     }
+
+
+    @Override
+    public boolean deleteStudentMedicalRecordById(long LRN) {
+        Student studentMedicalRecord = new Student();
+        try (Connection con = ConnectionHelper.getConnection()) {
+
+            QueryConstants queryConstants = new QueryConstants();
+
+            String sql = queryConstants.getAllMedicalInformationByLRN();
+
+            PreparedStatement stmt = con.prepareStatement(sql);
+
+
+            stmt.setLong(1, LRN);
+            ResultSet rs = stmt.executeQuery();
+
+
+            while (rs.next()){
+                studentMedicalRecord.setMedicalRecordId(rs.getInt("student_id"));
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        try (Connection con = ConnectionHelper.getConnection()) {
+
+            QueryConstants queryConstants = new QueryConstants();
+
+            String sql = queryConstants.getDELETE_MEDICINE_ADMINISTERED();
+
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setInt(1,studentMedicalRecord.getMedicalRecordId());
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        try (Connection con = ConnectionHelper.getConnection()) {
+
+            QueryConstants queryConstants = new QueryConstants();
+
+            String sql = queryConstants.getDELETE_STUDENT_MEDICAL_RECORD();
+
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setInt(1,studentMedicalRecord.getStudentId());
+
+            int affectedRow = preparedStatement.executeUpdate();
+            return affectedRow > 0;
+
+        } catch (SQLException e) {
+
+            throw new RuntimeException(e);
+        }
+
+
+    }
+
+
 }
+
+
 
 
 

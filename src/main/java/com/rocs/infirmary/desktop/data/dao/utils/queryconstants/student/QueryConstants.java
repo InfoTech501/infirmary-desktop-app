@@ -34,11 +34,30 @@ public class QueryConstants {
             "JOIN person ON medical_record.student_id = person.id " +
             "LEFT JOIN student ON medical_record.student_id = student.id";
 
+    private final String GET_DELETE_STUDENT_MEDICAL_RECORD_BY_ID = "SELECT" +
+            "medical_record.id," +
+            "medical_record.student.id, " +
+            "medical_record.student.ailment_id, " +
+            "medical_record.student.med_history_id, " +
+            "medical_record.student.nurse_in_charge_id, " +
+            "medical_record.symptoms, " +
+            "medical_record.temperature_readings, " +
+            "medical_record.visit_date, " +
+            "medical_record.treatment " +
+            "FROM medical_record " +
+            "DELETE FROM medical_record WHERE ID = ? ";
 
-    public String getAllStudentMedicalRecords() {
-        return GET_ALL_STUDENTS_MEDICAL_RECORDS;
+    private final String DELETE_MEDICINE_ADMINISTERED = "DELETE FROM MEDICINE_ADMINISTERED WHERE MED_RECORD_ID = ?";
+
+    private final String DELETE_STUDENT_MEDICAL_RECORD = "DELETE FROM MEDICAL_RECORD WHERE LRN = ?";
+
+
+    public String getAllStudentMedicalRecords() { return GET_ALL_STUDENTS_MEDICAL_RECORDS;
     }
-    public String getAllMedicalInformationByLRN() {
-        return GET_ALL_MEDICAL_INFORMATION_BY_LRN;
+    public String getAllMedicalInformationByLRN() { return GET_ALL_MEDICAL_INFORMATION_BY_LRN;
+    }
+    public String getDELETE_MEDICINE_ADMINISTERED() { return DELETE_MEDICINE_ADMINISTERED;
+    }
+    public String getDELETE_STUDENT_MEDICAL_RECORD() { return DELETE_STUDENT_MEDICAL_RECORD;
     }
 }

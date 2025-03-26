@@ -34,6 +34,7 @@ public class InfirmarySystemApplication {
         System.out.println("5 - Check Low Stock Medicine");
         System.out.println("6 - View Medicine Inventory List");
         System.out.println("7 - Read Student Medical Record");
+        System.out.println("8 - Delete Student Medical Record");
 
         System.out.println("Enter your choice: ");
         int choice = scanner.nextInt();
@@ -225,10 +226,44 @@ public class InfirmarySystemApplication {
                 }
                 break;
             }
+            case 8: {
+
+                StudentMedicalRecordFacadeImpl studentMedicalRecordFacade = new StudentMedicalRecordFacadeImpl();
+                Scanner sc = new Scanner(System.in);
+
+                System.out.print("Enter the LRN of student to delete: ");
+                long lrn = sc.nextLong();
+
+                if (studentMedicalRecordFacade.deleteStudentMedicalRecordById(lrn)) {
+                    System.out.println("Item to delete not found.");
+
+                } else {
+
+                    System.out.print("Are you sure you want to delete this record? This action cannot be undone. (Select 1. for YES and 2. for NO/CANCEL): ");
+                    int confirmation = sc.nextInt();
+
+
+                    if (confirmation == 1) {
+
+                        if (studentMedicalRecordFacade.deleteStudentMedicalRecordById(lrn)) {
+                            System.out.println("Item cannot be deleted.");
+                        } else {
+                            System.out.println("Item successfully deleted.");
+                        }
+
+                    }
+
+                    if (confirmation == 2) {
+                        System.out.println("Cancel the Deletion");
+
+                    }
+
+                }
+                break;
+            }
 
                 default:
                     System.out.println("Invalid choice. Please select a valid option.");
-                    break;
                 }
             }
 
