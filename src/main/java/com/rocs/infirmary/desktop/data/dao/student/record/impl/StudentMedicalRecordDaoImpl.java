@@ -91,6 +91,39 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
 
         return medicalRecords;
     }
+
+
+    @Override
+    public UpdateStudentMedicalRecord findUpdateStudentMedicalRecordById(String Id) {
+        UpdateMedical updatemedical = null;
+
+        try (Connection con = ConnectionHelper.getConnection()){
+
+            PreparedStatement stmt = con.prepareStatement("SELECT * FROM ITEM WHERE ID = ?");
+            stmt.setString(1, Id);
+
+            ResultSet rs = stmt.executeQuery();
+
+            if(rs.next()) {
+                updatemedical = new UpdateMedical();
+                updatemedical.setId(rs.getString("Id"));
+                updatemedical.setStudentId(rs.getInt("studentid"));
+                updatemedical.setAilmentId(rs.getInt("AilmentId"));
+                updatemedical.setMedHistoryId(rs.getString("MedHirtoryId"));
+                updatemedical.setNurseInChargeId(rs.getInt("NurseInChargeId"));
+                updatemedical.setSymptoms(rs.getString("Symptoms"));
+                updatemedical.setTemperatureReadings(rs.getInt("TemperatureReadings"));
+                updatemedical.setVisitDate(rs.getInt("VisitDate"));
+                updatemedical.setTreatment(rs.getString("Treatment"));
+
+            }
+
+        } catch (SQLException e) {
+            System.out.println("An SQL Exception occurred." + e.getMessage());
+        }
+
+        return updatemedical;
+    }
 }
 
 
