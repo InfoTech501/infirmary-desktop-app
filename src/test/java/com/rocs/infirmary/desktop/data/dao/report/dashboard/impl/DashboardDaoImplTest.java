@@ -57,17 +57,25 @@ public class DashboardDaoImplTest {
         when(preparedStatement.executeQuery()).thenReturn(resultSet);
         when(resultSet.next()).thenReturn(Boolean.TRUE, Boolean.FALSE);
 
+        when(resultSet.getInt("student_id")).thenReturn(1);
+        when(resultSet.getString("first_name")).thenReturn("Test First Name");
+        when(resultSet.getString("last_name")).thenReturn("Test Last Name");
+        when(resultSet.getString("grade_level")).thenReturn("Test Grade Level");
+        when(resultSet.getDate("visit_date")).thenReturn(java.sql.Date.valueOf("2000-01-02"));
+        when(resultSet.getString("symptoms")).thenReturn("Test Symptoms");
+        when(resultSet.getInt("visit_count")).thenReturn(2);
+
         DashboardReports dashboardDao = new DashboardReportsImpl();
         List<FrequentVisitReport> frequentVisitReports = dashboardDao.getFrequentVisitReports("Grade 11", new Date(), new Date());
+
+        assertNotNull(frequentVisitReports);
+        assertNotNull(frequentVisitReports.get(0));
 
         verify(connection, times(1)).prepareStatement(anyString());
         verify(preparedStatement, times(1)).setString(eq(1), eq("Grade 11"));
         verify(preparedStatement, times(1)).setTimestamp(eq(2), any(Timestamp.class));
         verify(preparedStatement, times(1)).setTimestamp(eq(3), any(Timestamp.class));
         verify(preparedStatement, times(1)).executeQuery();
-
-        assertNotNull(frequentVisitReports);
-        assertNotNull(frequentVisitReports.get(0));
 
     }
 
@@ -76,16 +84,20 @@ public class DashboardDaoImplTest {
         when(preparedStatement.executeQuery()).thenReturn(resultSet);
         when(resultSet.next()).thenReturn(Boolean.TRUE, Boolean.FALSE);
 
+        when(resultSet.getInt("usage")).thenReturn(100);
+        when(resultSet.getString("item_name")).thenReturn("Test Medicine Name");
+        when(resultSet.getInt("quantity")).thenReturn(50);
+
         DashboardReports dashboardDao = new DashboardReportsImpl();
         List<MedicationTrendReport> medicationTrendReports = dashboardDao.getMedicationTrendReport(new Date(), new Date());
+
+        assertNotNull(medicationTrendReports);
+        assertNotNull(medicationTrendReports.get(0));
 
         verify(connection, times(1)).prepareStatement(anyString());
         verify(preparedStatement, times(1)).setTimestamp(eq(1), any(Timestamp.class));
         verify(preparedStatement, times(1)).setTimestamp(eq(2), any(Timestamp.class));
         verify(preparedStatement, times(1)).executeQuery();
-
-        assertNotNull(medicationTrendReports);
-        assertNotNull(medicationTrendReports.get(0));
 
     }
 
