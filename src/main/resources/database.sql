@@ -395,14 +395,14 @@ values (4, 'AC', 4, '3', 'Antacid 500mg administered', 2, to_timestamp('2024-01-
 insert into medicine_administered (id, medicine_id, med_record_id, nurse_in_charge_id, description, quantity, date_administered)
 values (5, 'VM', 5, '1', 'Vitamin C 500mg administered', 1, to_timestamp('2020-01-02 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
 insert into medicine_administered (id, medicine_id, med_record_id, nurse_in_charge_id, description, quantity, date_administered)
-values (6, 'IB', 6, '2', 'Ibuprofen 200mg administered', 1, TO_TIMESTAMP('2024-02-15 09:30:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
+values (6, 'IB', 6, '2', 'Ibuprofen 200mg administered', 1, TO_TIMESTAMP('2023-02-15 09:30:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
 insert into medicine_administered (id, medicine_id, med_record_id, nurse_in_charge_id, description, quantity, date_administered)
-values (7, 'AH', 7, '1', 'Antihistamine cream administered', 2, TO_TIMESTAMP('2023-07-10 15:45:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
+values (7, 'AH', 7, '1', 'Antihistamine cream administered', 2, TO_TIMESTAMP('2022-07-10 15:45:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
 insert into medicine_administered (id, medicine_id, med_record_id, nurse_in_charge_id, description, quantity, date_administered)
-values (8, 'IB', 8, '4', 'Ibuprofen 400mg administered', 1, TO_TIMESTAMP('2022-05-25 12:20:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
+values (8, 'IB', 8, '4', 'Ibuprofen 400mg administered', 1, TO_TIMESTAMP('2021-05-25 12:20:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
 insert into medicine_administered (id, medicine_id, med_record_id, nurse_in_charge_id, description, quantity, date_administered)
-values (9, 'DN', 9, '3', 'Decongestant 10ml administered', 1, TO_TIMESTAMP('2023-10-01 08:15:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
+values (9, 'DN', 9, '3', 'Decongestant 10ml administered', 1, TO_TIMESTAMP('2020-10-01 08:15:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
 insert into medicine_administered (id, medicine_id, med_record_id, nurse_in_charge_id, description, quantity, date_administered)
-values (10, 'AN', 10, '2', 'Antibiotics 500mg administered', 1, TO_TIMESTAMP('2024-03-20 11:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
+values (10, 'AN', 10, '2', 'Antibiotics 500mg administered', 1, TO_TIMESTAMP('2023-03-20 11:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
 
 commit;
