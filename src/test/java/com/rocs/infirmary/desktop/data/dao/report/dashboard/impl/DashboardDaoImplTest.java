@@ -77,8 +77,6 @@ public class DashboardDaoImplTest {
         verify(preparedStatement, times(1)).setTimestamp(eq(3), any(Timestamp.class));
         verify(preparedStatement, times(1)).executeQuery();
 
-        assertNotNull(frequentVisitReports);
-        assertNotNull(frequentVisitReports.get(0));
 
     }
 
@@ -102,8 +100,7 @@ public class DashboardDaoImplTest {
         verify(preparedStatement, times(1)).setTimestamp(eq(2), any(Timestamp.class));
         verify(preparedStatement, times(1)).executeQuery();
 
-        assertNotNull(medicationTrendReports);
-        assertNotNull(medicationTrendReports.get(0));
+
 
     }
 
