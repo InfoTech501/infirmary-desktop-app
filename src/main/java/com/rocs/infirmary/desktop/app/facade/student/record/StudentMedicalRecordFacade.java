@@ -26,4 +26,9 @@ public interface StudentMedicalRecordFacade {
      * @return A list of student medical records, or an empty list if no records are found.
      */
     List<Student> readAllStudentMedicalRecords();
+
+
+
+
+    boolean updateStudentMedicalRecords(StudentMedicalRecord studentmedicalrecords);
 }

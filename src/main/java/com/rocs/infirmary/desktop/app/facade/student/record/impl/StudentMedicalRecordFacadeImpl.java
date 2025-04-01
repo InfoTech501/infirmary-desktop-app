@@ -27,10 +27,14 @@ public class StudentMedicalRecordFacadeImpl implements StudentMedicalRecordFacad
     @Override
     public List<Student> readAllStudentMedicalRecords() {
         List<Student> medicalRecords = this.studentMedRecord.getAllStudentMedicalRecords();
-
         return medicalRecords;
     }
+
+    @Override
+    public boolean updateStudentMedicalRecords(StudentMedicalRecord studentmedicalrecord) {
+        return this.studentMedRecord.updateStudentMedicalRecords(studentmedicalrecords);}
 }
+
 
 
 

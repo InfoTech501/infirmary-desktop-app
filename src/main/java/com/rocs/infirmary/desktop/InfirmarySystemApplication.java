@@ -34,6 +34,7 @@ public class InfirmarySystemApplication {
         System.out.println("5 - Check Low Stock Medicine");
         System.out.println("6 - View Medicine Inventory List");
         System.out.println("7 - Read Student Medical Record");
+        System.out.println("8 - Update Student Medical Record");
 
         System.out.println("Enter your choice: ");
         int choice = scanner.nextInt();
@@ -230,6 +231,75 @@ public class InfirmarySystemApplication {
                     System.out.println("Invalid choice. Please select a valid option.");
                     break;
                 }
+
+
+        case 8: {
+
+
+
+            StudentMedicalRecordFacade studentmedicalrecordFacade = new StudentMedicalRecordFacadeImpl();
+                    Scanner sc = new Scanner(System.in);
+
+
+                        sc.nextLine();
+                        System.out.println("Enter the id of the updatemedical to update: ");
+                        String id = sc.nextLine();
+                         studentmedicalrecord = StudentMedicalRecordFacade.getUpdateMedicalById(id);
+                        if (updatemedical == null) {
+                            System.out.println("UpdateMedical to update not found.");
+                        } else {
+                            System.out.println("Updating an updatemedical");
+                            System.out.println("Enter updatemedical studentid: ");
+                            int studentid = sc.nextInt();
+                            System.out.println("Enter updatemedical ailmentid: ");
+                            int ailmentid = sc.nextInt();
+                            System.out.println("Enter updatemedical medhistoryid: ");
+                            String medhistoryid = sc.nextLine();
+                            System.out.println("Enter updatemedical nurseinchargeid:");
+                            int nurseinchargeid = sc.nextInt();
+                            System.out.println("Enter updatemedical symptoms: ");
+                            String symptoms = sc.nextLine();
+                            System.out.println("Enter updatemedical temperaturereadings: ");
+                            int temperaturereadings = sc.nextInt();
+                            System.out.println("Enter updatemedical visitdate: ");
+                            int visitdate = sc.nextInt();
+                            System.out.println("Enter updatemedical treatment: ");
+                            String treatment = sc.nextLine();
+
+                            UpdateMedical updateUpdateMedical = new UpdateMedical();
+                            updateUpdateMedical.setId(id);
+                            updateUpdateMedical.setStudentId(studentid);
+                            updateUpdateMedical.setAilmentId(ailmentid);
+                            updateUpdateMedical.setMedHistoryId(medhistoryid);
+                            updateUpdateMedical.setNurseInChargeId(nurseinchargeid);
+                            updateUpdateMedical.setSymptoms(symptoms);
+                            updateUpdateMedical.setTemperatureReadings(temperaturereadings);
+                            updateUpdateMedical.setVisitDate(visitdate);
+                            updateUpdateMedical.setTreatment(treatment);
+
+                            boolean result = updatestudentmedicalrecordFacade.updateUpdateStudentMedicalRecord(updateUpdateStudentMedicalRecord);
+
+                            if (result) {
+                                System.out.println("UpdateMedical successfully updated.");
+
+                            } else {
+                                System.out.println("UpdateMedical failed.");
+
+                            }
+
+                        }
+
+
+                    }
+
+                }
+            }
+
+
+        }
+
+
+
             }
 
     private static void displayCommonAilmentsReport(List<CommonAilmentsReport> reports, Date startDate, Date endDate, String gradeLevel, String section) {

@@ -10,4 +10,6 @@ public interface StudentMedicalRecordDao {
     Student getMedicalInformationByLRN(long LRN);
 
     List<Student> getAllStudentMedicalRecords();
+
+    boolean updateStudentMedicalRecords(UpdateStudentMedicalRecord updatestudentmedicalrecord);
 }

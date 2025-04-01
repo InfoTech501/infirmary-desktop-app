@@ -35,10 +35,28 @@ public class QueryConstants {
             "LEFT JOIN student ON medical_record.student_id = student.id";
 
 
+    private final String GET_ALL_UPDATE_STUDENTS_MEDICAL_RECORDS = "SELECT " +
+            "student.id, " +
+            "person.first_name, " +
+            "person.middle_name, " +
+            "person.last_name, " +
+            "person.age, " +
+            "person.gender, " +
+            "medical_record.symptoms, " +
+            "medical_record.temperature_readings, " +
+            "medical_record.visit_date, " +
+            "medical_record.treatment " +
+            "FROM medical_record " +
+            "JOIN person ON medical_record.student_id = person.id " +
+            "LEFT JOIN student ON medical_record.student_id = student.id";
+
+
     public String getAllStudentMedicalRecords() {
         return GET_ALL_STUDENTS_MEDICAL_RECORDS;
     }
     public String getAllMedicalInformationByLRN() {
         return GET_ALL_MEDICAL_INFORMATION_BY_LRN;
+    }
+    public String getAllUpdateStudentMedicalRecords() {return GET_ALL_UPDATE_STUDENTS_MEDICAL_RECORDS;
     }
 }
