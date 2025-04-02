@@ -2,6 +2,7 @@ package com.rocs.infirmary.desktop.app.facade.student.record.impl;
 
 
 import com.rocs.infirmary.desktop.app.facade.student.record.StudentMedicalRecordFacade;
+import com.rocs.infirmary.desktop.data.model.person.student.MedicalRecord;
 import com.rocs.infirmary.desktop.data.model.person.student.Student;
 import com.rocs.infirmary.desktop.data.dao.student.record.StudentMedicalRecordDao;
 import com.rocs.infirmary.desktop.data.dao.student.record.impl.StudentMedicalRecordDaoImpl;
@@ -17,7 +18,9 @@ import java.util.List;
 
 public class StudentMedicalRecordFacadeImpl implements StudentMedicalRecordFacade {
 
-    /** The data access object for Student Medical Record. */
+    /**
+     * The data access object for Student Medical Record.
+     */
     private final StudentMedicalRecordDao studentMedRecord = new StudentMedicalRecordDaoImpl();
 
     public Student findMedicalInformationByLRN(long LRN) {
@@ -30,8 +33,15 @@ public class StudentMedicalRecordFacadeImpl implements StudentMedicalRecordFacad
 
         return medicalRecords;
     }
-}
 
+    /**
+     * The data adding object for Student Medical Record.
+     */
+    @Override
+    public boolean addStudentMedicalRecord(MedicalRecord record) {
+        return studentMedRecord.createMedicalRecord(record);
+    }
+}
 
 
 

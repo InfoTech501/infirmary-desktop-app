@@ -2,13 +2,11 @@ package com.rocs.infirmary.desktop.data.dao.student.record.impl;
 
 import com.rocs.infirmary.desktop.data.connection.ConnectionHelper;
 import com.rocs.infirmary.desktop.data.dao.utils.queryconstants.student.QueryConstants;
+import com.rocs.infirmary.desktop.data.model.person.student.MedicalRecord;
 import com.rocs.infirmary.desktop.data.model.person.student.Student;
 import com.rocs.infirmary.desktop.data.dao.student.record.StudentMedicalRecordDao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -91,7 +89,65 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
 
         return medicalRecords;
     }
+
+    @Override
+    public boolean createMedicalRecord(MedicalRecord medicalRecords) {
+        try (Connection con = ConnectionHelper.getConnection()) {
+            QueryConstants queryConstants = new QueryConstants();
+
+            String sql = queryConstants.getInsertMedicalRecord();
+
+            try (PreparedStatement stmt = con.prepareStatement(sql)) {
+                stmt.setString(1, medicalRecords.getSymptoms());
+
+                if (medicalRecords.getVisitDate() != null) {
+                    try {
+                        Timestamp ldt = medicalRecords.getVisitDate();
+                        if (ldt != null) {
+                            stmt.setTimestamp(2, ldt);
+                        } else {
+                            stmt.setTimestamp(2, null);
+                        }
+                    } catch (Exception e) {
+                        return false;
+                    }
+                } else {
+                    stmt.setTimestamp(2, null);
+                }
+
+                stmt.setString(3, medicalRecords.getTemperatureReadings());
+                stmt.setString(4, medicalRecords.getTreatment());
+                stmt.setLong(5, medicalRecords.getNurseInChargeId());
+
+                Long ailmentId = medicalRecords.getAilmentId();
+                if (ailmentId == null) {
+                    stmt.setNull(6, Types.INTEGER);
+                } else {
+                    stmt.setLong(6, ailmentId);
+                }
+
+                stmt.setString(7, medicalRecords.getFirstName());
+                stmt.setString(8, medicalRecords.getMiddleName());
+                stmt.setString(9, medicalRecords.getLastName());
+
+                stmt.setString(10, medicalRecords.getFirstName());
+                stmt.setString(11, medicalRecords.getMiddleName());
+                stmt.setString(12, medicalRecords.getLastName());
+
+                stmt.setLong(13, medicalRecords.getStudentId());
+
+                int rowsAffected = stmt.executeUpdate();
+                return rowsAffected > 0;
+            } catch (SQLException e) {
+                return false;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
+
+
 
 
 

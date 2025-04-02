@@ -34,7 +34,11 @@ public class QueryConstants {
             "JOIN person ON medical_record.student_id = person.id " +
             "LEFT JOIN student ON medical_record.student_id = student.id";
 
+    private final String INSERT_MEDICAL_RECORD_WITH_JOIN = "INSERT INTO medical_record " +
+            "(student_id, symptoms, visit_date, temperature_readings, treatment, nurse_in_charge_id, ailment_id) " +
+            "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
+    public String getInsertMedicalRecord() { return INSERT_MEDICAL_RECORD_WITH_JOIN;}
     public String getAllStudentMedicalRecords() {
         return GET_ALL_STUDENTS_MEDICAL_RECORDS;
     }
