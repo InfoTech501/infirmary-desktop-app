@@ -131,12 +131,6 @@
                        byline="true"/>
     </target>
 
-    <!--release process -->
-    <target name="release" depends="build, build-jar, generate-javadoc"
-            description="Performs a complete release build">
-        <echo>Creating release version ${version}</echo>
-    </target>
-
     <!--    run JAR    -->
     <target name="run" description="Run the application">
         <java jar="${dist.dir}/${dist.app.name}.jar" fork="true"/>

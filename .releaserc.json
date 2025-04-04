@@ -12,12 +12,9 @@
       }
     ],
     [
-      "@semantic-release/github",
+      "@semantic-release/exec",
       {
-        "assets": [
-          {"path": "build/dist/*.jar", "label": "JAR files"},
-          {"path": "build/doc", "label": "Documentation"}
-        ]
+        "prepare": "ant update-version -Dnew.version=${nextRelease.version}"
       }
     ]
   ]

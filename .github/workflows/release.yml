@@ -10,11 +10,16 @@ jobs:
   release:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+      id-token: write
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          token: ${{ secrets.GH_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up JDK
         uses: actions/setup-java@v4
@@ -24,29 +29,16 @@ jobs:
 
       - name: Setup semantic-release
         run: |
-          npm install -g semantic-release @semantic-release/git @semantic-release/changelog
+          npm install -g semantic-release @semantic-release/git @semantic-release/changelog @semantic-release/exec @semantic-release/replace
 
-      - name: Determine next version
-        id: semantic
+      - name: Determine next version and update files
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          npx semantic-release
-          echo "NEW_VERSION=$(npx semantic-release | grep 'The next release version is' | sed 's/.*is //')" >> $GITHUB_ENV
-
-      - name: Update version in build.properties
-        if: env.NEW_VERSION != ''
-        run: |
-          ant update-version -Dnew.version=${{ env.NEW_VERSION }}
-
-      - name: Update version in build.xml
-        if: env.NEW_VERSION != ''
-        run: |
-          sed -i "s/<property name=\"version\" value=\".*\"\/>/<property name=\"version\" value=\"$NEW_VERSION\"\/>/g" build.xml
-
-      - name: Build release artifacts
-        run: ant -noinput -buildfile build.xml release
+          npx semantic-release --branches master
 
       - name: Release
-        if: env.NEW_VERSION != ''
+        if: success()
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npx semantic-release
