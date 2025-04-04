@@ -44,8 +44,11 @@ public class InfirmarySystemApplication {
         DashboardFacade dashboardFacade = new DashboardFacadeImpl();
         switch (choice) {
             case 1: {
+                String SpecialCharacter = ".*[^a-zA-Z0-9 ].*";
 
                 try {
+
+
                     scanner.nextLine();
                     System.out.println("Common Ailments Report");
 
@@ -54,11 +57,21 @@ public class InfirmarySystemApplication {
 
                     System.out.print("Enter grade level (enter to skip): ");
                     String gradeLevel = scanner.nextLine().trim();
-                    gradeLevel = gradeLevel.isEmpty() ? null : gradeLevel;
+
+                        if (gradeLevel.matches(SpecialCharacter)) {
+                            System.out.println("Special character is not allowed in this case!");
+                            return;
+
+                        }else{gradeLevel = gradeLevel.isEmpty() ? null : gradeLevel;}
 
                     System.out.print("Enter section (enter to skip): ");
                     String section = scanner.nextLine().trim();
-                    section = section.isEmpty() ? null : section;
+
+                        if (section.matches(SpecialCharacter)) {
+                            System.out.println("Special character is not allowed in this case!");
+                            return;
+                        }else{section = section.isEmpty() ? null : section;}
+
 
                     List<CommonAilmentsReport> reports = dashboardFacade.generateCommonAilmentReport(startDate, endDate, gradeLevel, section);
                     displayCommonAilmentsReport(reports, startDate, endDate, gradeLevel, section);
