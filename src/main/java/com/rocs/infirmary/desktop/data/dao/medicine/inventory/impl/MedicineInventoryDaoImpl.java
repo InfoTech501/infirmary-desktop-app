@@ -58,15 +58,12 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
 
 
         try (Connection con = ConnectionHelper.getConnection()) {
-<<<<<<< HEAD
+
             QueryConstants queryConstants = new QueryConstants();
             String sql = queryConstants.getADD_MEDICINE_INVENTORY_QUERY();
             con.prepareStatement(sql);
             PreparedStatement stmt;
             stmt = con.prepareStatement("INSERT INTO Medicine (medicine_id, item_name, description, expiration_date) VALUES (?, ?, ?, ?)");
-=======
-            PreparedStatement stmt = con.prepareStatement ("INSERT INTO Medicine (medicine_id, item_name, description, expiration_date) VALUES (?, ?, ?, ?)");
->>>>>>> d7d2944 (IA-4 Create Medicine Inventory)
             stmt.setString(1, medicine.getMedicineId());
             stmt.setString(2, medicine.getItemName());
             stmt.setString(3, medicine.getDescription());
