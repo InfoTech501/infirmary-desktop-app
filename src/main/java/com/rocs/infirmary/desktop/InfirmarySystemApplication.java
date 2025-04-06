@@ -37,7 +37,8 @@ public class InfirmarySystemApplication {
         System.out.println("5 - Check Low Stock Medicine");
         System.out.println("6 - View Medicine Inventory List");
         System.out.println("7 - Read Student Medical Record");
-        System.out.println("8 - Add Student Personal Record");
+        System.out.println("8 - Delete Student Medical Record");
+        System.out.println("9 - Add Student Personal Record");
 
         System.out.println("Enter your choice: ");
         int choice = scanner.nextInt();
@@ -47,7 +48,6 @@ public class InfirmarySystemApplication {
         DashboardFacade dashboardFacade = new DashboardFacadeImpl();
         switch (choice) {
             case 1: {
-
                 try {
                     scanner.nextLine();
                     System.out.println("Common Ailments Report");
@@ -55,13 +55,14 @@ public class InfirmarySystemApplication {
                     Date startDate = getValidInputDate(scanner, dateFormat, "Enter start date (yyyy-MM-dd): ");
                     Date endDate = getValidInputDate(scanner, dateFormat, "Enter end date (yyyy-MM-dd): ");
 
-                    System.out.print("Enter grade level (enter to skip): ");
-                    String gradeLevel = scanner.nextLine().trim();
-                    gradeLevel = gradeLevel.isEmpty() ? null : gradeLevel;
+
+                    String gradeLevel = selectGradeLevel();
+                     gradeLevel = gradeLevel.isEmpty() ? null : gradeLevel;
 
                     System.out.print("Enter section (enter to skip): ");
                     String section = scanner.nextLine().trim();
                     section = section.isEmpty() ? null : section;
+
 
                     List<CommonAilmentsReport> reports = dashboardFacade.generateCommonAilmentReport(startDate, endDate, gradeLevel, section);
                     displayCommonAilmentsReport(reports, startDate, endDate, gradeLevel, section);
@@ -230,11 +231,37 @@ public class InfirmarySystemApplication {
                 break;
             }
             case 8: {
-                StudentMedicalRecordFacade studentMedicalRecordFacade = new StudentMedicalRecordFacadeImpl();
+                StudentMedicalRecordFacadeImpl studentMedicalRecordFacade = new StudentMedicalRecordFacadeImpl();
+                Scanner sc = new Scanner(System.in);
+
+                System.out.print("Enter the LRN of student to delete: ");
+                long lrn = sc.nextLong();
+                    System.out.print("Are you sure you want to delete this record? This action cannot be undone. (Select 1. for YES and 2. for NO/CANCEL): ");
+                    int confirmation = sc.nextInt();
+                    if (confirmation == 1) {
+                        studentMedicalRecordFacade.deleteStudentMedicalRecordByLrn(lrn);
+                        System.out.println("Deleted successfully");
+                    }
+                    else if (confirmation == 2) {
+                        System.out.println("Cancel the Deletion");
+
+                    }else {
+                        System.out.println("invalid input");
+                    }
+
+
+
+                break;
+            }
+            case 9: {
+              
+            }
+             StudentMedicalRecordFacade studentMedicalRecordFacade = new StudentMedicalRecordFacadeImpl();
                 try {
                     addStudentMedicalRecord(scanner, studentMedicalRecordFacade);
                 } catch (RuntimeException e) {
                     System.err.println("Error adding student medical record: " + e.getMessage());
+
                 }
                 break;
             }
@@ -351,4 +378,34 @@ public class InfirmarySystemApplication {
             }
         }
     }
+
+    public static String selectGradeLevel() {
+        Scanner scanner = new Scanner(System.in);
+        String gradeLevel = "";
+
+        while (true) {
+            System.out.println("Select Grade Level:");
+            System.out.println("1. Grade 11");
+            System.out.println("2. Grade 12");
+            System.out.print("Enter your choice (1 or 2): ");
+            int choice = scanner.nextInt();
+
+            switch (choice) {
+                case 1:
+                    gradeLevel = "Grade 11";
+                    break;
+                case 2:
+                    gradeLevel = "Grade 12";
+                    break;
+                default:
+                    System.out.println("Invalid input. Please choose 1 or 2.");
+                    continue;
+            }
+            break;
+        }
+
+        return gradeLevel;
+    }
+
+
 }

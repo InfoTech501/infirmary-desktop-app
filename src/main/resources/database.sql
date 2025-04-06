@@ -95,6 +95,9 @@ create table inventory (
   medicine_id varchar2(50 char),
   item_type varchar2(60),
   quantity number(10,0),
+  status NUMBER(1,0)
+    constraint STATUS_INVENTORY_NOT_NULL not null
+    constraint STATUS_INVENTORY_CHECK check (status IN (0,1)),
   primary key (inventory_id));
 
 create table medicine (
@@ -338,26 +341,26 @@ insert into medicine (medicine_id, item_name, description, expiration_date)
 values ('AN', 'Antibiotics', 'Treats bacterial infections in the body', TO_TIMESTAMP('2027-08-25 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
 
  --INSERT INVENTORY DATA
-insert into inventory (medicine_id, item_type, quantity)
-values ('IB', 'Medicine', 50);
-insert into inventory (medicine_id, item_type, quantity)
-values ('CS', 'Medicine', 30);
-insert into inventory (medicine_id, item_type, quantity)
-values ('PT', 'Medicine', 40);
-insert into inventory (medicine_id, item_type, quantity)
-values ('AC', 'Medicine', 25);
-insert into inventory (medicine_id, item_type, quantity)
-values ('AH', 'Medicine', 20);
-insert into inventory (medicine_id, item_type, quantity)
-values ('AS', 'Medicine', 60);
-insert into inventory (medicine_id, item_type, quantity)
-values ('VM', 'Medicine', 10);
-insert into inventory (medicine_id, item_type, quantity)
-values ('HD', 'Medicine', 15);
-insert into inventory (medicine_id, item_type, quantity)
-values ('DN', 'Medicine', 50);
-insert into inventory (medicine_id, item_type, quantity)
-values ('AN', 'Medicine', 4);
+insert into inventory (medicine_id, item_type, quantity, status)
+values ('IB', 'Medicine', 50, 0);
+insert into inventory (medicine_id, item_type, quantity, status)
+values ('CS', 'Medicine', 30, 1);
+insert into inventory (medicine_id, item_type, quantity, status)
+values ('PT', 'Medicine', 40, 1);
+insert into inventory (medicine_id, item_type, quantity, status)
+values ('AC', 'Medicine', 25, 0);
+insert into inventory (medicine_id, item_type, quantity, status)
+values ('AH', 'Medicine', 20, 0);
+insert into inventory (medicine_id, item_type, quantity, status)
+values ('AS', 'Medicine', 60, 0);
+insert into inventory (medicine_id, item_type, quantity, status)
+values ('VM', 'Medicine', 10, 0);
+insert into inventory (medicine_id, item_type, quantity, status)
+values ('HD', 'Medicine', 15, 1);
+insert into inventory (medicine_id, item_type, quantity, status)
+values ('DN', 'Medicine', 50, 0);
+insert into inventory (medicine_id, item_type, quantity, status)
+values ('AN', 'Medicine', 4, 1);
 
 --INSERT MEDICAL RECORD DATA
 insert into medical_record (student_id, ailment_id, med_history_id, nurse_in_charge_id, symptoms, temperature_readings, visit_date, treatment, status)

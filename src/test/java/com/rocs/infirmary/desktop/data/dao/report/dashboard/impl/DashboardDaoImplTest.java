@@ -35,7 +35,7 @@ public class DashboardDaoImplTest {
 
     @Mock
     private ResultSet resultSet;
-    
+
     private static MockedStatic<ConnectionHelper> connectionHelper;
 
     @BeforeEach
@@ -77,6 +77,7 @@ public class DashboardDaoImplTest {
         verify(preparedStatement, times(1)).setTimestamp(eq(3), any(Timestamp.class));
         verify(preparedStatement, times(1)).executeQuery();
 
+
     }
 
     @Test
@@ -98,6 +99,8 @@ public class DashboardDaoImplTest {
         verify(preparedStatement, times(1)).setTimestamp(eq(1), any(Timestamp.class));
         verify(preparedStatement, times(1)).setTimestamp(eq(2), any(Timestamp.class));
         verify(preparedStatement, times(1)).executeQuery();
+
+
 
     }
 
