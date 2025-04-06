@@ -292,7 +292,7 @@ public class InfirmarySystemApplication {
             try {
                 visitDateTime = dateTimeFormat.parse(dateTimeStr);
             } catch (ParseException e) {
-                System.out.println("Invalid date/time format. Please useyyyy-MM-dd HH:mm.");
+                System.out.println("Invalid date/time format. Please use yyyy-MM-dd HH:mm.");
             }
         }
 
