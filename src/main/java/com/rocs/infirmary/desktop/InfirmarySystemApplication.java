@@ -262,7 +262,7 @@ public class InfirmarySystemApplication {
                 String item_name = scanner.nextLine();
                 System.out.println("Enter Medicine Description: ");
                 String description = scanner.nextLine();
-                System.out.println("Enter Expiration Date (yyyy-mm-dd hh:mm:ss):");
+                System.out.println("Enter Expiration Date (yyyy-mm-dd):");
                 String expirationDateString = scanner.nextLine();
 
                 Timestamp expiration_Date;

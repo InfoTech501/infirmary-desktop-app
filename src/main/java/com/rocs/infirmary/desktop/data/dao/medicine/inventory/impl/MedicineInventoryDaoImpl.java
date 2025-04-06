@@ -55,8 +55,6 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
     }
     @Override
     public boolean addMedicine(Medicine medicine) {
-        getAllMedicine();
-
 
         try (Connection con = ConnectionHelper.getConnection()) {
 
