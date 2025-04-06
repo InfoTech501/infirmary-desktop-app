@@ -45,7 +45,6 @@ public class InfirmarySystemApplication {
         DashboardFacade dashboardFacade = new DashboardFacadeImpl();
         switch (choice) {
             case 1: {
-
                 try {
                     scanner.nextLine();
                     System.out.println("Common Ailments Report");
@@ -53,13 +52,14 @@ public class InfirmarySystemApplication {
                     Date startDate = getValidInputDate(scanner, dateFormat, "Enter start date (yyyy-MM-dd): ");
                     Date endDate = getValidInputDate(scanner, dateFormat, "Enter end date (yyyy-MM-dd): ");
 
-                    System.out.print("Enter grade level (enter to skip): ");
-                    String gradeLevel = scanner.nextLine().trim();
-                    gradeLevel = gradeLevel.isEmpty() ? null : gradeLevel;
+
+                    String gradeLevel = selectGradeLevel();
+                     gradeLevel = gradeLevel.isEmpty() ? null : gradeLevel;
 
                     System.out.print("Enter section (enter to skip): ");
                     String section = scanner.nextLine().trim();
                     section = section.isEmpty() ? null : section;
+
 
                     List<CommonAilmentsReport> reports = dashboardFacade.generateCommonAilmentReport(startDate, endDate, gradeLevel, section);
                     displayCommonAilmentsReport(reports, startDate, endDate, gradeLevel, section);
@@ -315,4 +315,34 @@ public class InfirmarySystemApplication {
             }
         }
     }
+
+    public static String selectGradeLevel() {
+        Scanner scanner = new Scanner(System.in);
+        String gradeLevel = "";
+
+        while (true) {
+            System.out.println("Select Grade Level:");
+            System.out.println("1. Grade 11");
+            System.out.println("2. Grade 12");
+            System.out.print("Enter your choice (1 or 2): ");
+            int choice = scanner.nextInt();
+
+            switch (choice) {
+                case 1:
+                    gradeLevel = "Grade 11";
+                    break;
+                case 2:
+                    gradeLevel = "Grade 12";
+                    break;
+                default:
+                    System.out.println("Invalid input. Please choose 1 or 2.");
+                    continue;
+            }
+            break;
+        }
+
+        return gradeLevel;
+    }
+
+
 }
