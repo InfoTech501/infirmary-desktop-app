@@ -262,9 +262,16 @@ public class InfirmarySystemApplication {
                 String item_name = scanner.nextLine();
                 System.out.println("Enter Medicine Description: ");
                 String description = scanner.nextLine();
-                System.out.println("Enter Expiration DAte(yyyy-mm-dd)");
-                Timestamp expiration_Date = Timestamp.valueOf(scanner.nextLine());
+                System.out.println("Enter Expiration Date (yyyy-mm-dd hh:mm:ss):");
+                String expirationDateString = scanner.nextLine();
 
+                Timestamp expiration_Date;
+                try {
+                    expiration_Date = Timestamp.valueOf(expirationDateString + " 00:00:00");
+                } catch (IllegalArgumentException e) {
+                    System.out.println("Invalid timestamp format. Please use yyyy-mm-dd hh:mm:ss");
+                    break;
+                }
                 Medicine medicine = new Medicine();
                 medicine.setMedicineId(medicine_id);
                 medicine.setItemName(item_name);
