@@ -19,6 +19,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
+import java.util.InputMismatchException;
 
 
 public class InfirmarySystemApplication {
@@ -104,7 +105,7 @@ public class InfirmarySystemApplication {
                     long LRN = scanner.nextLong();
                     Student record = studentMedicalRecord.findMedicalInformationByLRN(LRN);
                     if (record == null) {
-                        System.out.println(" Not Student Found");
+                        System.out.println(" Student Not Found");
                     } else {
                         System.out.println("Firstname             : " + record.getFirstName());
                         System.out.println("Middlename            : " + record.getMiddleName());
@@ -116,7 +117,11 @@ public class InfirmarySystemApplication {
                         System.out.println("Visit Date            : " + record.getVisitDate());
                         System.out.println("Treatment             : " + record.getTreatment());
                     }
-                } catch (RuntimeException e) {
+                } catch (InputMismatchException e) {
+                    System.out.println("Error: the LRN you entered is not valid. Please enter only numbers.");
+                    scanner.nextLine();
+
+                }catch (RuntimeException e) {
                     System.out.println("No Student Found!");
 
                 }
