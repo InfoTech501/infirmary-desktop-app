@@ -1,4 +1,4 @@
-name: Semantic Release
+name: Tags and Release
 
 on:
   workflow_run:
@@ -6,39 +6,27 @@ on:
     branches: [ master ]
     types: [ completed ]
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
-  release:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+  release-please:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      issues: write
-      pull-requests: write
-      id-token: write
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Set up JDK
-        uses: actions/setup-java@v4
+      - name: Effect only on new commits
+        run: |
+          BOUNDARY_COMMIT=$(git rev-list -n 1 --before="2025-04-09" master)
+          echo "BOUNDARY_COMMIT=$BOUNDARY_COMMIT" >> $GITHUB_ENV
+
+      - name: Release Please
+        uses: googleapis/release-please-action@v4
         with:
-          java-version: '11'
-          distribution: 'temurin'
+          token: ${{ secrets.GH_TOKEN }}
+          release-type: simple
+          last-release-sha: ${{ steps.boundary.outputs.boundary_commit }}
 
-      - name: Setup semantic-release
-        run: |
-          npm install -g semantic-release @semantic-release/git @semantic-release/changelog @semantic-release/exec @semantic-release/replace
-
-      - name: Determine next version and update files
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          npx semantic-release --branches master
-
-      - name: Release
-        if: success()
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npx semantic-release
