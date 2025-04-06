@@ -53,7 +53,6 @@ public class InfirmarySystemApplication {
 
 
                     String gradeLevel = selectGradeLevel();
-
                      gradeLevel = gradeLevel.isEmpty() ? null : gradeLevel;
 
                     System.out.print("Enter section (enter to skip): ");
