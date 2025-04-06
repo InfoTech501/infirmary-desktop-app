@@ -2,6 +2,7 @@
          default="build"
          xmlns:ivy="antlib:org.apache.ivy.ant">
     <property file="build.properties"/>
+    <property file="version.properties"/>
 
     <property name="build.dir" location="build"/>
     <property name="classes.dir" location="${build.dir}/classes"/>
@@ -117,24 +118,12 @@
               tofile="${dist.dir}/${dist.app.name}.jar"/>
     </target>
 
-    <!-- this is for semantic release -->
     <target name="update-version" description="Updates the version in build.properties">
-        <echo>Updating version to ${new.version}</echo>
-        <replaceregexp file="build.properties"
-                       match="version=.*"
-                       replace="version=${new.version}"
-                       byline="true"/>
-        <echo>Also updating version in ivy.xml</echo>
+        <echo>Updating version to ${version}</echo>
         <replaceregexp file="ivy.xml"
                        match='revision="[^"]*"'
-                       replace='revision="${new.version}"'
+                       replace='revision="${version}"'
                        byline="true"/>
-    </target>
-
-    <!--release process -->
-    <target name="release" depends="build, build-jar, generate-javadoc"
-            description="Performs a complete release build">
-        <echo>Creating release version ${version}</echo>
     </target>
 
     <!--    run JAR    -->
