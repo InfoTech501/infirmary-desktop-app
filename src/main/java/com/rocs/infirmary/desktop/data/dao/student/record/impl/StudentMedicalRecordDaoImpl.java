@@ -149,26 +149,25 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
     public boolean createMedicalRecord(MedicalRecord medicalRecords) {
         try (Connection con = ConnectionHelper.getConnection()) {
             QueryConstants queryConstants = new QueryConstants();
-
             String sql = queryConstants.getInsertMedicalRecord();
-
             try (PreparedStatement stmt = con.prepareStatement(sql)) {
                 stmt.setLong(1, medicalRecords.getStudentId());
                 stmt.setLong(2, medicalRecords.getAilmentId());
-                stmt.setNull(3, Types.INTEGER);
+                if (medicalRecords.getMedHistoryId() != null) {
+                    stmt.setLong(3, medicalRecords.getMedHistoryId());
+                } else {
+                    stmt.setNull(3, Types.INTEGER);
+                }
                 stmt.setLong(4, medicalRecords.getNurseInChargeId());
                 stmt.setString(5, medicalRecords.getSymptoms());
                 stmt.setString(6, medicalRecords.getTemperatureReadings());
-
                 if (medicalRecords.getVisitDate() != null) {
                     stmt.setTimestamp(7, medicalRecords.getVisitDate());
                 } else {
                     stmt.setNull(7, Types.TIMESTAMP);
                 }
-
                 stmt.setString(8, medicalRecords.getTreatment());
                 stmt.setInt(9, 1);
-
                 int rowsAffected = stmt.executeUpdate();
                 return rowsAffected > 0;
             } catch (SQLException e) {

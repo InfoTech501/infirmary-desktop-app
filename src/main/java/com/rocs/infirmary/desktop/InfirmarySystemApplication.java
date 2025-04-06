@@ -318,6 +318,14 @@ public class InfirmarySystemApplication {
             scanner.nextLine();
         }
 
+        System.out.print("Medical History ID (enter to skip): ");
+        if (scanner.hasNextLong()) {
+            record.setMedHistoryId(scanner.nextLong());
+        } else {
+            record.setMedHistoryId(null);
+            scanner.nextLine();
+        }
+
         if (recordsFacade.addStudentMedicalRecord(record)) {
             System.out.println("Record added and saved successfully.");
         } else {
