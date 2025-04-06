@@ -1,7 +1,6 @@
 package com.rocs.infirmary.desktop.data.dao.medicine.inventory.impl;
-
-import com.rocs.infirmary.desktop.data.connection.ConnectionHelper;
 import com.rocs.infirmary.desktop.data.dao.medicine.inventory.MedicineInventoryDao;
+import com.rocs.infirmary.desktop.data.connection.ConnectionHelper;
 import com.rocs.infirmary.desktop.data.dao.utils.queryconstants.medicine.inventory.QueryConstants;
 import com.rocs.infirmary.desktop.data.model.inventory.medicine.Medicine;
 
@@ -25,6 +24,7 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
         String sql= queryConstants.getLIST_ALL_MEDICINE_INVENTORY_QUERY();
 
 
+
         try (Connection con = ConnectionHelper.getConnection();
              PreparedStatement stmt = con.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
@@ -43,6 +43,7 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
                 medicine.setExpirationDate(rs.getTimestamp("EXPIRATION_DATE"));
 
 
+
                 MedicineInventoryList.add(medicine);
             }
 
@@ -50,9 +51,8 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
             System.out.println("An SQL Exception occurred: " + e.getMessage());
         }
 
-        return MedicineInventoryList;
+        return  MedicineInventoryList;
     }
-
     @Override
     public boolean addMedicine(Medicine medicine) {
         getAllMedicine();
