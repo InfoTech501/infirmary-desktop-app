@@ -12,6 +12,4 @@ public class QueryConstants {
 
     public String getADD_MEDICINE_INVENTORY_QUERY(){return ADD_MEDICINE_INVENTORY_QUERY ;}
 
-
-
 }
