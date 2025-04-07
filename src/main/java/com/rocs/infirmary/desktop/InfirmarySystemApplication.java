@@ -140,10 +140,10 @@ public class InfirmarySystemApplication {
                         if (gradeInput.equals("1")) {
                             frequentVisitGradeLevel = "Grade 11";
                             break;
-                        }else if(gradeInput.equals("2")) {
+                        } else if (gradeInput.equals("2")) {
                             frequentVisitGradeLevel = "Grade 12";
                             break;
-                        }else{
+                        } else {
                             System.out.println("Invalid Input. Please Enter 1 or 2");
                         }
                     }
@@ -228,77 +228,62 @@ public class InfirmarySystemApplication {
                 break;
             }
 
-                default:
-                    System.out.println("Invalid choice. Please select a valid option.");
-                    break;
-                }
+
+            case 8: {
+                StudentMedicalRecordFacadeImpl studentMedicalRecordFacade = new StudentMedicalRecordFacadeImpl();
+                Scanner sc = new Scanner(System.in);
+
+                System.out.println("Search Student Medical Records using LRN: ");
+                String studentLRN = sc.nextLine();
+                System.out.print("Are you sure you want to update this record? This action cannot be undone. (Select 1. for YES and 2. for NO/CANCEL): ");
+                int confirmation = sc.nextInt();
+                sc.nextLine();
+
+                if (confirmation == 1) {
+                    System.out.println("Updating a StudentMedicalRecord");
+                    System.out.println("Enter StudentMedicalRecord symptoms: ");
+                    String symptoms = sc.nextLine();
+                    System.out.println("Enter StudentMedicalRecord temperature readings: ");
+                    String temperatureReadings = sc.nextLine();
+                    System.out.println("Enter StudentMedicalRecord visit date (YYYY-MM-DD): ");
+                    String visitDateString = sc.nextLine();
 
 
-        case 8: {
 
-
-
-            scanner.nextLine();
-
-            System.out.println("Enter the Student LRN to update: ");
-            long LRN = scanner.nextLong();
-            Student student = StudentMedicalRecordFacade.findMedicalInformationByLRN(LRN);
-            if (student == null) {
-                System.out.println("StudentMedicalRecord to update not found.");
-            } else {
-                System.out.println("Updating a StudentMedicalRecord");
-                System.out.println("Enter StudentMedicalRecord studentid: ");
-                int studentId = scanner.nextInt();
-                System.out.println("Enter StudentMedicalRecord ailmentid: ");
-                int ailmentId = scanner.nextInt();
-                scanner.nextLine();
-                System.out.println("Enter StudentMedicalRecord medhistoryid: ");
-                String medHistoryId = scanner.nextLine();
-                System.out.println("Enter StudentMedicalRecord nurseinchargeid: ");
-                int nurseInChargeId = scanner.nextInt();
-                scanner.nextLine();
-                System.out.println("Enter StudentMedicalRecord symptoms: ");
-                String symptoms = scanner.nextLine();
-                System.out.println("Enter StudentMedicalRecord temperaturereadings: ");
-                int temperatureReadings = scanner.nextInt();
-                System.out.println("Enter StudentMedicalRecord visitdate (YYYY-MM-DD): ");
-                String visitDateString = scanner.next();
-                System.out.println("Enter StudentMedicalRecord treatment: ");
-                scanner.nextLine();
-                String treatment = scanner.nextLine();
-
-
-                StudentMedicalRecord updateStudentMedicalRecord = new StudentMedicalRecord();
-                updateStudentMedicalRecord.setStudentId(studentId);
-                updateStudentMedicalRecord.setAilmentId(ailmentId);
-                updateStudentMedicalRecord.setMedHistoryId(medHistoryId);
-                updateStudentMedicalRecord.setNurseInChargeId(nurseInChargeId);
-                updateStudentMedicalRecord.setSymptoms(symptoms);
-                updateStudentMedicalRecord.setTemperatureReadings(temperatureReadings);
-                updateStudentMedicalRecord.setVisitDate(java.sql.Date.valueOf(visitDateString));
-                updateStudentMedicalRecord.setTreatment(treatment);
-
-                boolean result = studentMedicalRecordFacade.updateUpdateStudentMedicalRecords(updateStudentMedicalRecord);
-
-                if (result) {
-                    System.out.println("StudentMedicalRecord successfully updated.");
-                } else {
-                    System.out.println("StudentMedicalRecord update failed.");
-                }
-            }
-
-
+                    Date visitDate = null;
+                    dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                    try {
+                        visitDate = dateFormat.parse(visitDateString);
+                    } catch (ParseException e) {
+                        System.out.println("Invalid date format. Please use YYYY-MM-DD.");
+                        return;
                     }
 
+                    Student updateStudentMedicalRecord = new Student();
+                    updateStudentMedicalRecord.setSymptoms(symptoms);
+                    updateStudentMedicalRecord.setTemperatureReadings(temperatureReadings);
+                    updateStudentMedicalRecord.setVisitDate(visitDate);
+
+
+
+                    boolean result = studentMedicalRecordFacade.updateStudentMedicalRecords(updateStudentMedicalRecord);
+                    System.out.println("Updated successfully");
+                } else if (confirmation == 2) {
+                    System.out.println("Cancel the update");
+                } else {
+                    System.out.println("Invalid input");
                 }
+
+
+                break;
             }
+            default:
+                System.out.println("Invalid choice. Please select a valid option.");
+                break;
+        }
 
 
-
-
-
-
-
+        }
 
     private static void displayCommonAilmentsReport(List<CommonAilmentsReport> reports, Date startDate, Date endDate, String gradeLevel, String section) {
         if (reports == null || reports.isEmpty()) {
@@ -354,3 +339,12 @@ public class InfirmarySystemApplication {
             }
         }
     }
+
+
+    }
+
+
+
+
+
+

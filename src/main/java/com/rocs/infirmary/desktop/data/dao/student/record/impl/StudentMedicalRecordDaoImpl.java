@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -94,31 +95,32 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
 
     @Override
     public boolean updateStudentMedicalRecords(Student student) {
-        String sql = "UPDATE medical_records SET SYMPTOMS = ?, ADDED_REMERKS = ?, TEMPERATURE_READINGS = ?, VISIT_DATE = ?, TREATMENT = ?, MEDICATIONS_ADMINISTERED = ? WHERE LRN = ?";
 
-        try (Connection con = ConnectionHelper.getConnection();
-             PreparedStatement stmt = con.prepareStatement(sql)) {
+        Student studentMedicalRecords = null;
+        try (Connection con = ConnectionHelper.getConnection()) {
+
+            QueryConstants queryConstants = new QueryConstants();
+
+            String sql = queryConstants.updateMedicalRecords();
+
+            PreparedStatement stmt = con.prepareStatement(sql);
+
+            stmt.setString(1, studentMedicalRecords.getSymptoms());
+            stmt.setString(2, studentMedicalRecords.getTemperatureReadings());
+            stmt.setDate(3, (java.sql.Date) new Date(studentMedicalRecords.getVisitDate().getTime()));
 
 
-            stmt.setString(1, student.getSymptoms());
-            stmt.setString(2, student.getAddedRemerks());
-            stmt.setString(3, student.getTemperatureReadings());
-            stmt.setDate(4, new java.sql.Date(student.getVisitDate().getTime()));
-            stmt.setString(5, student.getTreatment());
-            stmt.setString(6, student.getMedicationsAdministered());
-            stmt.setLong(7, student.getLrn());
-
-
-            int affectedRows = stmt.executeUpdate();
-            return affectedRows > 0;
-
+            int affectedRow = stmt.executeUpdate();
+            return affectedRow > 0;
         } catch (SQLException e) {
-            System.out.println("An SQL Exception occurred: " + e.getMessage());
-            return false;
-        }
-    }
 
+            throw new RuntimeException(e);}
     }
+}
+
+
+
+
 
 
 
