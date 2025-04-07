@@ -1,4 +1,4 @@
-name: Semantic Release
+name: Tags and Release
 
 on:
   workflow_run:
@@ -6,47 +6,27 @@ on:
     branches: [ master ]
     types: [ completed ]
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
-  release:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+  release-please:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          token: ${{ secrets.GH_TOKEN }}
 
-      - name: Set up JDK
-        uses: actions/setup-java@v4
+      - name: Effect only on new commits
+        run: |
+          BOUNDARY_COMMIT=$(git rev-list -n 1 --before="2025-04-09" master)
+          echo "BOUNDARY_COMMIT=$BOUNDARY_COMMIT" >> $GITHUB_ENV
+
+      - name: Release Please
+        uses: googleapis/release-please-action@v4
         with:
-          java-version: '11'
-          distribution: 'temurin'
+          token: ${{ secrets.GH_TOKEN }}
+          release-type: simple
+          last-release-sha: ${{ steps.boundary.outputs.boundary_commit }}
 
-      - name: Setup semantic-release
-        run: |
-          npm install -g semantic-release @semantic-release/git @semantic-release/changelog
-
-      - name: Determine next version
-        id: semantic
-        run: |
-          npx semantic-release
-          echo "NEW_VERSION=$(npx semantic-release | grep 'The next release version is' | sed 's/.*is //')" >> $GITHUB_ENV
-
-      - name: Update version in build.properties
-        if: env.NEW_VERSION != ''
-        run: |
-          ant update-version -Dnew.version=${{ env.NEW_VERSION }}
-
-      - name: Update version in build.xml
-        if: env.NEW_VERSION != ''
-        run: |
-          sed -i "s/<property name=\"version\" value=\".*\"\/>/<property name=\"version\" value=\"$NEW_VERSION\"\/>/g" build.xml
-
-      - name: Build release artifacts
-        run: ant -noinput -buildfile build.xml release
-
-      - name: Release
-        if: env.NEW_VERSION != ''
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-        run: npx semantic-release
