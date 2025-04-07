@@ -11,7 +11,15 @@ public interface StudentMedicalRecordDao {
 
     List<Student> getAllStudentMedicalRecords();
 
-    boolean updateStudentMedicalRecords(Student student);
+
+    /**
+     * This intended to delete a student's medical record based on their Learner Reference Number (LRN).
+     * The LRN is a unique identifier assigned to each student. This value is used to locate and delete the corresponding medical record.
+     *
+     */
+
+    boolean deleteStudentMedicalRecordByLrn (long LRN);
+
 }
 
 

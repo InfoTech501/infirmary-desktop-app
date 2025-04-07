@@ -11,11 +11,16 @@ public class Student extends Person {
     private int studentGuardianId;
     private  long lrn;
     private String symptoms;
-    private String addedremerks;
     private String temperatureReadings;
     private Date visitDate;
     private String treatment;
     private String medicationsadministered;
+    private long id;
+    private int ailmentId;
+    private String medHistoryId;
+    private int nurseInChargeId;
+    private int setMedicalRecordId ;
+    private int getMedicaRecordStatus;
 
 
     public void setStudentId(int studentId) {
@@ -34,13 +39,6 @@ public class Student extends Person {
         this.symptoms = symptoms;
     }
 
-    public String getAddedRemerks() {
-        return addedremerks;
-    }
-
-    public void setAddedRemerks(String addedremerks) {
-        this.addedremerks = addedremerks;
-    }
 
 
     public String getTemperatureReadings() {
@@ -71,4 +69,37 @@ public class Student extends Person {
 
     public void  setMedicationsadministered(String medicationsadministered) { this.medicationsadministered = medicationsadministered; }
 
+    public int getStudentId() {
+        return studentId;
+    }
+
+    public long getLrn() {
+        return lrn;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setAilmentId(int ailmentId) {
+        this.ailmentId = ailmentId;
+    }
+
+    public void setMedHistoryId(String medHistoryId) {
+        this.medHistoryId = medHistoryId;
+    }
+
+    public void setNurseInChargeId(int nurseInChargeId) {
+        this.nurseInChargeId = nurseInChargeId;
+    }
+
+    public void setMedicalRecordId(int medicalRecordIdId) {
+        this.setMedicalRecordId = medicalRecordIdId;
+    }
+
+    public int getMedicalRecordStatus() {
+        return getMedicaRecordStatus;
+    }
 }
+
+

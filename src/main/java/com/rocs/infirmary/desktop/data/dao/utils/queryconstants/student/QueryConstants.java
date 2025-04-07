@@ -38,11 +38,14 @@ public class QueryConstants {
 
 
 
-    public String getAllStudentMedicalRecords() {
-        return GET_ALL_STUDENTS_MEDICAL_RECORDS;
+    private final String UPDATE_STUDENT_MEDICAL_RECORD_STATUS = "UPDATE MEDICAL_RECORD SET STATUS = 0 WHERE STUDENT_ID = ?";
+
+
+    public String getAllStudentMedicalRecords() { return GET_ALL_STUDENTS_MEDICAL_RECORDS;
     }
-    public String getAllMedicalInformationByLRN() {
-        return GET_ALL_MEDICAL_INFORMATION_BY_LRN;
+    public String getAllMedicalInformationByLRN() { return GET_ALL_MEDICAL_INFORMATION_BY_LRN;
+    }
+    public String updateMedicalRecordStatus() { return UPDATE_STUDENT_MEDICAL_RECORD_STATUS;
     }
     public String updateMedicalRecords() {return UPDATE_STUDENT_MEDICAL_RECORDS;
     }

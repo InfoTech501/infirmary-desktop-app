@@ -1,7 +1,6 @@
 package com.rocs.infirmary.desktop.app.facade.student.record;
 
 
-import com.rocs.infirmary.desktop.data.dao.student.record.StudentMedicalRecordDao;
 import com.rocs.infirmary.desktop.data.model.person.student.Student;
 
 
@@ -28,8 +27,10 @@ public interface StudentMedicalRecordFacade {
      */
     List<Student> readAllStudentMedicalRecords();
 
+    /**
+     * This intended to delete a student's medical record based on their Learner Reference Number (LRN).
+     * The LRN is a unique identifier assigned to each student. This value is used to locate and delete the corresponding medical record.
+     */
 
-
-
-    boolean updateStudentMedicalRecords(Student student);
+    boolean deleteStudentMedicalRecordByLrn(long LRN);
 }

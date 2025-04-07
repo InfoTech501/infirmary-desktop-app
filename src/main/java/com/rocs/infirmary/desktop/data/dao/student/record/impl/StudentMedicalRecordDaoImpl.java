@@ -37,7 +37,7 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
             ResultSet rs = stmt.executeQuery();
 
 
-            if (rs.next()) {
+            if(rs.next()) {
                 studentMedicalRecord = new Student();
                 studentMedicalRecord.setStudentId(rs.getInt("student_id"));
                 studentMedicalRecord.setLrn(rs.getLong("LRN"));
@@ -93,6 +93,62 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
         return medicalRecords;
     }
 
+
+    /**
+     * Deactivates a student's medical record based on their LRN (Learner Reference Number).
+     * Instead of completely removing the data, it likely updates the status
+     * of the medical record in the database to indicate it's no longer active.
+     *
+     * A status value of 0 means the record is no longer active (deleted),
+     * while a status of 1 means the record is still active and present in the system.
+     */
+    @Override
+    public boolean deleteStudentMedicalRecordByLrn(long LRN) {
+        Student studentMedicalRecord = getStudent(LRN);
+
+        try (Connection con = ConnectionHelper.getConnection()) {
+
+            QueryConstants queryConstants = new QueryConstants();
+
+            String sql = queryConstants.updateMedicalRecordStatus();
+
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setInt(1,studentMedicalRecord.getStudentId());
+
+            int affectedRow = preparedStatement.executeUpdate();
+            return affectedRow > 0;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    private static Student getStudent(long LRN) {
+        Student studentMedicalRecord = null;
+
+        try (Connection con = ConnectionHelper.getConnection()) {
+
+            QueryConstants queryConstants = new QueryConstants();
+
+            String sql = queryConstants.getAllMedicalInformationByLRN();
+
+            PreparedStatement stmt = con.prepareStatement(sql);
+
+            stmt.setLong(1, LRN);
+
+            ResultSet resultSet = stmt.executeQuery();
+            while(resultSet.next()){
+                studentMedicalRecord = new Student();
+                studentMedicalRecord.setStudentId(resultSet.getInt("student_id"));
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return studentMedicalRecord;
+    }
+
+
     @Override
     public boolean updateStudentMedicalRecords(Student student) {
 
@@ -117,11 +173,6 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
             throw new RuntimeException(e);}
     }
 }
-
-
-
-
-
 
 
 
