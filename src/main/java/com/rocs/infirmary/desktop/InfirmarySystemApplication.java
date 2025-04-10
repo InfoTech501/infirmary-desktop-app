@@ -103,6 +103,13 @@ public class InfirmarySystemApplication {
                     StudentMedicalRecordFacadeImpl studentMedicalRecord = new StudentMedicalRecordFacadeImpl();
                     System.out.println("Search Student Medical Records using LRN: ");
                     long LRN = scanner.nextLong();
+                    String lrnString = String.valueOf(LRN);
+
+                    if(!lrnString.matches("\\d{11}")){
+                        System.out.println("Error: Please enter a valid 12-Digit LRN.");
+                        break;
+                    }
+
                     Student record = studentMedicalRecord.findMedicalInformationByLRN(LRN);
                     if (record == null) {
                         System.out.println(" Student Not Found");
