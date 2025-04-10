@@ -36,6 +36,7 @@ public class InfirmarySystemApplication {
         System.out.println("6 - View Medicine Inventory List");
         System.out.println("7 - Read Student Medical Record");
         System.out.println("8 - Delete Student Medical Record");
+        System.out.println("9 - Update Student Medical Record");
 
         System.out.println("Enter your choice: ");
         int choice = scanner.nextInt();
@@ -45,6 +46,7 @@ public class InfirmarySystemApplication {
         DashboardFacade dashboardFacade = new DashboardFacadeImpl();
         switch (choice) {
             case 1: {
+
                 try {
                     scanner.nextLine();
                     System.out.println("Common Ailments Report");
@@ -59,7 +61,6 @@ public class InfirmarySystemApplication {
                     System.out.print("Enter section (enter to skip): ");
                     String section = scanner.nextLine().trim();
                     section = section.isEmpty() ? null : section;
-
 
                     List<CommonAilmentsReport> reports = dashboardFacade.generateCommonAilmentReport(startDate, endDate, gradeLevel, section);
                     displayCommonAilmentsReport(reports, startDate, endDate, gradeLevel, section);
@@ -151,10 +152,10 @@ public class InfirmarySystemApplication {
                         if (gradeInput.equals("1")) {
                             frequentVisitGradeLevel = "Grade 11";
                             break;
-                        }else if(gradeInput.equals("2")) {
+                        } else if (gradeInput.equals("2")) {
                             frequentVisitGradeLevel = "Grade 12";
                             break;
-                        }else{
+                        } else {
                             System.out.println("Invalid Input. Please Enter 1 or 2");
                         }
                     }
@@ -263,10 +264,65 @@ public class InfirmarySystemApplication {
                 break;
             }
 
-                default:
-                    System.out.println("Invalid choice. Please select a valid option.");
+
+            case 9: {
+                StudentMedicalRecordFacadeImpl studentMedicalRecordFacade = new StudentMedicalRecordFacadeImpl();
+                Scanner sc = new Scanner(System.in);
+
+                System.out.println("Enter StudentMedicalRecord temperature readings: ");
+                String temperatureReadings = sc.nextLine();
+
+                System.out.println("Enter StudentMedicalRecord visit date (YYYY-MM-DD): ");
+                String visitDateString = sc.nextLine();
+
+                System.out.println("Search Student Medical Records using LRN: ");
+                String studentLRN = sc.nextLine();
+
+                System.out.print("Are you sure you want to update this record? This action cannot be undone. (Select 1. for YES and 2. for NO/CANCEL): ");
+                int confirmation = sc.nextInt();
+                sc.nextLine();
+
+                if (confirmation == 1) {
+                    System.out.println("Updating a StudentMedicalRecord");
+
+                    System.out.println("Enter StudentMedicalRecord symptoms: ");
+                    String symptoms = sc.nextLine();
+
+
+                    Date visitDate = null;
+                    try {
+                        visitDate = java.sql.Date.valueOf(visitDateString);
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("Invalid date format. Please use YYYY-MM-DD.");
+                        break;
+                    }
+
+                    Student updateStudentMedicalRecord = new Student();
+                    updateStudentMedicalRecord.setSymptoms(symptoms);
+                    updateStudentMedicalRecord.setTemperatureReadings(temperatureReadings);
+                    updateStudentMedicalRecord.setVisitDate(visitDate);
+
+                    boolean result = studentMedicalRecordFacade.updateStudentMedicalRecords(updateStudentMedicalRecord);
+                    if (result) {
+                        System.out.println("Updated successfully");
+                    } else {
+                        System.out.println("Update failed");
+                    }
+                } else if (confirmation == 2) {
+                    System.out.println("Cancel the update");
+                } else {
+                    System.out.println("Invalid input");
                 }
+
+                break;
             }
+            default:
+                System.out.println("Invalid choice. Please select a valid option.");
+                break;
+        }
+
+
+        }
 
     private static void displayCommonAilmentsReport(List<CommonAilmentsReport> reports, Date startDate, Date endDate, String gradeLevel, String section) {
         if (reports == null || reports.isEmpty()) {

@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -97,7 +98,7 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
      * Deactivates a student's medical record based on their LRN (Learner Reference Number).
      * Instead of completely removing the data, it likely updates the status
      * of the medical record in the database to indicate it's no longer active.
-     *
+     * <p>
      * A status value of 0 means the record is no longer active (deleted),
      * while a status of 1 means the record is still active and present in the system.
      */
@@ -112,7 +113,7 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
             String sql = queryConstants.updateMedicalRecordStatus();
 
             PreparedStatement preparedStatement = con.prepareStatement(sql);
-            preparedStatement.setInt(1,studentMedicalRecord.getStudentId());
+            preparedStatement.setInt(1, studentMedicalRecord.getStudentId());
 
             int affectedRow = preparedStatement.executeUpdate();
             return affectedRow > 0;
@@ -136,7 +137,7 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
             stmt.setLong(1, LRN);
 
             ResultSet resultSet = stmt.executeQuery();
-            while(resultSet.next()){
+            while (resultSet.next()) {
                 studentMedicalRecord = new Student();
                 studentMedicalRecord.setStudentId(resultSet.getInt("student_id"));
             }
@@ -147,18 +148,26 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
         return studentMedicalRecord;
     }
 
+
+    @Override
+    public boolean updateStudentMedicalRecords(Student student) {
+        try (Connection con = ConnectionHelper.getConnection()) {
+            QueryConstants queryConstants = new QueryConstants();
+            String sql = queryConstants.getALLUpdateMedicalRecords();
+
+            try (PreparedStatement stmt = con.prepareStatement(sql)) {
+
+                stmt.setString(1, student.getSymptoms());
+                stmt.setString(2, student.getTemperatureReadings());
+                stmt.setDate(3, new java.sql.Date(student.getVisitDate().getTime()));
+
+                int affectedRow = stmt.executeUpdate();
+                return affectedRow > 0;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
