@@ -34,11 +34,18 @@ public class QueryConstants {
             "JOIN person ON medical_record.student_id = person.id " +
             "LEFT JOIN student ON medical_record.student_id = student.id";
 
-    private final String UPDATE_STUDENT_MEDICAL_RECORDS = "UPDATE MEDICAL  SET RECORD = 0 WHERE STUDENT_ID = ?";
-
 
 
     private final String UPDATE_STUDENT_MEDICAL_RECORD_STATUS = "UPDATE MEDICAL_RECORD SET STATUS = 0 WHERE STUDENT_ID = ?";
+
+
+
+    private final String GET_ALL_UPDATE_STUDENT_MEDICAL_RECORDS = "SELECT " +
+            "student.symptoms, " +
+            "student.temperature_readings, " +
+            "student.visit_date, " +
+            "JOIN person ON medical_record.student_id = person.id " +
+            "LEFT JOIN student ON medical_record.student_id = student.id";
 
 
     public String getAllStudentMedicalRecords() { return GET_ALL_STUDENTS_MEDICAL_RECORDS;
@@ -47,7 +54,7 @@ public class QueryConstants {
     }
     public String updateMedicalRecordStatus() { return UPDATE_STUDENT_MEDICAL_RECORD_STATUS;
     }
-    public String updateMedicalRecords() {return UPDATE_STUDENT_MEDICAL_RECORDS;
+    public String getALLUpdateMedicalRecords() {return GET_ALL_UPDATE_STUDENT_MEDICAL_RECORDS;
     }
 
 }

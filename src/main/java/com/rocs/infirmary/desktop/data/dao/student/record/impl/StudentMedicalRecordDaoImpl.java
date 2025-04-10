@@ -157,7 +157,7 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
 
             QueryConstants queryConstants = new QueryConstants();
 
-            String sql = queryConstants.updateMedicalRecords();
+            String sql = queryConstants.getALLUpdateMedicalRecords();
 
             PreparedStatement stmt = con.prepareStatement(sql);
 

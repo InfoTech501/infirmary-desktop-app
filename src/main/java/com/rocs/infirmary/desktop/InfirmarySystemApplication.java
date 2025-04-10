@@ -257,30 +257,32 @@ public class InfirmarySystemApplication {
                 StudentMedicalRecordFacadeImpl studentMedicalRecordFacade = new StudentMedicalRecordFacadeImpl();
                 Scanner sc = new Scanner(System.in);
 
+                System.out.println("Enter StudentMedicalRecord temperature readings: ");
+                String temperatureReadings = sc.nextLine();
+
+                System.out.println("Enter StudentMedicalRecord visit date (YYYY-MM-DD): ");
+                String visitDateString = sc.nextLine();
+
                 System.out.println("Search Student Medical Records using LRN: ");
                 String studentLRN = sc.nextLine();
+
                 System.out.print("Are you sure you want to update this record? This action cannot be undone. (Select 1. for YES and 2. for NO/CANCEL): ");
                 int confirmation = sc.nextInt();
                 sc.nextLine();
 
                 if (confirmation == 1) {
                     System.out.println("Updating a StudentMedicalRecord");
+
                     System.out.println("Enter StudentMedicalRecord symptoms: ");
                     String symptoms = sc.nextLine();
-                    System.out.println("Enter StudentMedicalRecord temperature readings: ");
-                    String temperatureReadings = sc.nextLine();
-                    System.out.println("Enter StudentMedicalRecord visit date (YYYY-MM-DD): ");
-                    String visitDateString = sc.nextLine();
-
 
 
                     Date visitDate = null;
-                    dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                     try {
-                        visitDate = dateFormat.parse(visitDateString);
-                    } catch (ParseException e) {
+                        visitDate = java.sql.Date.valueOf(visitDateString);
+                    } catch (IllegalArgumentException e) {
                         System.out.println("Invalid date format. Please use YYYY-MM-DD.");
-                        return;
+                        break;
                     }
 
                     Student updateStudentMedicalRecord = new Student();
@@ -288,16 +290,17 @@ public class InfirmarySystemApplication {
                     updateStudentMedicalRecord.setTemperatureReadings(temperatureReadings);
                     updateStudentMedicalRecord.setVisitDate(visitDate);
 
-
-
                     boolean result = studentMedicalRecordFacade.updateStudentMedicalRecords(updateStudentMedicalRecord);
-                    System.out.println("Updated successfully");
+                    if (result) {
+                        System.out.println("Updated successfully");
+                    } else {
+                        System.out.println("Update failed");
+                    }
                 } else if (confirmation == 2) {
                     System.out.println("Cancel the update");
                 } else {
                     System.out.println("Invalid input");
                 }
-
 
                 break;
             }

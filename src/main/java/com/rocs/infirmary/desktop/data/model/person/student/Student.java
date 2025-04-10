@@ -57,8 +57,7 @@ public class Student extends Person {
         this.visitDate = visitDate;
     }
 
-    public String getTreatment() {
-        return treatment;
+    public String getTreatment() { return treatment;
     }
 
     public void setTreatment(String treatment) {
