@@ -266,7 +266,7 @@ public class InfirmarySystemApplication {
                 System.out.println("Search Student Medical Records using LRN: ");
                 String studentLRN = sc.nextLine();
 
-                System.out.print("Are you sure you want to update this record? This action cannot be undone. (Select 1. for YES and 2. for NO/CANCEL): ");
+                System.out.print("Are you sure you want to update this record? This action cannot be undone. (Select 1 for YES and 2 for NO/CANCEL): ");
                 int confirmation = sc.nextInt();
                 sc.nextLine();
 
@@ -276,14 +276,7 @@ public class InfirmarySystemApplication {
                     System.out.println("Enter StudentMedicalRecord symptoms: ");
                     String symptoms = sc.nextLine();
 
-
-                    Date visitDate = null;
-                    try {
-                        visitDate = java.sql.Date.valueOf(visitDateString);
-                    } catch (IllegalArgumentException e) {
-                        System.out.println("Invalid date format. Please use YYYY-MM-DD.");
-                        break;
-                    }
+                    Date visitDate = getValidInputDate(sc, dateFormat, "Enter visit date (yyyy-MM-dd): ");
 
                     Student updateStudentMedicalRecord = new Student();
                     updateStudentMedicalRecord.setSymptoms(symptoms);
