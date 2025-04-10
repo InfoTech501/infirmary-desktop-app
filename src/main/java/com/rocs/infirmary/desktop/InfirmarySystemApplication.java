@@ -13,6 +13,7 @@ import com.rocs.infirmary.desktop.data.model.report.lowstock.LowStockReport;
 import com.rocs.infirmary.desktop.data.model.report.medication.MedicationTrendReport;
 import com.rocs.infirmary.desktop.data.model.report.visit.FrequentVisitReport;
 
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -23,7 +24,7 @@ import java.util.InputMismatchException;
 
 public class InfirmarySystemApplication {
     public static void main(String[] args) {
-
+        MedicineInventoryFacade medicineInventoryFacade = new MedicineInventoryFacadeImpl();
         Scanner scanner = new Scanner(System.in);
         System.out.println("Welcome to Infirmary System Application");
         System.out.println("Please select which report:");
@@ -35,6 +36,7 @@ public class InfirmarySystemApplication {
         System.out.println("6 - View Medicine Inventory List");
         System.out.println("7 - Read Student Medical Record");
         System.out.println("8 - Delete Student Medical Record");
+        System.out.println("9 - Add Medicine Inventory");
 
         int choice = 0;
         while (true) {
@@ -265,6 +267,42 @@ public class InfirmarySystemApplication {
                     System.out.println("invalid input");
                 }
 
+
+                break;
+            }
+            case 9:{
+                scanner.nextLine();
+
+                System.out.println("Adding an Medicine");
+                System.out.println("Enter Medicine Medicine Id: " );
+                String medicine_id = scanner.nextLine();
+                System.out.println("Enter Medicine Item Name: ");
+                String item_name = scanner.nextLine();
+                System.out.println("Enter Medicine Description: ");
+                String description = scanner.nextLine();
+                System.out.println("Enter Expiration Date (yyyy-mm-dd):");
+                String expirationDateString = scanner.nextLine();
+
+                Timestamp expiration_Date;
+                try {
+                    expiration_Date = Timestamp.valueOf(expirationDateString + " 00:00:00");
+                } catch (IllegalArgumentException e) {
+                    System.out.println("Invalid timestamp format. Please use yyyy-mm-dd hh:mm:ss");
+                    break;
+                }
+                Medicine medicine = new Medicine();
+                medicine.setMedicineId(medicine_id);
+                medicine.setItemName(item_name);
+                medicine.setDescription(description);
+                medicine.setExpirationDate(expiration_Date);
+
+                boolean result = medicineInventoryFacade.addMedicine(medicine);
+
+                if(result) {
+                    System.out.println("Successfully Added in Medicine.");
+                } else {
+                    System.out.println("Cannot be added in Medicine.");
+                }
 
                 break;
             }
