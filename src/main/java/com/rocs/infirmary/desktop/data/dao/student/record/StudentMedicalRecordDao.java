@@ -21,3 +21,5 @@ public interface StudentMedicalRecordDao {
     boolean deleteStudentMedicalRecordByLrn (long LRN);
 
 }
+
+
