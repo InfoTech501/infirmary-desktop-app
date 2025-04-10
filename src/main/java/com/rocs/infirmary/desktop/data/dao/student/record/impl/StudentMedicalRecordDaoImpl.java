@@ -2,13 +2,11 @@ package com.rocs.infirmary.desktop.data.dao.student.record.impl;
 
 import com.rocs.infirmary.desktop.data.connection.ConnectionHelper;
 import com.rocs.infirmary.desktop.data.dao.utils.queryconstants.student.QueryConstants;
+import com.rocs.infirmary.desktop.data.model.person.student.MedicalRecord;
 import com.rocs.infirmary.desktop.data.model.person.student.Student;
 import com.rocs.infirmary.desktop.data.dao.student.record.StudentMedicalRecordDao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -97,7 +95,7 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
      * Deactivates a student's medical record based on their LRN (Learner Reference Number).
      * Instead of completely removing the data, it likely updates the status
      * of the medical record in the database to indicate it's no longer active.
-     *
+     * <p>
      * A status value of 0 means the record is no longer active (deleted),
      * while a status of 1 means the record is still active and present in the system.
      */
@@ -112,7 +110,7 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
             String sql = queryConstants.updateMedicalRecordStatus();
 
             PreparedStatement preparedStatement = con.prepareStatement(sql);
-            preparedStatement.setInt(1,studentMedicalRecord.getStudentId());
+            preparedStatement.setInt(1, studentMedicalRecord.getStudentId());
 
             int affectedRow = preparedStatement.executeUpdate();
             return affectedRow > 0;
@@ -136,7 +134,7 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
             stmt.setLong(1, LRN);
 
             ResultSet resultSet = stmt.executeQuery();
-            while(resultSet.next()){
+            while (resultSet.next()) {
                 studentMedicalRecord = new Student();
                 studentMedicalRecord.setStudentId(resultSet.getInt("student_id"));
             }
@@ -147,8 +145,40 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
         return studentMedicalRecord;
     }
 
+    @Override
+    public boolean createMedicalRecord(MedicalRecord medicalRecords) {
+        try (Connection con = ConnectionHelper.getConnection()) {
+            QueryConstants queryConstants = new QueryConstants();
+            String sql = queryConstants.getInsertMedicalRecord();
+            try (PreparedStatement stmt = con.prepareStatement(sql)) {
+                stmt.setLong(1, medicalRecords.getStudentId());
+                stmt.setLong(2, medicalRecords.getAilmentId());
+                if (medicalRecords.getMedHistoryId() != null) {
+                    stmt.setLong(3, medicalRecords.getMedHistoryId());
+                } else {
+                    stmt.setNull(3, Types.INTEGER);
+                }
+                stmt.setLong(4, medicalRecords.getNurseInChargeId());
+                stmt.setString(5, medicalRecords.getSymptoms());
+                stmt.setString(6, medicalRecords.getTemperatureReadings());
+                if (medicalRecords.getVisitDate() != null) {
+                    stmt.setTimestamp(7, medicalRecords.getVisitDate());
+                } else {
+                    stmt.setNull(7, Types.TIMESTAMP);
+                }
+                stmt.setString(8, medicalRecords.getTreatment());
+                stmt.setInt(9, 1);
+                int rowsAffected = stmt.executeUpdate();
+                return rowsAffected > 0;
+            } catch (SQLException e) {
+                System.err.println("SQL Error in createMedicalRecord: " + e.getMessage());
+                return false;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error connecting to the database", e);
+        }
+    }
 }
-
 
 
 

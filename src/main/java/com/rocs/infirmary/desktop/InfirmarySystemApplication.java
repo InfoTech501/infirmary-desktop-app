@@ -2,6 +2,8 @@ package com.rocs.infirmary.desktop;
 
 import com.rocs.infirmary.desktop.app.facade.dashboard.DashboardFacade;
 import com.rocs.infirmary.desktop.app.facade.dashboard.impl.DashboardFacadeImpl;
+import com.rocs.infirmary.desktop.app.facade.student.record.StudentMedicalRecordFacade;
+import com.rocs.infirmary.desktop.data.model.person.student.MedicalRecord;
 import com.rocs.infirmary.desktop.data.model.person.student.Student;
 import com.rocs.infirmary.desktop.data.model.person.Person;
 import com.rocs.infirmary.desktop.data.model.report.ailment.CommonAilmentsReport;
@@ -14,6 +16,7 @@ import com.rocs.infirmary.desktop.app.facade.medicine.inventory.impl.MedicineInv
 import com.rocs.infirmary.desktop.data.model.inventory.medicine.Medicine;
 
 
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -36,6 +39,7 @@ public class InfirmarySystemApplication {
         System.out.println("6 - View Medicine Inventory List");
         System.out.println("7 - Read Student Medical Record");
         System.out.println("8 - Delete Student Medical Record");
+        System.out.println("9 - Add Student Personal Record");
 
         System.out.println("Enter your choice: ");
         int choice = scanner.nextInt();
@@ -257,16 +261,89 @@ public class InfirmarySystemApplication {
                     }else {
                         System.out.println("invalid input");
                     }
-
-
-
                 break;
             }
-
-                default:
-                    System.out.println("Invalid choice. Please select a valid option.");
+            case 9: {
+                StudentMedicalRecordFacade studentMedicalRecordFacade = new StudentMedicalRecordFacadeImpl();
+                try {
+                    addStudentMedicalRecord(scanner, studentMedicalRecordFacade);
+                } catch (RuntimeException e) {
+                    System.err.println("Error adding student medical record: " + e.getMessage());
                 }
+                break;
             }
+            default:
+                System.out.println("Invalid choice. Please select a valid option.");
+                break;
+        }
+    }
+
+    private static void addStudentMedicalRecord(Scanner scanner, StudentMedicalRecordFacade recordsFacade) {
+        System.out.println("Adding Student Medical Record");
+        MedicalRecord record = new MedicalRecord();
+
+        System.out.print("Student ID: ");
+        if (scanner.hasNextLong()) {
+            record.setStudentId(scanner.nextLong());
+            scanner.nextLine();
+        } else {
+            System.out.println("Invalid Student ID format.");
+            scanner.nextLine();
+            return;
+        }
+
+        System.out.print("Symptoms: ");
+        record.setSymptoms(scanner.nextLine());
+
+        SimpleDateFormat dateTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        Date visitDateTime = null;
+
+        while (visitDateTime == null) {
+            System.out.print("Visit Date and Time (YYYY-MM-dd HH:mm): ");
+            String dateTimeStr = scanner.nextLine();
+            try {
+                visitDateTime = dateTimeFormat.parse(dateTimeStr);
+            } catch (ParseException e) {
+                System.out.println("Invalid date/time format. Please use yyyy-MM-dd HH:mm.");
+            }
+        }
+
+        record.setVisitDate(new Timestamp(visitDateTime.getTime()));
+        System.out.print("Temperature Readings: ");
+        record.setTemperatureReadings(scanner.nextLine());
+        System.out.print("Treatment: ");
+        record.setTreatment(scanner.nextLine());
+        System.out.print("Nurse In Charge ID: ");
+        if (scanner.hasNextLong()) {
+            record.setNurseInChargeId(scanner.nextLong());
+            scanner.nextLine();
+        } else {
+            System.out.println("Invalid Nurse In Charge ID format.");
+            scanner.nextLine();
+            return;
+        }
+        System.out.print("Ailment ID (enter to skip): ");
+        if (scanner.hasNextLong()) {
+            record.setAilmentId(scanner.nextLong());
+        } else {
+            record.setAilmentId(null);
+            scanner.nextLine();
+        }
+
+        System.out.print("Medical History ID (enter to skip): ");
+        if (scanner.hasNextLong()) {
+            record.setMedHistoryId(scanner.nextLong());
+        } else {
+            record.setMedHistoryId(null);
+            scanner.nextLine();
+        }
+
+        if (recordsFacade.addStudentMedicalRecord(record)) {
+            System.out.println("Record added and saved successfully.");
+        } else {
+            System.out.println("Failed to add and save record.");
+        }
+    }
 
     private static void displayCommonAilmentsReport(List<CommonAilmentsReport> reports, Date startDate, Date endDate, String gradeLevel, String section) {
         if (reports == null || reports.isEmpty()) {

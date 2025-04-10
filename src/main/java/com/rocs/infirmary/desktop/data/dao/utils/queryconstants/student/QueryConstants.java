@@ -37,6 +37,9 @@ public class QueryConstants {
 
     private final String UPDATE_STUDENT_MEDICAL_RECORD_STATUS = "UPDATE MEDICAL_RECORD SET STATUS = 0 WHERE STUDENT_ID = ?";
 
+    private final String INSERT_MEDICAL_RECORD_WITH_JOIN = "INSERT INTO medical_record (student_id, ailment_id, med_history_id, nurse_in_charge_id, symptoms, temperature_readings, visit_date, treatment, status) " +
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
 
     public String getAllStudentMedicalRecords() { return GET_ALL_STUDENTS_MEDICAL_RECORDS;
     }
@@ -44,4 +47,5 @@ public class QueryConstants {
     }
     public String updateMedicalRecordStatus() { return UPDATE_STUDENT_MEDICAL_RECORD_STATUS;
     }
+    public String getInsertMedicalRecord() { return INSERT_MEDICAL_RECORD_WITH_JOIN;}
 }
