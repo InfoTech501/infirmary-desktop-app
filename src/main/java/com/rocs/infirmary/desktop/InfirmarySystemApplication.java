@@ -36,8 +36,14 @@ public class InfirmarySystemApplication {
         System.out.println("7 - Read Student Medical Record");
         System.out.println("8 - Delete Student Medical Record");
 
-        System.out.println("Enter your choice: ");
-        int choice = scanner.nextInt();
+        int choice = 0;
+        try {
+            System.out.println("Enter your choice: ");
+            choice = scanner.nextInt();
+        } catch (Exception e) {
+            System.out.println("Invalid input. Please enter a number.");
+            return;
+        }
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         dateFormat.setLenient(false);
