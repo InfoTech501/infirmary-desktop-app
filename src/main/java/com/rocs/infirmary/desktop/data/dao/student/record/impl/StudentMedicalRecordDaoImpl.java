@@ -37,7 +37,7 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
             ResultSet rs = stmt.executeQuery();
 
 
-            if(rs.next()) {
+            if (rs.next()) {
                 studentMedicalRecord = new Student();
                 studentMedicalRecord.setStudentId(rs.getInt("student_id"));
                 studentMedicalRecord.setLrn(rs.getLong("LRN"));
@@ -98,7 +98,7 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
      * Deactivates a student's medical record based on their LRN (Learner Reference Number).
      * Instead of completely removing the data, it likely updates the status
      * of the medical record in the database to indicate it's no longer active.
-     *
+     * <p>
      * A status value of 0 means the record is no longer active (deleted),
      * while a status of 1 means the record is still active and present in the system.
      */
@@ -113,7 +113,7 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
             String sql = queryConstants.updateMedicalRecordStatus();
 
             PreparedStatement preparedStatement = con.prepareStatement(sql);
-            preparedStatement.setInt(1,studentMedicalRecord.getStudentId());
+            preparedStatement.setInt(1, studentMedicalRecord.getStudentId());
 
             int affectedRow = preparedStatement.executeUpdate();
             return affectedRow > 0;
@@ -137,7 +137,7 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
             stmt.setLong(1, LRN);
 
             ResultSet resultSet = stmt.executeQuery();
-            while(resultSet.next()){
+            while (resultSet.next()) {
                 studentMedicalRecord = new Student();
                 studentMedicalRecord.setStudentId(resultSet.getInt("student_id"));
             }
@@ -151,28 +151,23 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
 
     @Override
     public boolean updateStudentMedicalRecords(Student student) {
-
-        Student studentMedicalRecords = null;
         try (Connection con = ConnectionHelper.getConnection()) {
-
             QueryConstants queryConstants = new QueryConstants();
-
             String sql = queryConstants.getALLUpdateMedicalRecords();
 
-            PreparedStatement stmt = con.prepareStatement(sql);
+            try (PreparedStatement stmt = con.prepareStatement(sql)) {
 
-            stmt.setString(1, studentMedicalRecords.getSymptoms());
-            stmt.setString(2, studentMedicalRecords.getTemperatureReadings());
-            stmt.setDate(3, (java.sql.Date) new Date(studentMedicalRecords.getVisitDate().getTime()));
+                stmt.setString(1, student.getSymptoms());
+                stmt.setString(2, student.getTemperatureReadings());
+                stmt.setDate(3, new java.sql.Date(student.getVisitDate().getTime()));
 
-
-            int affectedRow = stmt.executeUpdate();
-            return affectedRow > 0;
+                int affectedRow = stmt.executeUpdate();
+                return affectedRow > 0;
+            }
         } catch (SQLException e) {
-
-            throw new RuntimeException(e);}
+            throw new RuntimeException(e);
+        }
     }
 }
-
 
 
