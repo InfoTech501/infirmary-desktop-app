@@ -2,21 +2,21 @@ package com.rocs.infirmary.desktop;
 
 import com.rocs.infirmary.desktop.app.facade.dashboard.DashboardFacade;
 import com.rocs.infirmary.desktop.app.facade.dashboard.impl.DashboardFacadeImpl;
-import com.rocs.infirmary.desktop.data.model.person.student.Student;
-import com.rocs.infirmary.desktop.data.model.person.Person;
-import com.rocs.infirmary.desktop.data.model.report.ailment.CommonAilmentsReport;
-import com.rocs.infirmary.desktop.data.model.report.lowstock.LowStockReport;
-import com.rocs.infirmary.desktop.data.model.report.visit.FrequentVisitReport;
-import com.rocs.infirmary.desktop.data.model.report.medication.MedicationTrendReport;
-import com.rocs.infirmary.desktop.app.facade.student.record.impl.StudentMedicalRecordFacadeImpl;
 import com.rocs.infirmary.desktop.app.facade.medicine.inventory.MedicineInventoryFacade;
 import com.rocs.infirmary.desktop.app.facade.medicine.inventory.impl.MedicineInventoryFacadeImpl;
+import com.rocs.infirmary.desktop.app.facade.student.record.impl.StudentMedicalRecordFacadeImpl;
 import com.rocs.infirmary.desktop.data.model.inventory.medicine.Medicine;
-
+import com.rocs.infirmary.desktop.data.model.person.Person;
+import com.rocs.infirmary.desktop.data.model.person.student.Student;
+import com.rocs.infirmary.desktop.data.model.report.ailment.CommonAilmentsReport;
+import com.rocs.infirmary.desktop.data.model.report.lowstock.LowStockReport;
+import com.rocs.infirmary.desktop.data.model.report.medication.MedicationTrendReport;
+import com.rocs.infirmary.desktop.data.model.report.visit.FrequentVisitReport;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 import java.util.InputMismatchException;
@@ -63,7 +63,7 @@ public class InfirmarySystemApplication {
 
 
                     String gradeLevel = selectGradeLevel();
-                     gradeLevel = gradeLevel.isEmpty() ? null : gradeLevel;
+                    gradeLevel = gradeLevel.isEmpty() ? null : gradeLevel;
 
                     System.out.print("Enter section (enter to skip): ");
                     String section = scanner.nextLine().trim();
@@ -160,10 +160,10 @@ public class InfirmarySystemApplication {
                         if (gradeInput.equals("1")) {
                             frequentVisitGradeLevel = "Grade 11";
                             break;
-                        }else if(gradeInput.equals("2")) {
+                        } else if (gradeInput.equals("2")) {
                             frequentVisitGradeLevel = "Grade 12";
                             break;
-                        }else{
+                        } else {
                             System.out.println("Invalid Input. Please Enter 1 or 2");
                         }
                     }
@@ -254,28 +254,26 @@ public class InfirmarySystemApplication {
 
                 System.out.print("Enter the LRN of student to delete: ");
                 long lrn = sc.nextLong();
-                    System.out.print("Are you sure you want to delete this record? This action cannot be undone. (Select 1. for YES and 2. for NO/CANCEL): ");
-                    int confirmation = sc.nextInt();
-                    if (confirmation == 1) {
-                        studentMedicalRecordFacade.deleteStudentMedicalRecordByLrn(lrn);
-                        System.out.println("Deleted successfully");
-                    }
-                    else if (confirmation == 2) {
-                        System.out.println("Cancel the Deletion");
+                System.out.print("Are you sure you want to delete this record? This action cannot be undone. (Select 1. for YES and 2. for NO/CANCEL): ");
+                int confirmation = sc.nextInt();
+                if (confirmation == 1) {
+                    studentMedicalRecordFacade.deleteStudentMedicalRecordByLrn(lrn);
+                    System.out.println("Deleted successfully");
+                } else if (confirmation == 2) {
+                    System.out.println("Cancel the Deletion");
 
-                    }else {
-                        System.out.println("invalid input");
-                    }
-
+                } else {
+                    System.out.println("invalid input");
+                }
 
 
                 break;
             }
 
-                default:
-                    System.out.println("Invalid choice. Please select a valid option.");
-                }
-            }
+            default:
+                System.out.println("Invalid choice. Please select a valid option.");
+        }
+    }
 
     private static void displayCommonAilmentsReport(List<CommonAilmentsReport> reports, Date startDate, Date endDate, String gradeLevel, String section) {
         if (reports == null || reports.isEmpty()) {
