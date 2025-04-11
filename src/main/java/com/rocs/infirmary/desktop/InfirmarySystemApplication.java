@@ -16,9 +16,10 @@ import com.rocs.infirmary.desktop.data.model.report.visit.FrequentVisitReport;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
-import java.util.InputMismatchException;
+import java.util.logging.Logger;
 
 
 public class InfirmarySystemApplication {
@@ -193,15 +194,20 @@ public class InfirmarySystemApplication {
 
             }
             case 5: {
+                Logger logger = Logger.getLogger("Medicine Audit Logs");
+                logger.info("User accessed Low Stock Medicine Alert.");
                 try {
                     List<LowStockReport> lowStockItems = dashboardFacade.findAllLowStockMedicine();
                     for (LowStockReport medicineInventory : lowStockItems) {
                         System.out.println("Medicine Name: " + medicineInventory.getDescription());
                         System.out.println("Current Stock Level: " + medicineInventory.getQuantityAvailable());
                         System.out.println("Notification: The stock level of " + medicineInventory.getDescription() + " is low. Current stock level: " + medicineInventory.getQuantityAvailable() + ". Please reorder supplies.");
+                        logger.info("Alerted: " + medicineInventory.getDescription() + " Stock: " + medicineInventory.getQuantityAvailable());
                     }
                 } catch (RuntimeException e) {
                     System.out.println("Error checking low stock items: " + e.getMessage());
+                    System.out.println("Log: Error occurred " + e.getMessage());
+                    logger.info("Error checking low stock items: " + e.getMessage());
                 }
                 break;
             }
