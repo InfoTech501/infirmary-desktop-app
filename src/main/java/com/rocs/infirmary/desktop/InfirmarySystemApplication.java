@@ -13,6 +13,10 @@ import com.rocs.infirmary.desktop.data.model.report.lowstock.LowStockReport;
 import com.rocs.infirmary.desktop.data.model.report.medication.MedicationTrendReport;
 import com.rocs.infirmary.desktop.data.model.report.visit.FrequentVisitReport;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -22,7 +26,11 @@ import java.util.InputMismatchException;
 
 
 public class InfirmarySystemApplication {
+
+    private static Logger LOGGER = LoggerFactory.getLogger(InfirmarySystemApplication.class);
+
     public static void main(String[] args) {
+
 
         Scanner scanner = new Scanner(System.in);
         System.out.println("Welcome to Infirmary System Application");
@@ -54,6 +62,7 @@ public class InfirmarySystemApplication {
         switch (choice) {
             case 1: {
                 try {
+
                     scanner.nextLine();
                     System.out.println("Common Ailments Report");
 
@@ -114,13 +123,17 @@ public class InfirmarySystemApplication {
                     String lrnString = String.valueOf(LRN);
 
                     if(!lrnString.matches("\\d{11}")){
+
+                        LOGGER.info("User entered invalid LRN length" );
                         System.out.println("Error: Please enter a valid 12-Digit LRN.");
                         break;
                     }
 
                     Student record = studentMedicalRecord.findMedicalInformationByLRN(LRN);
-                    if (record == null) {
-                        System.out.println(" Student Not Found");
+                    if (record == null ) {
+
+                        LOGGER.info("No student record found ");
+                        System.out.println("Student Not Found");
                     } else {
                         System.out.println("Firstname             : " + record.getFirstName());
                         System.out.println("Middlename            : " + record.getMiddleName());
@@ -131,17 +144,25 @@ public class InfirmarySystemApplication {
                         System.out.println("Temperature Readings  : " + record.getTemperatureReadings());
                         System.out.println("Visit Date            : " + record.getVisitDate());
                         System.out.println("Treatment             : " + record.getTreatment());
+
+                        LOGGER.info("Retrieved Medical Record Successfully");
+                        LOGGER.info("Program Successfully Ended");
+
+
                     }
                 } catch (InputMismatchException e) {
+                    LOGGER.error("Input Mismatch Exception " +  e);
                     System.out.println("Error: the LRN you entered is not valid. Please enter only numbers.");
                     scanner.nextLine();
 
                 }catch (RuntimeException e) {
+                    LOGGER.error("Runtime Exception " + e);
                     System.out.println("No Student Found!");
 
                 }
                 break;
             }
+
 
             case 4: {
                 scanner.nextLine();
@@ -272,6 +293,8 @@ public class InfirmarySystemApplication {
             default:
                 System.out.println("Invalid choice. Please select a valid option.");
         }
+
+
     }
 
     private static void displayCommonAilmentsReport(List<CommonAilmentsReport> reports, Date startDate, Date endDate, String gradeLevel, String section) {

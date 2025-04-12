@@ -28,6 +28,17 @@
         <dependency org="org.mockito" name="mockito-junit-jupiter" rev="5.15.2"/>
         <dependency org="net.bytebuddy" name="byte-buddy-dep" rev="1.17.0"/>
 
+
+
+        <dependency org="org.apache.logging.log4j" name="log4j-api" rev="2.24.3"/>
+        <dependency org="org.apache.logging.log4j" name="log4j-core" rev="2.24.3"/>
+        <dependency org="org.apache.logging.log4j" name="log4j-slf4j2-impl" rev="2.24.3"/>
+
+        <dependency org="org.slf4j" name="slf4j-api" rev="2.0.17"/>
+
+
+
+
     </dependencies>
 
 </ivy-module>
