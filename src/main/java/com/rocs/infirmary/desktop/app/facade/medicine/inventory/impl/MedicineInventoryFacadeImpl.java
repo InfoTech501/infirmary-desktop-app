@@ -19,4 +19,8 @@ public class MedicineInventoryFacadeImpl implements MedicineInventoryFacade {
         return this.medicineInventoryDao.getAllMedicine();
     }
 
+    @Override
+    public boolean addMedicine(Medicine medicine) {
+        return this.medicineInventoryDao.addMedicine(medicine);
+    }
 }
