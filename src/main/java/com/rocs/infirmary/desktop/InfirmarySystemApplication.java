@@ -63,15 +63,17 @@ public class InfirmarySystemApplication {
             case 1: {
                 try {
 
+                    LOGGER.info(" User Access the Common Ailment Report ");
                     scanner.nextLine();
                     System.out.println("Common Ailments Report");
+
 
                     Date startDate = getValidInputDate(scanner, dateFormat, "Enter start date (yyyy-MM-dd): ");
                     Date endDate = getValidInputDate(scanner, dateFormat, "Enter end date (yyyy-MM-dd): ");
 
-
                     String gradeLevel = selectGradeLevel();
                     gradeLevel = gradeLevel.isEmpty() ? null : gradeLevel;
+
 
                     System.out.print("Enter section (enter to skip): ");
                     String section = scanner.nextLine().trim();
@@ -79,10 +81,20 @@ public class InfirmarySystemApplication {
 
 
                     List<CommonAilmentsReport> reports = dashboardFacade.generateCommonAilmentReport(startDate, endDate, gradeLevel, section);
-                    displayCommonAilmentsReport(reports, startDate, endDate, gradeLevel, section);
+                     if(reports  == null || reports.isEmpty()){
+                         LOGGER.info("Failed on Generating Report ");
+                     }else {
+                         displayCommonAilmentsReport(reports, startDate, endDate, gradeLevel, section);
+                         LOGGER.info("Report Successfully Generated");
+                         LOGGER.info("Program Ended Successfully");
+                     }
+
                 } catch (RuntimeException e) {
+                    LOGGER.error("Runtime Exception Occured " + e);
                     System.out.println("Report generation failed: " + e.getMessage());
+
                 }
+
                 break;
             }
 
@@ -170,6 +182,7 @@ public class InfirmarySystemApplication {
                 try {
                     System.out.println("Frequent Visit Report");
                     SimpleDateFormat displayFormat = new SimpleDateFormat("MMMM dd, yyyy");
+
                     Date frequentVisitStartDate = getValidInputDate(scanner, dateFormat, "Enter start date (yyyy-MM-dd): ");
                     Date frequentVisitEndDate = getValidInputDate(scanner, dateFormat, "Enter end date (yyyy-MM-dd): ");
 
