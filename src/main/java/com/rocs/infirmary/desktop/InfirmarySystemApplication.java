@@ -177,8 +177,9 @@ public class InfirmarySystemApplication {
 
 
             case 4: {
-                scanner.nextLine();
 
+                LOGGER.info(" User Access the Frequent Visit Report ");
+                scanner.nextLine();
                 try {
                     System.out.println("Frequent Visit Report");
                     SimpleDateFormat displayFormat = new SimpleDateFormat("MMMM dd, yyyy");
@@ -195,6 +196,7 @@ public class InfirmarySystemApplication {
                             break;
                         } else if (gradeInput.equals("2")) {
                             frequentVisitGradeLevel = "Grade 12";
+
                             break;
                         } else {
                             System.out.println("Invalid Input. Please Enter 1 or 2");
@@ -204,6 +206,7 @@ public class InfirmarySystemApplication {
                     List<FrequentVisitReport> reports = dashboardFacade.generateFrequentVisitReport(frequentVisitStartDate, frequentVisitEndDate, frequentVisitGradeLevel);
 
                     if (reports == null || reports.isEmpty()) {
+                        LOGGER.info("No data found for the selected criteria);" );
                         System.out.println("No data available for the selected criteria.");
                     } else {
                         System.out.println("Frequent Visit Report");
@@ -216,11 +219,15 @@ public class InfirmarySystemApplication {
                             System.out.println("Grade Level: " + report.getGradeLevel());
                             System.out.println("Health Concern: " + report.getSymptoms());
                             System.out.println("Total Visit: " + report.getVisitCount());
+
                         }
+                        LOGGER.info("Generate Frequent Visit Report Successfully");
+                        LOGGER.info("Program Successfully Ended");
                     }
 
 
                 } catch (RuntimeException e) {
+                    LOGGER.error(" RuntimeException " + e);
                     System.out.println("Report generation failed: " + e.getMessage());
                 }
                 break;
