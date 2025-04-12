@@ -43,7 +43,11 @@
     <!--    compile    -->
     <target name="compile" depends="init" description="Compiles the java project.">
         <echo>Compiling...</echo>
-        <javac srcdir="${src.dir}" destdir="${classes.dir}" includeantruntime="false" debug="true"/>
+        <javac srcdir="${src.dir}" destdir="${classes.dir}" includeantruntime="false" debug="true">
+            <classpath>
+                <path refid="compile.path"/>
+            </classpath>
+        </javac>
     </target>
 
     <target name="compile-tests" depends="compile">
