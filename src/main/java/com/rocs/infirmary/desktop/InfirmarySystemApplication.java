@@ -13,6 +13,10 @@ import com.rocs.infirmary.desktop.data.model.report.lowstock.LowStockReport;
 import com.rocs.infirmary.desktop.data.model.report.medication.MedicationTrendReport;
 import com.rocs.infirmary.desktop.data.model.report.visit.FrequentVisitReport;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -22,7 +26,11 @@ import java.util.InputMismatchException;
 
 
 public class InfirmarySystemApplication {
+
+    private static Logger LOGGER = LoggerFactory.getLogger(InfirmarySystemApplication.class);
+
     public static void main(String[] args) {
+
 
         Scanner scanner = new Scanner(System.in);
         System.out.println("Welcome to Infirmary System Application");
@@ -54,15 +62,18 @@ public class InfirmarySystemApplication {
         switch (choice) {
             case 1: {
                 try {
+
+                    LOGGER.info(" User Access the Common Ailment Report ");
                     scanner.nextLine();
                     System.out.println("Common Ailments Report");
+
 
                     Date startDate = getValidInputDate(scanner, dateFormat, "Enter start date (yyyy-MM-dd): ");
                     Date endDate = getValidInputDate(scanner, dateFormat, "Enter end date (yyyy-MM-dd): ");
 
-
                     String gradeLevel = selectGradeLevel();
                     gradeLevel = gradeLevel.isEmpty() ? null : gradeLevel;
+
 
                     System.out.print("Enter section (enter to skip): ");
                     String section = scanner.nextLine().trim();
@@ -70,10 +81,20 @@ public class InfirmarySystemApplication {
 
 
                     List<CommonAilmentsReport> reports = dashboardFacade.generateCommonAilmentReport(startDate, endDate, gradeLevel, section);
-                    displayCommonAilmentsReport(reports, startDate, endDate, gradeLevel, section);
+                     if(reports  == null || reports.isEmpty()){
+                         LOGGER.info("Failed on Generating Report ");
+                     }else {
+                         displayCommonAilmentsReport(reports, startDate, endDate, gradeLevel, section);
+                         LOGGER.info("Report Successfully Generated");
+                         LOGGER.info("Program Ended Successfully");
+                     }
+
                 } catch (RuntimeException e) {
+                    LOGGER.error("Runtime Exception Occured " + e);
                     System.out.println("Report generation failed: " + e.getMessage());
+
                 }
+
                 break;
             }
 
@@ -114,13 +135,17 @@ public class InfirmarySystemApplication {
                     String lrnString = String.valueOf(LRN);
 
                     if(!lrnString.matches("\\d{11}")){
+
+                        LOGGER.info("User entered invalid LRN length" );
                         System.out.println("Error: Please enter a valid 12-Digit LRN.");
                         break;
                     }
 
                     Student record = studentMedicalRecord.findMedicalInformationByLRN(LRN);
-                    if (record == null) {
-                        System.out.println(" Student Not Found");
+                    if (record == null ) {
+
+                        LOGGER.info("No student record found ");
+                        System.out.println("Student Not Found");
                     } else {
                         System.out.println("Firstname             : " + record.getFirstName());
                         System.out.println("Middlename            : " + record.getMiddleName());
@@ -131,24 +156,34 @@ public class InfirmarySystemApplication {
                         System.out.println("Temperature Readings  : " + record.getTemperatureReadings());
                         System.out.println("Visit Date            : " + record.getVisitDate());
                         System.out.println("Treatment             : " + record.getTreatment());
+
+                        LOGGER.info("Retrieved Medical Record Successfully");
+                        LOGGER.info("Program Successfully Ended");
+
+
                     }
                 } catch (InputMismatchException e) {
+                    LOGGER.error("Input Mismatch Exception " +  e);
                     System.out.println("Error: the LRN you entered is not valid. Please enter only numbers.");
                     scanner.nextLine();
 
                 }catch (RuntimeException e) {
+                    LOGGER.error("Runtime Exception " + e);
                     System.out.println("No Student Found!");
 
                 }
                 break;
             }
 
-            case 4: {
-                scanner.nextLine();
 
+            case 4: {
+
+                LOGGER.info(" User Access the Frequent Visit Report ");
+                scanner.nextLine();
                 try {
                     System.out.println("Frequent Visit Report");
                     SimpleDateFormat displayFormat = new SimpleDateFormat("MMMM dd, yyyy");
+
                     Date frequentVisitStartDate = getValidInputDate(scanner, dateFormat, "Enter start date (yyyy-MM-dd): ");
                     Date frequentVisitEndDate = getValidInputDate(scanner, dateFormat, "Enter end date (yyyy-MM-dd): ");
 
@@ -161,6 +196,7 @@ public class InfirmarySystemApplication {
                             break;
                         } else if (gradeInput.equals("2")) {
                             frequentVisitGradeLevel = "Grade 12";
+
                             break;
                         } else {
                             System.out.println("Invalid Input. Please Enter 1 or 2");
@@ -170,6 +206,7 @@ public class InfirmarySystemApplication {
                     List<FrequentVisitReport> reports = dashboardFacade.generateFrequentVisitReport(frequentVisitStartDate, frequentVisitEndDate, frequentVisitGradeLevel);
 
                     if (reports == null || reports.isEmpty()) {
+                        LOGGER.info("No data found for the selected criteria);" );
                         System.out.println("No data available for the selected criteria.");
                     } else {
                         System.out.println("Frequent Visit Report");
@@ -182,11 +219,15 @@ public class InfirmarySystemApplication {
                             System.out.println("Grade Level: " + report.getGradeLevel());
                             System.out.println("Health Concern: " + report.getSymptoms());
                             System.out.println("Total Visit: " + report.getVisitCount());
+
                         }
+                        LOGGER.info("Generate Frequent Visit Report Successfully");
+                        LOGGER.info("Program Successfully Ended");
                     }
 
 
                 } catch (RuntimeException e) {
+                    LOGGER.error(" RuntimeException " + e);
                     System.out.println("Report generation failed: " + e.getMessage());
                 }
                 break;
@@ -272,6 +313,8 @@ public class InfirmarySystemApplication {
             default:
                 System.out.println("Invalid choice. Please select a valid option.");
         }
+
+
     }
 
     private static void displayCommonAilmentsReport(List<CommonAilmentsReport> reports, Date startDate, Date endDate, String gradeLevel, String section) {
