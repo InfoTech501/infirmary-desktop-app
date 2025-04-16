@@ -95,9 +95,6 @@ create table inventory (
   medicine_id varchar2(50 char),
   item_type varchar2(60),
   quantity number(10,0),
-  status NUMBER(1,0)
-    constraint STATUS_INVENTORY_NOT_NULL not null
-    constraint STATUS_INVENTORY_CHECK check (status IN (0,1)),
   primary key (inventory_id));
 
 create table medicine (
@@ -105,6 +102,9 @@ create table medicine (
   item_name varchar2(50),
   description varchar2(255),
   expiration_date timestamp(6),
+  is_available NUMBER(1,0)
+    constraint IS_AVAILABLE_MEDICINE_NOT_NULL not null
+    constraint IS_AVAILABLE_MEDICINE_CHECK check (is_available IN (0,1)),
   primary key (medicine_id));
 
 create table medicine_administered (
@@ -319,48 +319,48 @@ insert into ailments (ailment_id, description)
 values (10, 'Allergic Reaction');
 
 --INSERT MEDICINE DATA
-insert into medicine (medicine_id, item_name, description, expiration_date)
-values ('IB', 'Ibuprofen', 'can treat fever, mild to moderate pain, etc', to_timestamp('2028-01-02 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
-insert into medicine (medicine_id, item_name, description, expiration_date)
-values ('CS', 'Cough Syrup', 'Adults with both dry and productive coughs', to_timestamp('2028-01-02 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
-insert into medicine (medicine_id, item_name, description, expiration_date)
-values ('PT', 'Paracetamol', 'temporarily relieve mild-to-moderate pain and fever', to_timestamp('2028-01-02 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
-insert into medicine (medicine_id, item_name, description, expiration_date)
-values ('AC', 'Antacid', 'a medicine used to treat heartburn and indigestion', to_timestamp('2028-01-02 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
-insert into medicine (medicine_id, item_name, description, expiration_date)
-values ('AH', 'Antihistamine', 'treat allergic rhinitis, common cold, influenza, and other allergies', to_timestamp('2026-01-02 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
-insert into medicine (medicine_id, item_name, description, expiration_date)
-values ('AS', 'Aspirin', 'Used to treat pain, fever, or inflammation', TO_TIMESTAMP('2027-06-15 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
-insert into medicine (medicine_id, item_name, description, expiration_date)
-values ('VM', 'Vitamin C', 'Boosts immunity and promotes overall health', TO_TIMESTAMP('2026-10-10 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
-insert into medicine (medicine_id, item_name, description, expiration_date)
-values ('HD', 'Hydrocortisone Cream', 'Treats skin irritation, eczema, and rashes', TO_TIMESTAMP('2025-12-31 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
-insert into medicine (medicine_id, item_name, description, expiration_date)
-values ('DN', 'Decongestant', 'Relieves nasal congestion caused by colds', TO_TIMESTAMP('2026-03-20 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
-insert into medicine (medicine_id, item_name, description, expiration_date)
-values ('AN', 'Antibiotics', 'Treats bacterial infections in the body', TO_TIMESTAMP('2027-08-25 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
+insert into medicine (medicine_id, item_name, description, expiration_date, is_available)
+values ('IB', 'Ibuprofen', 'can treat fever, mild to moderate pain, etc', to_timestamp('2028-01-02 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'), 1);
+insert into medicine (medicine_id, item_name, description, expiration_date, is_available)
+values ('CS', 'Cough Syrup', 'Adults with both dry and productive coughs', to_timestamp('2028-01-02 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'), 1);
+insert into medicine (medicine_id, item_name, description, expiration_date, is_available)
+values ('PT', 'Paracetamol', 'temporarily relieve mild-to-moderate pain and fever', to_timestamp('2028-01-02 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'), 0);
+insert into medicine (medicine_id, item_name, description, expiration_date, is_available)
+values ('AC', 'Antacid', 'a medicine used to treat heartburn and indigestion', to_timestamp('2028-01-02 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'), 1);
+insert into medicine (medicine_id, item_name, description, expiration_date, is_available)
+values ('AH', 'Antihistamine', 'treat allergic rhinitis, common cold, influenza, and other allergies', to_timestamp('2026-01-02 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'), 1);
+insert into medicine (medicine_id, item_name, description, expiration_date, is_available)
+values ('AS', 'Aspirin', 'Used to treat pain, fever, or inflammation', TO_TIMESTAMP('2027-06-15 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'), 0);
+insert into medicine (medicine_id, item_name, description, expiration_date, is_available)
+values ('VM', 'Vitamin C', 'Boosts immunity and promotes overall health', TO_TIMESTAMP('2026-10-10 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'), 1);
+insert into medicine (medicine_id, item_name, description, expiration_date, is_available)
+values ('HD', 'Hydrocortisone Cream', 'Treats skin irritation, eczema, and rashes', TO_TIMESTAMP('2025-12-31 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'), 0);
+insert into medicine (medicine_id, item_name, description, expiration_date, is_available)
+values ('DN', 'Decongestant', 'Relieves nasal congestion caused by colds', TO_TIMESTAMP('2026-03-20 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'), 0);
+insert into medicine (medicine_id, item_name, description, expiration_date, is_available)
+values ('AN', 'Antibiotics', 'Treats bacterial infections in the body', TO_TIMESTAMP('2027-08-25 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'), 1);
 
  --INSERT INVENTORY DATA
-insert into inventory (medicine_id, item_type, quantity, status)
-values ('IB', 'Medicine', 50, 0);
-insert into inventory (medicine_id, item_type, quantity, status)
-values ('CS', 'Medicine', 30, 1);
-insert into inventory (medicine_id, item_type, quantity, status)
-values ('PT', 'Medicine', 40, 1);
-insert into inventory (medicine_id, item_type, quantity, status)
-values ('AC', 'Medicine', 25, 0);
-insert into inventory (medicine_id, item_type, quantity, status)
-values ('AH', 'Medicine', 20, 0);
-insert into inventory (medicine_id, item_type, quantity, status)
-values ('AS', 'Medicine', 60, 0);
-insert into inventory (medicine_id, item_type, quantity, status)
-values ('VM', 'Medicine', 10, 0);
-insert into inventory (medicine_id, item_type, quantity, status)
-values ('HD', 'Medicine', 15, 1);
-insert into inventory (medicine_id, item_type, quantity, status)
-values ('DN', 'Medicine', 50, 0);
-insert into inventory (medicine_id, item_type, quantity, status)
-values ('AN', 'Medicine', 4, 1);
+insert into inventory (medicine_id, item_type, quantity)
+values ('IB', 'Medicine', 50);
+insert into inventory (medicine_id, item_type, quantity)
+values ('CS', 'Medicine', 30);
+insert into inventory (medicine_id, item_type, quantity)
+values ('PT', 'Medicine', 40);
+insert into inventory (medicine_id, item_type, quantity)
+values ('AC', 'Medicine', 25);
+insert into inventory (medicine_id, item_type, quantity)
+values ('AH', 'Medicine', 20);
+insert into inventory (medicine_id, item_type, quantity)
+values ('AS', 'Medicine', 60);
+insert into inventory (medicine_id, item_type, quantity)
+values ('VM', 'Medicine', 10);
+insert into inventory (medicine_id, item_type, quantity)
+values ('HD', 'Medicine', 15);
+insert into inventory (medicine_id, item_type, quantity)
+values ('DN', 'Medicine', 50);
+insert into inventory (medicine_id, item_type, quantity)
+values ('AN', 'Medicine', 4);
 
 --INSERT MEDICAL RECORD DATA
 insert into medical_record (student_id, ailment_id, med_history_id, nurse_in_charge_id, symptoms, temperature_readings, visit_date, treatment, status)
