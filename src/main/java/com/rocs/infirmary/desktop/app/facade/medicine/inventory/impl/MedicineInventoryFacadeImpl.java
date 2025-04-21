@@ -18,4 +18,9 @@ public class MedicineInventoryFacadeImpl implements MedicineInventoryFacade {
     public List<Medicine> findAllMedicine() {
         return this.medicineInventoryDao.getAllMedicine();
     }
+    @Override
+    public boolean deleteMedicineByItemName(String itemName) {
+        return medicineInventoryDao.deleteMedicineByItemName(itemName);
+    }
+
 }

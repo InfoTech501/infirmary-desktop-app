@@ -7,6 +7,9 @@ public class QueryConstants {
             "JOIN MEDICINE m ON i.MEDICINE_ID = m.MEDICINE_ID";
 
 
+    private final String DELETE_MEDICINE_BY_ITEM_NAME_QUERY = "UPDATE MEDICINE SET IS_AVAILABLE = 0 WHERE ITEM_NAME = ?";
+
+    public String deleteMedicine() {return DELETE_MEDICINE_BY_ITEM_NAME_QUERY;}
 
     public String getLIST_ALL_MEDICINE_INVENTORY_QUERY(){return  LIST_ALL_MEDICINE_INVENTORY_QUERY;}
 
