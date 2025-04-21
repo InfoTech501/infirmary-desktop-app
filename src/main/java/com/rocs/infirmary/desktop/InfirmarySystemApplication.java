@@ -45,6 +45,8 @@ public class InfirmarySystemApplication {
         System.out.println("7 - Read Student Medical Record");
         System.out.println("8 - Delete Student Medical Record");
 
+
+
         int choice = 0;
         while (true) {
             try {
