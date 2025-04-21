@@ -45,7 +45,7 @@ public class InfirmarySystemApplication {
         System.out.println("6 - View Medicine Inventory List");
         System.out.println("7 - Read Student Medical Record");
         System.out.println("8 - Delete Student Medical Record");
-        System.out.println("9 - Delete Medicine");
+
 
 
 
