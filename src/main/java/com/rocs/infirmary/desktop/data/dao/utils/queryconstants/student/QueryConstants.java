@@ -35,7 +35,7 @@ public class QueryConstants {
             "LEFT JOIN student ON medical_record.student_id = student.id";
 
 
-    private final String UPDATE_STUDENT_MEDICAL_RECORD_STATUS = "UPDATE MEDICAL_RECORD SET STATUS = 0 WHERE STUDENT_ID = ?";
+    private final String UPDATE_STUDENT_MEDICAL_RECORD_STATUS = "UPDATE MEDICAL_RECORD SET IS_ACTIVE = 0 WHERE STUDENT_ID = ?";
 
 
     public String getAllStudentMedicalRecords() { return GET_ALL_STUDENTS_MEDICAL_RECORDS;
