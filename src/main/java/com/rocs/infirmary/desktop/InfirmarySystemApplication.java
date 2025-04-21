@@ -132,17 +132,16 @@ public class InfirmarySystemApplication {
                     scanner.nextLine();
                     StudentMedicalRecordFacadeImpl studentMedicalRecord = new StudentMedicalRecordFacadeImpl();
                     System.out.println("Search Student Medical Records using LRN: ");
-                    String LRN = scanner.nextLine();
+                    long LRN = scanner.nextLong();
+                    String lrnString = String.valueOf(LRN);
 
-
-                    if(LRN.length() != 12 ){
-
+                    if(!lrnString.matches("\\d{11}")){
                         LOGGER.info("User entered invalid LRN length" );
                         System.out.println("Error: Please enter a valid 12-Digit LRN.");
                         break;
                     }
 
-                    Student record = studentMedicalRecord.findMedicalInformationByLRN(Long.parseLong(LRN));
+                    Student record = studentMedicalRecord.findMedicalInformationByLRN(LRN);
                     if (record == null ) {
 
                         LOGGER.info("No student record found ");
