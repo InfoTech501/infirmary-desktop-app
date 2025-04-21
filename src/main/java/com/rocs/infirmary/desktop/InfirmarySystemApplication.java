@@ -48,14 +48,18 @@ public class InfirmarySystemApplication {
         while (true) {
             try {
                 System.out.println("Enter your choice: ");
-                choice = scanner.nextInt();
-                break;
+                if (scanner.hasNextInt()) {
+                    choice = scanner.nextInt();
+                    break;
+                } else {
+                    System.out.println("Invalid input. Please enter a number.");
+                    scanner.nextLine();
+                }
             } catch (InputMismatchException e) {
                 System.out.println("Invalid input. Please enter a number.");
                 scanner.nextLine();
             }
         }
-
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         dateFormat.setLenient(false);
         DashboardFacade dashboardFacade = new DashboardFacadeImpl();
@@ -131,6 +135,7 @@ public class InfirmarySystemApplication {
                     scanner.nextLine();
                     StudentMedicalRecordFacadeImpl studentMedicalRecord = new StudentMedicalRecordFacadeImpl();
                     System.out.println("Search Student Medical Records using LRN: ");
+                    if(scanner.hasNextInt()){
                     long LRN = scanner.nextLong();
                     String lrnString = String.valueOf(LRN);
 
@@ -161,6 +166,11 @@ public class InfirmarySystemApplication {
                         LOGGER.info("Program Successfully Ended");
 
 
+                    }
+                    }else{
+                        LOGGER.error("Input Mismatch Exception ");
+                        System.out.println("Error: the LRN you entered is not valid. Please enter only numbers.");
+                        scanner.nextLine();
                     }
                 } catch (InputMismatchException e) {
                     LOGGER.error("Input Mismatch Exception " +  e);
@@ -291,19 +301,28 @@ public class InfirmarySystemApplication {
 
                 StudentMedicalRecordFacadeImpl studentMedicalRecordFacade = new StudentMedicalRecordFacadeImpl();
                 Scanner sc = new Scanner(System.in);
-
                 System.out.print("Enter the LRN of student to delete: ");
-                long lrn = sc.nextLong();
-                System.out.print("Are you sure you want to delete this record? This action cannot be undone. (Select 1. for YES and 2. for NO/CANCEL): ");
-                int confirmation = sc.nextInt();
-                if (confirmation == 1) {
-                    studentMedicalRecordFacade.deleteStudentMedicalRecordByLrn(lrn);
-                    System.out.println("Deleted successfully");
-                } else if (confirmation == 2) {
-                    System.out.println("Cancel the Deletion");
+                if (sc.hasNextLong()) {
+                    long lrn = sc.nextLong();
+                    System.out.print("Are you sure you want to delete this record? This action cannot be undone. (Select 1. for YES and 2. for NO/CANCEL): ");
+                    if (sc.hasNextInt()) {
+                        int confirmation = sc.nextInt();
+                        if (confirmation == 1) {
+                            studentMedicalRecordFacade.deleteStudentMedicalRecordByLrn(lrn);
+                            System.out.println("Deleted successfully");
+                        } else if (confirmation == 2) {
+                            System.out.println("Cancel the Deletion");
 
+                        } else {
+                            System.out.println("invalid input");
+                        }
+                    } else {
+                        System.out.println("Invalid input for confirmation. Please enter a number.");
+                        sc.next(); // consume invalid input
+                    }
                 } else {
-                    System.out.println("invalid input");
+                    System.out.println("Invalid input for LRN. Please enter a number.");
+                    sc.next(); // consume invalid input
                 }
 
 
