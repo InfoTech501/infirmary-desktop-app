@@ -13,5 +13,4 @@ public interface MedicineInventoryFacade {
 
 
     List<Medicine> findAllMedicine();
-
 }

@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
+import java.sql.SQLOutput;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -44,6 +45,7 @@ public class InfirmarySystemApplication {
         System.out.println("6 - View Medicine Inventory List");
         System.out.println("7 - Read Student Medical Record");
         System.out.println("8 - Delete Student Medical Record");
+        System.out.println("9 - Delete Medicine");
 
 
 
@@ -401,6 +403,8 @@ public class InfirmarySystemApplication {
 
         return gradeLevel;
     }
+
+
 
 
 }

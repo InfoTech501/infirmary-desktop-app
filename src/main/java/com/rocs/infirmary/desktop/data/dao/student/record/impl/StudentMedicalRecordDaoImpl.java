@@ -109,7 +109,7 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
 
             QueryConstants queryConstants = new QueryConstants();
 
-            String sql = queryConstants.updateMedicalRecordIsActive();
+            String sql = queryConstants.deleteStudentMedicalRecord();
 
             PreparedStatement preparedStatement = con.prepareStatement(sql);
             preparedStatement.setInt(1,studentMedicalRecord.getStudentId());

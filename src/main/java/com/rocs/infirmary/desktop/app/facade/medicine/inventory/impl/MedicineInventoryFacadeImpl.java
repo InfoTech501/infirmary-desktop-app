@@ -18,5 +18,4 @@ public class MedicineInventoryFacadeImpl implements MedicineInventoryFacade {
     public List<Medicine> findAllMedicine() {
         return this.medicineInventoryDao.getAllMedicine();
     }
-
 }

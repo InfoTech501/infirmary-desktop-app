@@ -6,7 +6,10 @@ public class QueryConstants {
             "FROM INVENTORY i " +
             "JOIN MEDICINE m ON i.MEDICINE_ID = m.MEDICINE_ID";
 
+
+
     public String getLIST_ALL_MEDICINE_INVENTORY_QUERY(){return  LIST_ALL_MEDICINE_INVENTORY_QUERY;}
+
 
 
 }
