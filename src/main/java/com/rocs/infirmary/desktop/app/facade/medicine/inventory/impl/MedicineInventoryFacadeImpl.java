@@ -23,4 +23,9 @@ public class MedicineInventoryFacadeImpl implements MedicineInventoryFacade {
         return medicineInventoryDao.deleteMedicineByItemName(itemName);
     }
 
+    @Override
+    public boolean IsAvailable(String itemName) {
+        return medicineInventoryDao.isAvailable(itemName);
+    }
+
 }

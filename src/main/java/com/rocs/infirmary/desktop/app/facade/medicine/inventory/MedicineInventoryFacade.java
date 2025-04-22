@@ -15,4 +15,6 @@ public interface MedicineInventoryFacade {
     List<Medicine> findAllMedicine();
 
     boolean deleteMedicineByItemName(String itemName);
+
+    boolean IsAvailable(String itemName);
 }

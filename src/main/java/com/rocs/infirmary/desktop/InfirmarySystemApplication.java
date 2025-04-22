@@ -318,30 +318,32 @@ public class InfirmarySystemApplication {
             case 9: {
                 try {
                     scanner.nextLine();
+
                     MedicineInventoryFacade medicineInventoryFacade = new MedicineInventoryFacadeImpl();
                     System.out.println("Delete Medicine By Item Name : ");
                     String itemName = scanner.nextLine().trim();
 
                     if(itemName.isEmpty()) {
-
                         System.out.println("No data Detected");
                         return;
 
-                    } else if (!medicineInventoryFacade.deleteMedicineByItemName(itemName)) {
-
-                        System.out.println("This Medicine " + itemName +  " " + "does not Exist");
+                    } else if (!medicineInventoryFacade.IsAvailable(itemName)){
+                        System.out.println("This medicine " + itemName + " " + "does not exist");
                         return;
                     }
-
                     System.out.println("Are you sure you want to delete this item? This action cannot be undone. ");
                     System.out.println("1 - Confirm (To proceed with the deletion)");
                     System.out.println("2 - Cancel  (To abort the action and retain the medicine in the list)");
                     int confirmation = scanner.nextInt();
 
                     if (confirmation == 1 ) {
+                        boolean success =  medicineInventoryFacade.deleteMedicineByItemName(itemName);
 
-                        medicineInventoryFacade.deleteMedicineByItemName(itemName);
-                        System.out.println("Successfully Deleted");
+                        if (success) {
+                            System.out.println("Successfully Deleted");
+                        } else {
+                            System.out.println("Failed to Delete");
+                        }
 
                     } else if (confirmation == 2) {
 
@@ -354,7 +356,6 @@ public class InfirmarySystemApplication {
                 } catch (RuntimeException e) {
                     throw new RuntimeException(e);
                 }
-
             }
             break;
 

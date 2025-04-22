@@ -14,9 +14,11 @@ public class Medicine extends Inventory{
 
     private Timestamp expirationDate;
 
+    private String isAvailable;
 
-
-
+    public String getIsAvailable() {
+        return isAvailable;
+    }
 
     public String getMedicineId(){ return medicineId; }
 

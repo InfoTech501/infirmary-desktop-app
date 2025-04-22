@@ -12,4 +12,5 @@ public interface MedicineInventoryDao {
 */
     List<Medicine> getAllMedicine();
     boolean deleteMedicineByItemName(String itemName);
+    boolean isAvailable(String itemName);
 }
