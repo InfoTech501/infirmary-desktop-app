@@ -9,12 +9,12 @@ public class QueryConstants {
 
     private final String DELETE_MEDICINE_BY_ITEM_NAME_QUERY = "UPDATE MEDICINE SET IS_AVAILABLE = 0 WHERE ITEM_NAME = ?";
 
-    private final String FILTER_MEDICINE_DELETED = "SELECT * FROM MEDICINE WHERE IS_AVAILABLE = 1 AND ITEM_NAME = ?";
+    private final String FILTER_MEDICINE_DELETED_QUERY = "SELECT * FROM MEDICINE WHERE IS_AVAILABLE = 1 AND ITEM_NAME = ?";
 
-    public String deleteMedicine() {return DELETE_MEDICINE_BY_ITEM_NAME_QUERY;}
+    public String getDeleteMedicineQuery() {return DELETE_MEDICINE_BY_ITEM_NAME_QUERY;}
 
     public String getLIST_ALL_MEDICINE_INVENTORY_QUERY(){return  LIST_ALL_MEDICINE_INVENTORY_QUERY;}
 
-    public String filterDeletedMedicine() {return FILTER_MEDICINE_DELETED;}
+    public String filterDeletedMedicine() {return FILTER_MEDICINE_DELETED_QUERY;}
 
 }

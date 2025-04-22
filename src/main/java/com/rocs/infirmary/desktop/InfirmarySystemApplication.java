@@ -332,8 +332,8 @@ public class InfirmarySystemApplication {
                         return;
                     }
                     System.out.println("Are you sure you want to delete this item? This action cannot be undone. ");
-                    System.out.println("1 - Confirm (To proceed with the deletion)");
-                    System.out.println("2 - Cancel  (To abort the action and retain the medicine in the list)");
+                    System.out.println("1 - Confirm ");
+                    System.out.println("2 - Cancel  ");
                     int confirmation = scanner.nextInt();
 
                     if (confirmation == 1 ) {
