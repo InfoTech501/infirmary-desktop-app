@@ -140,7 +140,7 @@ public class InfirmarySystemApplication {
                     long LRN = scanner.nextLong();
                     String lrnString = String.valueOf(LRN);
 
-                    if(!lrnString.matches("\\d{11}")){
+                    if(!lrnString.matches("\\d{12}")){
                         LOGGER.info("User entered invalid LRN length" );
                         System.out.println("Error: Please enter a valid 12-Digit LRN.");
                         break;
@@ -329,6 +329,7 @@ public class InfirmarySystemApplication {
 
                     } else if (!medicineInventoryFacade.IsAvailable(itemName)){
                         System.out.println("This medicine " + itemName + " " + "does not exist");
+                        LOGGER.info("This medicine " + itemName + " " + "does not exist");
                         return;
                     }
                     System.out.println("Are you sure you want to delete this item? This action cannot be undone. ");

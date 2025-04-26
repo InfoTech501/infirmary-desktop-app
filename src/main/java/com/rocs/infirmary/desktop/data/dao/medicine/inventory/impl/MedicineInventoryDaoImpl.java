@@ -18,7 +18,7 @@ import java.util.ArrayList;
  * Includes method for calling the query constants and connection helper.
  */
 public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
-    Logger LOGGER = LoggerFactory.getLogger(MedicineInventoryDaoImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MedicineInventoryDaoImpl.class);
     @Override
     public List<Medicine> getAllMedicine() {
         LOGGER.info("get all medicine started");
@@ -33,7 +33,7 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
         try (Connection con = ConnectionHelper.getConnection();
              PreparedStatement stmt = con.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
-
+            LOGGER.info("Query in use"+sql);
 
             while (rs.next()) {
 
@@ -47,19 +47,21 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
                 medicine.setDescription(rs.getString("DESCRIPTION"));
                 medicine.setExpirationDate(rs.getTimestamp("EXPIRATION_DATE"));
 
-                LOGGER.info("Data retrieved: "+"Inventory ID: "+medicine.getInventoryId()+"\n"
+                LOGGER.info("Data retrieved: "+"\n"
+                        +"Inventory ID: "+medicine.getInventoryId()+"\n"
                         +"Medicine  ID: "+medicine.getMedicineId()+"\n"
                         +"Item type   : "+medicine.getItemType()+"\n"
                         +"Quantity    : "+medicine.getQuantity()+"\n"
                         +"Item Name   : "+medicine.getItemName()+"\n"
                         +"Description : "+medicine.getDescription()+"\n"
-                        +"Expiration  : "+medicine.getExpirationDate());
+                        +"Expiration  : "+medicine.getExpirationDate()
+                );
 
                 MedicineInventoryList.add(medicine);
             }
 
         } catch (SQLException e) {
-            LOGGER.error("An SQL Exception occurred: " + e.getMessage());
+            LOGGER.error("SQLException Occurred: " + e.getMessage());
             System.out.println("An SQL Exception occurred: " + e.getMessage());
         }
         LOGGER.info("Data retrieved successfully");
@@ -74,6 +76,8 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
 
             String sql = queryConstants.getDeleteMedicineQuery();
             PreparedStatement stmt = con.prepareStatement(sql);
+            LOGGER.info("Query in use"+sql);
+            LOGGER.info("data inserted: "+"Item Name: "+itemName);
             if(isAvailable(itemName)) {
 
                 stmt.setString(1,itemName);
@@ -83,12 +87,13 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
                 return affectedRows > 0;
 
             } else {
+                LOGGER.info(itemName+" Failed to delete");
                 return false;
             }
 
 
         }catch (SQLException e) {
-            LOGGER.error("Sql exception occurred: "+e);
+            LOGGER.error("SqlException Occurred: "+e.getMessage());
             throw new RuntimeException();
         }
 
@@ -109,7 +114,7 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
            return rs.next();
 
         }catch (SQLException e ) {
-            LOGGER.error("Sql exception occurred: "+e);
+            LOGGER.error("SqlException Occurred: "+e.getMessage());
             System.out.println("SQL error " + e.getMessage());
         }
         LOGGER.info("availability check ended successfully");
