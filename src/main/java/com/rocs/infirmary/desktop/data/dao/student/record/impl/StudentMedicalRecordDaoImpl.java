@@ -24,7 +24,7 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
     private static final Logger LOGGER = LoggerFactory.getLogger(StudentMedicalRecordDaoImpl.class);
 
     public Student getMedicalInformationByLRN(long LRN) {
-        LOGGER.info("get medical information started");
+        LOGGER.info("get medical record started");
         Student studentMedicalRecord = null;
         try (Connection con = ConnectionHelper.getConnection()) {
 
