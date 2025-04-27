@@ -15,7 +15,8 @@ import java.util.ArrayList;
  * This class includes methods for setting values of both medicine and inventory objects.
  * Includes method for calling the query constants and connection helper.
  *
- * Includes method for deleting Medicine by ItemName.
+ * Includes method for deleting Medicine by ItemName and method for checking if medicine
+ * is not deleted (available) from the database.
  */
 public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
     @Override
