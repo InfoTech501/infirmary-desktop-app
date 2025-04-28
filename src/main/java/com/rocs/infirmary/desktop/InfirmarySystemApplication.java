@@ -132,22 +132,33 @@ public class InfirmarySystemApplication {
                 }
                 break;
             }
+
             case 3: {
-                try {
                     scanner.nextLine();
                     StudentMedicalRecordFacadeImpl studentMedicalRecord = new StudentMedicalRecordFacadeImpl();
-                    System.out.println("Search Student Medical Records using LRN: ");
-                    String LRN = scanner.next();
 
-                    if(LRN.length() != 12  ){
-                        LOGGER.info("User entered invalid LRN length" );
+                    String LRN;
+                    while (true) {
+                        System.out.println("Search Student Medical Records using LRN: ");
+                        LRN = scanner.nextLine();
+
+                    if(LRN.length() == 12 ) {
+                        try {
+                            Long.parseLong(LRN);
+                            break;
+                        } catch (NumberFormatException e) {
+                            System.out.println("Error: The LRN must contain only 12 numeric digits.");
+                        }
+                    } else {
                         System.out.println("Error: Please enter a valid 12-Digit LRN.");
-                        break;
+                        LOGGER.info("User entered invalid LRN length" );
+
+                        }
                     }
 
+                try{
                     Student record = studentMedicalRecord.findMedicalInformationByLRN(Long.parseLong(LRN));
                     if (record == null ) {
-
                         LOGGER.info("No student record found ");
                         System.out.println("Student Not Found");
                     } else {
@@ -163,7 +174,6 @@ public class InfirmarySystemApplication {
 
                         LOGGER.info("Retrieved Medical Record Successfully");
                         LOGGER.info("Program Successfully Ended");
-
 
                     }
                 } catch (InputMismatchException e) {
@@ -291,25 +301,53 @@ public class InfirmarySystemApplication {
                 }
                 break;
             }
+
             case 8: {
-
-                StudentMedicalRecordFacadeImpl studentMedicalRecordFacade = new StudentMedicalRecordFacadeImpl();
                 Scanner sc = new Scanner(System.in);
+                StudentMedicalRecordFacadeImpl studentMedicalRecordFacade = new StudentMedicalRecordFacadeImpl();
 
-                System.out.print("Enter the LRN of student to delete: ");
-                long lrn = sc.nextLong();
-                System.out.print("Are you sure you want to delete this record? This action cannot be undone. (Select 1. for YES and 2. for NO/CANCEL): ");
-                int confirmation = sc.nextInt();
-                if (confirmation == 1) {
-                    studentMedicalRecordFacade.deleteStudentMedicalRecordByLrn(lrn);
-                    System.out.println("Deleted successfully");
-                } else if (confirmation == 2) {
-                    System.out.println("Cancel the Deletion");
-
-                } else {
-                    System.out.println("invalid input");
+                long lrn;
+                while (true) {
+                    System.out.print("Enter the LRN of student to delete: ");
+                    if (sc.hasNextLong()) {
+                        lrn = sc.nextLong();
+                        sc.nextLine();
+                        break;
+                    } else {
+                        System.out.println("Error: Please enter a valid 12-digit numeric LRN.");
+                        sc.nextLine();
+                    }
                 }
 
+                int confirmation;
+                while (true) {
+                    System.out.print("Are you sure you want to delete this record? This action cannot be undone. \n(Select 1 for YES and 2 for NO/CANCEL): ");
+
+                    try {
+                        confirmation = sc.nextInt();
+                        sc.nextLine();
+
+                        if (confirmation == 1) {
+                            try {
+                                studentMedicalRecordFacade.deleteStudentMedicalRecordByLrn(lrn);
+                                System.out.println("LRN Deleted Successfully");
+                            } catch (NullPointerException e) {
+                                System.out.println("Error: The record does not exist or could not be deleted.");
+                            } catch (RuntimeException e) {
+                                System.out.println("Unexpected error occurred during deletion.");
+                            }
+                            break;
+                        } else if (confirmation == 2) {
+                            System.out.println("Cancel the Deletion");
+                            break;
+                        } else {
+                            System.out.println("Invalid input. Please enter 1 for YES or 2 for NO.");
+                        }
+                    } catch (InputMismatchException e) {
+                        System.out.println("Invalid input. Please enter a number (1 or 2).");
+                        sc.nextLine();
+                    }
+                }
 
                 break;
             }
