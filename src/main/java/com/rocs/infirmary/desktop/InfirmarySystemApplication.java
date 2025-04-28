@@ -88,7 +88,7 @@ public class InfirmarySystemApplication {
 
                     List<CommonAilmentsReport> reports = dashboardFacade.generateCommonAilmentReport(startDate, endDate, gradeLevel, section);
                      if(reports  == null || reports.isEmpty()){
-                         LOGGER.info("Failed on Generating Report ");
+                         LOGGER.info("No reports available to generate. The report list is empty or null.");
                      }else {
                          displayCommonAilmentsReport(reports, startDate, endDate, gradeLevel, section);
                          LOGGER.info("Report Successfully Generated");
