@@ -30,6 +30,8 @@ import java.util.InputMismatchException;
 public class InfirmarySystemApplication {
 
     private static Logger LOGGER = LoggerFactory.getLogger(InfirmarySystemApplication.class);
+    private static final String MEDICINE_INVENTORY_ACCESSED = "User accessed the Medicine Inventory.";
+    private static final String PROGRAM_ENDED_SUCCESSFULLY = "Program Ended Successfully.";
 
     public static void main(String[] args) {
 
@@ -107,6 +109,7 @@ public class InfirmarySystemApplication {
             case 2: {
 
                 try {
+                    LOGGER.info("User accessed the Medication Trend Report");
                     scanner.nextLine();
                     System.out.println("\nWelcome to Medication Trend Report");
                     SimpleDateFormat displayFormat = new SimpleDateFormat("MMMM dd, yyyy");
@@ -115,6 +118,7 @@ public class InfirmarySystemApplication {
 
                     List<MedicationTrendReport> medicationTrendReportList = dashboardFacade.generateMedicationReport(startDate, endDate);
                     if (medicationTrendReportList == null || medicationTrendReportList.isEmpty()) {
+                        LOGGER.info("No data available for Medication Trend Report for the selected criteria.");
                         System.out.println("No data available for the selected criteria.");
                         return;
                     } else {
@@ -126,14 +130,18 @@ public class InfirmarySystemApplication {
                             System.out.print(" | Medicine: " + report.getMedicineName());
                             System.out.print(" | Medication Stocks: " + report.getStocks());
                         }
+                        LOGGER.info("Medication Trend Report generated successfully.");
                     }
+                    LOGGER.info(PROGRAM_ENDED_SUCCESSFULLY);
                 } catch (RuntimeException e) {
+                    LOGGER.error("Runtime Exception occurred while generating Medication Trend Report.", e);
                     System.out.println("Error generating: " + e.getMessage());
                 }
                 break;
             }
             case 3: {
                 try {
+                    LOGGER.info("User accessed the Retrieve Student Medical Record functionality.");
                     scanner.nextLine();
                     StudentMedicalRecordFacadeImpl studentMedicalRecord = new StudentMedicalRecordFacadeImpl();
                     System.out.println("Search Student Medical Records using LRN: ");
@@ -239,22 +247,27 @@ public class InfirmarySystemApplication {
             }
             case 5: {
                 try {
+                    LOGGER.info("User accessed the Check Low Stock Medicine functionality.");
                     List<LowStockReport> lowStockItems = dashboardFacade.findAllLowStockMedicine();
                     for (LowStockReport medicineInventory : lowStockItems) {
                         System.out.println("Medicine Name: " + medicineInventory.getDescription());
                         System.out.println("Current Stock Level: " + medicineInventory.getQuantityAvailable());
                         System.out.println("Notification: The stock level of " + medicineInventory.getDescription() + " is low. Current stock level: " + medicineInventory.getQuantityAvailable() + ". Please reorder supplies.");
                     }
+                    LOGGER.info(PROGRAM_ENDED_SUCCESSFULLY);
                 } catch (RuntimeException e) {
+                    LOGGER.error("Error checking low stock items.", e);
                     System.out.println("Error checking low stock items: " + e.getMessage());
                 }
                 break;
             }
 
             case 6: {
+                LOGGER.info(MEDICINE_INVENTORY_ACCESSED);
                 MedicineInventoryFacade inventoryFacade = new MedicineInventoryFacadeImpl();
                 List<Medicine> medicineInventoryItems = inventoryFacade.findAllMedicine();
                 if (medicineInventoryItems.isEmpty()) {
+                    LOGGER.info("Medicine Inventory is empty.");
                     System.out.println("The list of items is empty.");
                 } else {
                     System.out.println("LIST OF ITEMS:");
@@ -268,34 +281,44 @@ public class InfirmarySystemApplication {
                         }
                     }
                 }
+                LOGGER.info(PROGRAM_ENDED_SUCCESSFULLY);
                 break;
             }
             case 7: {
-
+                LOGGER.info("User accessed the Read All Student Medical Records functionality.");
                 StudentMedicalRecordFacadeImpl studentMedical = new StudentMedicalRecordFacadeImpl();
-                List<Student> medicalRecords = studentMedical.readAllStudentMedicalRecords();
-
-                for (Student record : medicalRecords) {
-                    System.out.println();
-                    System.out.println("Firstname             : " + record.getFirstName());
-                    System.out.println("Middlename            : " + record.getMiddleName());
-                    System.out.println("Lastname              : " + record.getLastName());
-                    System.out.println("Age                   : " + record.getAge());
-                    System.out.println("Gender                : " + record.getGender());
-                    System.out.println("Symptoms              : " + record.getSymptoms());
-                    System.out.println("Temperature Readings  : " + record.getTemperatureReadings());
-                    System.out.println("Visit Date            : " + record.getVisitDate());
-                    System.out.println("Treatment             : " + record.getTreatment());
-
-                    System.out.println();
+                try {
+                    List<Student> medicalRecords = studentMedical.readAllStudentMedicalRecords();
+                    if (medicalRecords.isEmpty()) {
+                        LOGGER.info("No student medical records found.");
+                        System.out.println("No student medical records available.");
+                    } else {
+                        LOGGER.info("Successfully retrieved all student medical records. Total records: {}", medicalRecords.size());
+                        for (Student record : medicalRecords) {
+                            System.out.println();
+                            System.out.println("Firstname             : " + record.getFirstName());
+                            System.out.println("Middlename            : " + record.getMiddleName());
+                            System.out.println("Lastname              : " + record.getLastName());
+                            System.out.println("Age                   : " + record.getAge());
+                            System.out.println("Gender                : " + record.getGender());
+                            System.out.println("Symptoms              : " + record.getSymptoms());
+                            System.out.println("Temperature Readings  : " + record.getTemperatureReadings());
+                            System.out.println("Visit Date            : " + record.getVisitDate());
+                            System.out.println("Treatment             : " + record.getTreatment());
+                            System.out.println();
+                        }
+                    }
+                } catch (RuntimeException e) {
+                    LOGGER.error("Error reading all student medical records.", e);
+                    System.out.println("Error reading student medical records: " + e.getMessage());
                 }
+                LOGGER.info(PROGRAM_ENDED_SUCCESSFULLY);
                 break;
             }
             case 8: {
-
+                LOGGER.info("User accessed the Delete Student Medical Record functionality.");
                 StudentMedicalRecordFacadeImpl studentMedicalRecordFacade = new StudentMedicalRecordFacadeImpl();
                 Scanner sc = new Scanner(System.in);
-
                 System.out.print("Enter the LRN of student to delete: ");
                 long lrn = sc.nextLong();
                 System.out.print("Are you sure you want to delete this record? This action cannot be undone. (Select 1. for YES and 2. for NO/CANCEL): ");
@@ -316,6 +339,7 @@ public class InfirmarySystemApplication {
 
             case 9: {
                 try {
+                    LOGGER.info("User accessed the DELETE MEDICINE ACCESSED");
                     scanner.nextLine();
 
                     MedicineInventoryFacade medicineInventoryFacade = new MedicineInventoryFacadeImpl();
