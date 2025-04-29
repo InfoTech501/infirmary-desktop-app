@@ -16,7 +16,6 @@ import com.rocs.infirmary.desktop.data.model.report.visit.FrequentVisitReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 import java.sql.SQLOutput;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -87,18 +86,19 @@ public class InfirmarySystemApplication {
 
 
                     List<CommonAilmentsReport> reports = dashboardFacade.generateCommonAilmentReport(startDate, endDate, gradeLevel, section);
-                     if(reports  == null || reports.isEmpty()){
-                         LOGGER.info("Failed on Generating Report ");
-                     }else {
-                         displayCommonAilmentsReport(reports, startDate, endDate, gradeLevel, section);
-                         LOGGER.info("Report Successfully Generated");
-                         LOGGER.info("Program Ended Successfully");
-                     }
-
+                    if (reports == null || reports.isEmpty()) {
+                        LOGGER.info("Failed on Generating Report ");
+                    } else {
+                        displayCommonAilmentsReport(reports, startDate, endDate, gradeLevel, section);
+                        LOGGER.info("Report Successfully Generated");
+                        LOGGER.info("Program Ended Successfully");
+                    }
+                } catch (InputMismatchException e) {
+                    System.out.println("Error: Invalid input detected. Please enter valid data.");
+                    scanner.nextLine();
                 } catch (RuntimeException e) {
                     LOGGER.error("Runtime Exception Occured " + e);
                     System.out.println("Report generation failed: " + e.getMessage());
-
                 }
 
                 break;
@@ -137,24 +137,7 @@ public class InfirmarySystemApplication {
                     scanner.nextLine();
                     StudentMedicalRecordFacadeImpl studentMedicalRecord = new StudentMedicalRecordFacadeImpl();
 
-                    String LRN;
-                    while (true) {
-                        System.out.println("Search Student Medical Records using LRN: ");
-                        LRN = scanner.nextLine();
-
-                    if(LRN.length() == 12 ) {
-                        try {
-                            Long.parseLong(LRN);
-                            break;
-                        } catch (NumberFormatException e) {
-                            System.out.println("Error: The LRN must contain only 12 numeric digits.");
-                        }
-                    } else {
-                        System.out.println("Error: Please enter a valid 12-Digit LRN.");
-                        LOGGER.info("User entered invalid LRN length" );
-
-                        }
-                    }
+                    String LRN = getValidLRN(scanner, "Search Student Medical Records using LRN: ");
 
                 try{
                     Student record = studentMedicalRecord.findMedicalInformationByLRN(Long.parseLong(LRN));
@@ -188,7 +171,6 @@ public class InfirmarySystemApplication {
                 }
                 break;
             }
-
 
             case 4: {
 
@@ -306,18 +288,8 @@ public class InfirmarySystemApplication {
                 Scanner sc = new Scanner(System.in);
                 StudentMedicalRecordFacadeImpl studentMedicalRecordFacade = new StudentMedicalRecordFacadeImpl();
 
-                long lrn;
-                while (true) {
-                    System.out.print("Enter the LRN of student to delete: ");
-                    if (sc.hasNextLong()) {
-                        lrn = sc.nextLong();
-                        sc.nextLine();
-                        break;
-                    } else {
-                        System.out.println("Error: Please enter a valid 12-digit numeric LRN.");
-                        sc.nextLine();
-                    }
-                }
+                String LRN = getValidLRN(sc, "Enter the LRN of Student to Delete: ");
+                long lrn = Long.parseLong(LRN);
 
                 int confirmation;
                 while (true) {
@@ -452,6 +424,7 @@ public class InfirmarySystemApplication {
                     continue;
                 }
                 return date;
+
             } catch (ParseException e) {
                 System.err.println("Invalid date format, use yyyy-MM-dd.");
             }
@@ -486,7 +459,25 @@ public class InfirmarySystemApplication {
         return gradeLevel;
     }
 
+    public static String getValidLRN(Scanner scanner, String promptMessage) {
+        String LRN;
+        while (true) {
+            System.out.println(promptMessage);
+            LRN = scanner.nextLine().trim();
 
+            if(LRN.length() == 12 ) {
+                try {
+                    Long.parseLong(LRN);
+                    return LRN;
+                } catch (NumberFormatException e) {
+                    System.out.println("Error: The LRN must contain only 12 numeric digits.");
+                }
+            } else {
+                System.out.println("Error: Please enter a valid 12-Digit LRN.");
+                LOGGER.info("User entered invalid LRN length" );
+            }
+        }
+    }
 
 
 }
