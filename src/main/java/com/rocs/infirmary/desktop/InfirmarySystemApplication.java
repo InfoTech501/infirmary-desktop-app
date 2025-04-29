@@ -54,7 +54,11 @@ public class InfirmarySystemApplication {
             try {
                 System.out.println("Enter your choice: ");
                 choice = scanner.nextInt();
-                break;
+                if (choice >= 1 && choice <= 9){
+                    break;
+                }else {
+                    System.out.println("Invalid Choice. Please select a valid option. ");
+                }
             } catch (InputMismatchException e) {
                 System.out.println("Invalid input. Please enter a number.");
                 scanner.nextLine();
@@ -340,27 +344,16 @@ public class InfirmarySystemApplication {
                         System.out.println("This medicine " + itemName + " " + "does not exist");
                         return;
                     }
-                    System.out.println("Are you sure you want to delete this item? This action cannot be undone. ");
-                    System.out.println("1 - Confirm ");
-                    System.out.println("2 - Cancel  ");
-                    int confirmation = scanner.nextInt();
+                    String confirmationMessage = "Are you sure you want to delete this Medicine Item? \n This action cannot be undone. ";
+                    int confirmation = InfirmarySystemApplication.getUserConfirmation(scanner, confirmationMessage);
 
                     if (confirmation == 1 ) {
                         boolean success =  medicineInventoryFacade.deleteMedicineByItemName(itemName);
+                        System.out.println(success ? "Successfully Deleted" : "Failed to Delete");
 
-                        if (success) {
-                            System.out.println("Successfully Deleted");
                         } else {
-                            System.out.println("Failed to Delete");
+                            System.out.println("Cancel the deletion. ");
                         }
-
-                    } else if (confirmation == 2) {
-
-                        System.out.println("Cancel the Deletion");
-                        return;
-                    }else {
-                        System.out.println("Invalid Choice.");
-                    }
 
                 } catch (RuntimeException e) {
                     throw new RuntimeException(e);
@@ -368,8 +361,6 @@ public class InfirmarySystemApplication {
             }
             break;
 
-            default:
-                System.out.println("Invalid choice. Please select a valid option.");
         }
 
 
@@ -479,5 +470,27 @@ public class InfirmarySystemApplication {
         }
     }
 
+    public static int getUserConfirmation(Scanner scanner, String promptMessage) {
+        int confirmation = -1;
+        while (true) {
+            try {
+                System.out.println(promptMessage);
+                System.out.println("1 - Confirm");
+                System.out.println("2 - Cancel");
+
+                confirmation = scanner.nextInt();
+                scanner.nextLine();
+
+                if (confirmation == 1 || confirmation == 2) {
+                    return confirmation;
+                }else {
+                    System.out.println("Invalid Choice. Please enter 1 to CONFIRM or 2 to CANCEL. ");
+                }
+                }catch (InputMismatchException e) {
+                    System.out.println("Invalid input. Please enter a numeric value (1 or 2). ");
+                    scanner.nextLine();
+                }
+            }
+        }
 
 }
