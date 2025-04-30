@@ -248,11 +248,15 @@ public class InfirmarySystemApplication {
             }
 
             case 6: {
+                LOGGER.info(" User Access the Frequent Visit Report ");
                 MedicineInventoryFacade inventoryFacade = new MedicineInventoryFacadeImpl();
+               try{
                 List<Medicine> medicineInventoryItems = inventoryFacade.findAllMedicine();
                 if (medicineInventoryItems.isEmpty()) {
+                    LOGGER.info("Medicine Inventory List is empty.");
                     System.out.println("The list of items is empty.");
                 } else {
+                    System.out.println("Medicine Inventory Retrieval Success"+ medicineInventoryItems.size());
                     System.out.println("LIST OF ITEMS:");
                     {
                         for (Medicine medicine : medicineInventoryItems) {
@@ -262,8 +266,15 @@ public class InfirmarySystemApplication {
                                     "\nStock Level:  " + medicine.getQuantity() +
                                     "\nExpiry date:  " + medicine.getExpirationDate() + "\n");
                         }
+
                     }
+                    LOGGER.info("Retrieving View Medicine Inventory List Successfully");
+                    LOGGER.info("Program Successfully Ended");
                 }
+               }catch (RuntimeException e) {
+                   LOGGER.error(" RuntimeException " + e);
+                   System.out.println("Error retrieving medicine inventory: " + e.getMessage());
+               }
                 break;
             }
             case 7: {
