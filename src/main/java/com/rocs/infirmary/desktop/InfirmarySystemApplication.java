@@ -248,7 +248,7 @@ public class InfirmarySystemApplication {
             }
 
             case 6: {
-                LOGGER.info(" User Access the Frequent Visit Report ");
+                LOGGER.info(" User Access View Medicine Inventory List ");
                 MedicineInventoryFacade inventoryFacade = new MedicineInventoryFacadeImpl();
                try{
                 List<Medicine> medicineInventoryItems = inventoryFacade.findAllMedicine();
