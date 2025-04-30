@@ -4,6 +4,7 @@ package com.rocs.infirmary.desktop.app.facade.student.record;
 import com.rocs.infirmary.desktop.data.model.person.student.Student;
 
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -33,4 +34,6 @@ public interface StudentMedicalRecordFacade {
      */
 
     boolean deleteStudentMedicalRecordByLrn(long LRN);
+    Student updateStudentMedicalRecord(String symptoms, String temperatureReadings, Date visitDate , String treatement, long LRN  );
+
 }

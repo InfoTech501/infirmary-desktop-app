@@ -3,6 +3,7 @@ package com.rocs.infirmary.desktop.data.dao.student.record;
 
 import com.rocs.infirmary.desktop.data.model.person.student.Student;
 
+import java.util.Date;
 import java.util.List;
 
 public interface StudentMedicalRecordDao {
@@ -19,6 +20,8 @@ public interface StudentMedicalRecordDao {
      */
 
     boolean deleteStudentMedicalRecordByLrn (long LRN);
+    Student updateStudentMedicalRecord(String symptoms, String temperatureReadings, Date visitDate , String treatment, long LRN  );
+
 
 }
 

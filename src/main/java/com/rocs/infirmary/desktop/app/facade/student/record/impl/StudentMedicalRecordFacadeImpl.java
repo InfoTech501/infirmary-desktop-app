@@ -7,6 +7,7 @@ import com.rocs.infirmary.desktop.data.dao.student.record.StudentMedicalRecordDa
 import com.rocs.infirmary.desktop.data.dao.student.record.impl.StudentMedicalRecordDaoImpl;
 
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -39,6 +40,10 @@ public class StudentMedicalRecordFacadeImpl implements StudentMedicalRecordFacad
    @Override
    public boolean deleteStudentMedicalRecordByLrn(long LRN) {
         return this.studentMedRecord.deleteStudentMedicalRecordByLrn(LRN);
+    }
+    @Override
+    public Student updateStudentMedicalRecord(String symptoms, String temperatureReadings, Date visitDate, String treatement, long LRN) {
+        return this.studentMedRecord.updateStudentMedicalRecord(symptoms,temperatureReadings,visitDate,treatement, LRN);
     }
 }
 

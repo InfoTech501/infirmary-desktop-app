@@ -4,6 +4,7 @@ import com.rocs.infirmary.desktop.app.facade.dashboard.DashboardFacade;
 import com.rocs.infirmary.desktop.app.facade.dashboard.impl.DashboardFacadeImpl;
 import com.rocs.infirmary.desktop.app.facade.medicine.inventory.MedicineInventoryFacade;
 import com.rocs.infirmary.desktop.app.facade.medicine.inventory.impl.MedicineInventoryFacadeImpl;
+import com.rocs.infirmary.desktop.app.facade.student.record.StudentMedicalRecordFacade;
 import com.rocs.infirmary.desktop.app.facade.student.record.impl.StudentMedicalRecordFacadeImpl;
 import com.rocs.infirmary.desktop.data.model.inventory.medicine.Medicine;
 import com.rocs.infirmary.desktop.data.model.person.Person;
@@ -45,8 +46,7 @@ public class InfirmarySystemApplication {
         System.out.println("7 - Read Student Medical Record");
         System.out.println("8 - Delete Student Medical Record");
         System.out.println("9 - Delete Medicine");
-
-
+        System.out.println("10 - Update Student Medical Record");
 
 
         int choice = 0;
@@ -54,9 +54,9 @@ public class InfirmarySystemApplication {
             try {
                 System.out.println("Enter your choice: ");
                 choice = scanner.nextInt();
-                if (choice >= 1 && choice <= 9){
+                if (choice >= 1 && choice <= 10) {
                     break;
-                }else {
+                } else {
                     System.out.println("Invalid Choice. Please select a valid option. ");
                 }
             } catch (InputMismatchException e) {
@@ -138,14 +138,14 @@ public class InfirmarySystemApplication {
             }
 
             case 3: {
-                    scanner.nextLine();
-                    StudentMedicalRecordFacadeImpl studentMedicalRecord = new StudentMedicalRecordFacadeImpl();
+                scanner.nextLine();
+                StudentMedicalRecordFacadeImpl studentMedicalRecord = new StudentMedicalRecordFacadeImpl();
 
-                    String LRN = getValidLRN(scanner, "Search Student Medical Records using LRN: ");
+                String LRN = getValidLRN(scanner, "Search Student Medical Records using LRN: ");
 
-                try{
+                try {
                     Student record = studentMedicalRecord.findMedicalInformationByLRN(Long.parseLong(LRN));
-                    if (record == null ) {
+                    if (record == null) {
                         LOGGER.info("No student record found ");
                         System.out.println("Student Not Found");
                     } else {
@@ -164,11 +164,11 @@ public class InfirmarySystemApplication {
 
                     }
                 } catch (InputMismatchException e) {
-                    LOGGER.error("Input Mismatch Exception " +  e);
+                    LOGGER.error("Input Mismatch Exception " + e);
                     System.out.println("Error: the LRN you entered is not valid. Please enter only numbers.");
                     scanner.nextLine();
 
-                }catch (RuntimeException e) {
+                } catch (RuntimeException e) {
                     LOGGER.error("Runtime Exception " + e);
                     System.out.println("No Student Found!");
 
@@ -206,7 +206,7 @@ public class InfirmarySystemApplication {
                     List<FrequentVisitReport> reports = dashboardFacade.generateFrequentVisitReport(frequentVisitStartDate, frequentVisitEndDate, frequentVisitGradeLevel);
 
                     if (reports == null || reports.isEmpty()) {
-                        LOGGER.info("No data found for the selected criteria);" );
+                        LOGGER.info("No data found for the selected criteria);");
                         System.out.println("No data available for the selected criteria.");
                     } else {
                         System.out.println("Frequent Visit Report");
@@ -336,33 +336,74 @@ public class InfirmarySystemApplication {
                     System.out.println("Delete Medicine By Item Name : ");
                     String itemName = scanner.nextLine().trim();
 
-                    if(itemName.isEmpty()) {
+                    if (itemName.isEmpty()) {
                         System.out.println("No data Detected");
                         return;
 
-                    } else if (!medicineInventoryFacade.IsAvailable(itemName)){
+                    } else if (!medicineInventoryFacade.IsAvailable(itemName)) {
                         System.out.println("This medicine " + itemName + " " + "does not exist");
                         return;
                     }
                     String confirmationMessage = "Are you sure you want to delete this Medicine Item? \n This action cannot be undone. ";
                     int confirmation = InfirmarySystemApplication.getUserConfirmation(scanner, confirmationMessage);
 
-                    if (confirmation == 1 ) {
-                        boolean success =  medicineInventoryFacade.deleteMedicineByItemName(itemName);
+                    if (confirmation == 1) {
+                        boolean success = medicineInventoryFacade.deleteMedicineByItemName(itemName);
                         System.out.println(success ? "Successfully Deleted" : "Failed to Delete");
 
-                        } else {
-                            System.out.println("Cancel the deletion. ");
-                        }
+                    } else {
+                        System.out.println("Cancel the deletion. ");
+                    }
 
                 } catch (RuntimeException e) {
                     throw new RuntimeException(e);
                 }
+                break;
+            }
+
+            case 10: {
+
+                scanner.nextLine();
+                StudentMedicalRecordFacade studentMedicalRecordFacade = new StudentMedicalRecordFacadeImpl();
+                try {
+
+                    String LRN = getValidLRN(scanner,"Enter a Student LRN to update : ");
+
+                    Student student = studentMedicalRecordFacade.findMedicalInformationByLRN(Long.parseLong((LRN)));
+
+                    if (student == null) {
+                        System.out.println("No student found.");
+                        return;
+                    }
+                    System.out.println(" ");
+                    System.out.println("Symptoms (Enter to skip): ");
+                    String symptom = scanner.nextLine();
+
+                    System.out.println("Temperature Readings (Enter to skip): ");
+                    String temperatureReadings = scanner.nextLine();
+
+
+                    Date visitDate = getValidInputDate(scanner, dateFormat,"Visit Date ( yyyy-MM-dd ):");
+
+                    System.out.println("Treatment (Enter to skip) : ");
+                    String treatment = scanner.nextLine();
+
+                    Student success = studentMedicalRecordFacade.updateStudentMedicalRecord(symptom, temperatureReadings, visitDate, treatment, Long.parseLong((LRN)));
+
+                    if (success != null) {
+                        System.out.println("Successfully Updated");
+
+
+                    } else {
+                        System.out.println("Failed to Update ");
+                    }
+
+                } catch (RuntimeException e) {
+                    System.out.println("Runtime Exception Occurred:"+ e.getMessage());
+                }
             }
             break;
-
         }
-
 
     }
 

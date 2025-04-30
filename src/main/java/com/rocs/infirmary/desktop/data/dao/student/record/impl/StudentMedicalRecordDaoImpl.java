@@ -154,6 +154,59 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
 
     }
 
+
+
+    @Override
+    public Student updateStudentMedicalRecord(String symptoms, String temperatureReadings, java.util.Date  visitDate, String treatment, long LRN) {
+        QueryConstants queryConstants = new QueryConstants();
+        Student student = getStudent(LRN);
+
+        try (Connection con = ConnectionHelper.getConnection()) {
+
+            if (symptoms != null && !symptoms.trim().isEmpty()) {
+                String updateSymptomQuery = queryConstants.updateStudentSymptoms();
+                try (PreparedStatement stmt = con.prepareStatement(updateSymptomQuery)) {
+                    stmt.setString(1, symptoms);
+                    stmt.setLong(2, LRN);
+                    stmt.executeUpdate();
+                }
+            }
+
+            if (temperatureReadings != null && !temperatureReadings.trim().isEmpty()) {
+                String updateTemperatureReadingsQuery = queryConstants.updateStudentTemperatureReadings();
+                try (PreparedStatement stmt = con.prepareStatement(updateTemperatureReadingsQuery)) {
+                    stmt.setString(1, temperatureReadings);
+                    stmt.setLong(2, LRN);
+                    stmt.executeUpdate();
+                }
+            }
+
+            if (visitDate != null ){
+                String updateVisitDateQuery = queryConstants.updateStudentVisitDate();
+                try (PreparedStatement stmt = con.prepareStatement(updateVisitDateQuery)) {
+                    stmt.setTimestamp(1, new java.sql.Timestamp(visitDate.getTime()));
+                    stmt.setLong(2, LRN);
+                    stmt.executeUpdate();
+                }
+            }
+
+            if (treatment != null && !treatment.trim().isEmpty()) {
+                String updateTreatmentQuery = queryConstants.updateStudentTreatment();
+                try (PreparedStatement stmt = con.prepareStatement(updateTreatmentQuery)) {
+                    stmt.setString(1, treatment);
+                    stmt.setLong(2, LRN);
+                    stmt.executeUpdate();
+                }
+            }
+
+            return student;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
     private static Student getStudent(long LRN) {
         Student studentMedicalRecord = null;
         LOGGER.info("Retrieving Student information");
