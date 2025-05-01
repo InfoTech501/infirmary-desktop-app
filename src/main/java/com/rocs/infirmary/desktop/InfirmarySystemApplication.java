@@ -49,6 +49,7 @@ public class InfirmarySystemApplication {
         System.out.println("10 - Update Student Medical Record");
 
 
+
         int choice = 0;
         while (true) {
             try {

@@ -165,6 +165,7 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
 
         try (Connection con = ConnectionHelper.getConnection()) {
 
+
             if (symptoms != null && !symptoms.trim().isEmpty()) {
                 String updateSymptomQuery = queryConstants.updateStudentSymptoms();
                 try (PreparedStatement stmt = con.prepareStatement(updateSymptomQuery)) {
@@ -176,6 +177,9 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
                     int rows = stmt.executeUpdate();
                     LOGGER.info("Symptoms updated. Rows affected: " + rows);
                     updateSuccessful = rows > 0;
+                }catch (SQLException e ) {
+                    LOGGER.info("SQL Exception Occurred on Symptoms " + symptoms );
+                    System.out.println("SQL Exception Occurred when updating Symptom : " + e.getMessage());
                 }
             }
 
@@ -190,6 +194,9 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
                     int rows = stmt.executeUpdate();
                     LOGGER.info("Temperature readings updated. Rows affected: " + rows);
                     updateSuccessful = rows > 0;
+                }catch (SQLException e ) {
+                    LOGGER.info("SQL Exception Occurred on Temperature Readings" + e.getMessage());
+                    System.out.println("SQL Exception Occurred when Updating Temperature Readings : " + e.getMessage());
                 }
             }
 
@@ -204,7 +211,9 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
                     int rows = stmt.executeUpdate();
                     LOGGER.info("Visit date updated. Rows affected: " + rows);
                     updateSuccessful = rows > 0;
-                }
+                }catch (SQLException e ) {
+                LOGGER.info("SQL Exception Occurred on Visit Date "+ e.getMessage());
+                System.out.println("SQL Exception Occurred when Updating Visit Date : " + e.getMessage());}
             }
 
             if (treatment != null && !treatment.trim().isEmpty()) {
@@ -217,14 +226,17 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
                     LOGGER.info("Parameters - treatment: " + treatment + ", LRN: " + LRN);
                     int rows = stmt.executeUpdate();
                     updateSuccessful = rows > 0;
+                } catch (SQLException e) {
+                    LOGGER.info("SQL Exception Occurred on Treatment " + e.getMessage());
+                    System.out.println("SQL Exception Occurred when Updating Treatment : " + e.getMessage());
                 }
             }
 
             LOGGER.info("Update Student Medical Record Completed for LRN: " + LRN);
             return updateSuccessful;
 
-        } catch (SQLException e) {
-            LOGGER.error("SQLException Occured" + e.getMessage());
+        } catch ( SQLException e) {
+            LOGGER.error("SQL Exception Occurred" + e.getMessage());
             throw new RuntimeException(e);
         }
     }
