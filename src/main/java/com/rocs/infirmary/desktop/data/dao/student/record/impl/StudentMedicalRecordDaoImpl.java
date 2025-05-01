@@ -13,6 +13,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -157,54 +158,77 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
 
 
     @Override
-    public Student updateStudentMedicalRecord(String symptoms, String temperatureReadings, java.util.Date  visitDate, String treatment, long LRN) {
+    public boolean updateStudentMedicalRecord(String symptoms, String temperatureReadings, Date visitDate, String treatment, long LRN) {
+        LOGGER.info("Update Student Medical Record Started for LRN: " + LRN);
         QueryConstants queryConstants = new QueryConstants();
-        Student student = getStudent(LRN);
+        boolean updateSuccessful = false;
 
         try (Connection con = ConnectionHelper.getConnection()) {
 
             if (symptoms != null && !symptoms.trim().isEmpty()) {
                 String updateSymptomQuery = queryConstants.updateStudentSymptoms();
                 try (PreparedStatement stmt = con.prepareStatement(updateSymptomQuery)) {
+                    LOGGER.info("Executing update for symptoms...");
+                    LOGGER.info("Query: " + updateSymptomQuery);
                     stmt.setString(1, symptoms);
                     stmt.setLong(2, LRN);
-                    stmt.executeUpdate();
+                    LOGGER.info("Symptoms: " + symptoms + ", LRN: " + LRN);
+                    int rows = stmt.executeUpdate();
+                    LOGGER.info("Symptoms updated. Rows affected: " + rows);
+                    updateSuccessful = rows > 0;
                 }
             }
 
             if (temperatureReadings != null && !temperatureReadings.trim().isEmpty()) {
                 String updateTemperatureReadingsQuery = queryConstants.updateStudentTemperatureReadings();
                 try (PreparedStatement stmt = con.prepareStatement(updateTemperatureReadingsQuery)) {
+                    LOGGER.info("Executing update for temperature readings...");
+                    LOGGER.info("Query: " + updateTemperatureReadingsQuery);
                     stmt.setString(1, temperatureReadings);
                     stmt.setLong(2, LRN);
-                    stmt.executeUpdate();
+                    LOGGER.info("TemperatureReadings: " + temperatureReadings + ", LRN: " + LRN);
+                    int rows = stmt.executeUpdate();
+                    LOGGER.info("Temperature readings updated. Rows affected: " + rows);
+                    updateSuccessful = rows > 0;
                 }
             }
 
-            if (visitDate != null ){
+            if (visitDate != null) {
                 String updateVisitDateQuery = queryConstants.updateStudentVisitDate();
                 try (PreparedStatement stmt = con.prepareStatement(updateVisitDateQuery)) {
+                    LOGGER.info("Executing update for visit date...");
+                    LOGGER.info("Query: " + updateVisitDateQuery);
                     stmt.setTimestamp(1, new java.sql.Timestamp(visitDate.getTime()));
                     stmt.setLong(2, LRN);
-                    stmt.executeUpdate();
+                    LOGGER.info("Parameters - visitDate: " + visitDate + ", LRN: " + LRN);
+                    int rows = stmt.executeUpdate();
+                    LOGGER.info("Visit date updated. Rows affected: " + rows);
+                    updateSuccessful = rows > 0;
                 }
             }
 
             if (treatment != null && !treatment.trim().isEmpty()) {
                 String updateTreatmentQuery = queryConstants.updateStudentTreatment();
                 try (PreparedStatement stmt = con.prepareStatement(updateTreatmentQuery)) {
+                    LOGGER.info("Executing update for treatment");
+                    LOGGER.info("Query: " + updateTreatmentQuery);
                     stmt.setString(1, treatment);
                     stmt.setLong(2, LRN);
-                    stmt.executeUpdate();
+                    LOGGER.info("Parameters - treatment: " + treatment + ", LRN: " + LRN);
+                    int rows = stmt.executeUpdate();
+                    updateSuccessful = rows > 0;
                 }
             }
 
-            return student;
+            LOGGER.info("Update Student Medical Record Completed for LRN: " + LRN);
+            return updateSuccessful;
 
         } catch (SQLException e) {
+            LOGGER.error("SQLException Occured" + e.getMessage());
             throw new RuntimeException(e);
         }
     }
+
 
 
     private static Student getStudent(long LRN) {

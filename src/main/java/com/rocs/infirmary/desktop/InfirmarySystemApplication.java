@@ -388,11 +388,10 @@ public class InfirmarySystemApplication {
                     System.out.println("Treatment (Enter to skip) : ");
                     String treatment = scanner.nextLine();
 
-                    Student success = studentMedicalRecordFacade.updateStudentMedicalRecord(symptom, temperatureReadings, visitDate, treatment, Long.parseLong((LRN)));
+                    boolean success = studentMedicalRecordFacade.updateStudentMedicalRecord(symptom, temperatureReadings, visitDate, treatment, Long.parseLong((LRN)));
 
-                    if (success != null) {
+                    if (success) {
                         System.out.println("Successfully Updated");
-
 
                     } else {
                         System.out.println("Failed to Update ");
