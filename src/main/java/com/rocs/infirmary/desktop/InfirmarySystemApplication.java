@@ -25,11 +25,12 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.InputMismatchException;
 
+import static org.slf4j.LoggerFactory.*;
 
 
 public class InfirmarySystemApplication {
 
-    private static Logger LOGGER = LoggerFactory.getLogger(InfirmarySystemApplication.class);
+    private static Logger LOGGER = getLogger(InfirmarySystemApplication.class);
 
     public static void main(String[] args) {
 
@@ -112,6 +113,7 @@ public class InfirmarySystemApplication {
             case 2: {
 
                 try {
+                    LOGGER.info(" User Access the Medication Trend Report ");
                     scanner.nextLine();
                     System.out.println("\nWelcome to Medication Trend Report");
                     SimpleDateFormat displayFormat = new SimpleDateFormat("MMMM dd, yyyy");
@@ -120,6 +122,7 @@ public class InfirmarySystemApplication {
 
                     List<MedicationTrendReport> medicationTrendReportList = dashboardFacade.generateMedicationReport(startDate, endDate);
                     if (medicationTrendReportList == null || medicationTrendReportList.isEmpty()) {
+                        LOGGER.info("No data found for the selected criteria);");
                         System.out.println("No data available for the selected criteria.");
                         return;
                     } else {
@@ -130,9 +133,13 @@ public class InfirmarySystemApplication {
                             System.out.print("\nMedication Usage: " + report.getUsage());
                             System.out.print(" | Medicine: " + report.getMedicineName());
                             System.out.print(" | Medication Stocks: " + report.getStocks());
+
+                            LOGGER.info("Generate Medication Trend Report Successfully");
+                            LOGGER.info("Program Successfully Ended");
                         }
                     }
                 } catch (RuntimeException e) {
+                    LOGGER.error(" RuntimeException " + e);
                     System.out.println("Error generating: " + e.getMessage());
                 }
                 break;
