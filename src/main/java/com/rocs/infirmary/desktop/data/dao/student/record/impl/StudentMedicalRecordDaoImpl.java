@@ -156,7 +156,12 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
     }
 
 
-
+    /**
+     * Updates a student's medical record based on their LRN (Learner Reference Number).
+     * This method updates specific fields in the medical record, including:
+     * symptoms, temperature readings, visit date, and treatment.
+     * Only non-null and non-empty parameters are considered for update.
+     */
     @Override
     public boolean updateStudentMedicalRecord(String symptoms, String temperatureReadings, Date visitDate, String treatment, long LRN) {
         LOGGER.info("Update Student Medical Record Started for LRN: " + LRN);
