@@ -242,6 +242,7 @@ public class InfirmarySystemApplication {
 
             }
             case 5: {
+                LOGGER.info(" User Access the Check Low Stock Medicine ");
                 try {
                     List<LowStockReport> lowStockItems = dashboardFacade.findAllLowStockMedicine();
                     for (LowStockReport medicineInventory : lowStockItems) {
@@ -249,7 +250,11 @@ public class InfirmarySystemApplication {
                         System.out.println("Current Stock Level: " + medicineInventory.getQuantityAvailable());
                         System.out.println("Notification: The stock level of " + medicineInventory.getDescription() + " is low. Current stock level: " + medicineInventory.getQuantityAvailable() + ". Please reorder supplies.");
                     }
+
+                    LOGGER.info("Alerting Check Low Stock Medicine Successfully");
+                    LOGGER.info("Program Successfully Ended");
                 } catch (RuntimeException e) {
+                    LOGGER.error(" RuntimeException " + e);
                     System.out.println("Error checking low stock items: " + e.getMessage());
                 }
                 break;
