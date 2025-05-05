@@ -141,8 +141,5 @@
         <ivy:retrieve/>
     </target>
 
-    <target name="ivy-test" description="Testing ivy installetion">
-        <ivy:settings />
-    </target>
 
 </project>
