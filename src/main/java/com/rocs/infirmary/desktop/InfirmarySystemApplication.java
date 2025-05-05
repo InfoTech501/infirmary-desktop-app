@@ -30,7 +30,7 @@ import static org.slf4j.LoggerFactory.*;
 
 public class InfirmarySystemApplication {
 
-    private static Logger LOGGER = getLogger(InfirmarySystemApplication.class);
+    private static Logger LOGGER =  LoggerFactory.getLogger(InfirmarySystemApplication.class);
 
     public static void main(String[] args) {
 
