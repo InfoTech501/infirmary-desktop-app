@@ -16,7 +16,22 @@ public interface MedicineInventoryFacade {
 
     List<Medicine> findAllMedicine();
 
+
+    /**
+     * This is intended to delete medicine based on its Name(ItemName).
+     *
+     * @param itemName is a unique identifier assigned to a medicine. This value is used to locate and delete the corresponding medicine.
+     * @return (true) if the medicine was successfully deleted, (false) otherwise (not found).
+     *
+     */
     boolean deleteMedicineByItemName(String itemName);
+
+    /**
+     * This is intended to check whether a specific medicine item is available in the database.
+     *
+     * @param itemName The name of the medicine item to check.
+     * @return (true) if the medicine item is available and (false) otherwise (not found).
+     */
 
     boolean IsAvailable(String itemName);
 }
