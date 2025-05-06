@@ -552,4 +552,27 @@ public class InfirmarySystemApplication {
             }
         }
 
+        public static String generateMedicineID(String itemName) {
+            try {
+                LOGGER.info("Generating Medicine Id");
+                String[] words = itemName.trim().split(" ");
+                String medicineID = "";
+
+                if (words.length == 1) {
+                    medicineID += itemName.substring(0, 2).toUpperCase();
+                } else {
+                    for (String word : words) {
+                        medicineID += Character.toUpperCase(word.charAt(0));
+                    }
+                }
+                return medicineID;
+
+            } catch (StringIndexOutOfBoundsException e ) {
+                System.out.println("No item Found ");
+                LOGGER.error("Failed to Generate Medicine ID ");
+                return itemName;
+            }
+
+        }
+
 }
