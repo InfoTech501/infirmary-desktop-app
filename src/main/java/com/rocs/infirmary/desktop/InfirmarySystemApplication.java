@@ -291,28 +291,45 @@ public class InfirmarySystemApplication {
                 break;
             }
             case 7: {
+                LOGGER.info(" User Access Read Student Medical Record ");
+                try {
 
-                StudentMedicalRecordFacadeImpl studentMedical = new StudentMedicalRecordFacadeImpl();
-                List<Student> medicalRecords = studentMedical.readAllStudentMedicalRecords();
 
-                for (Student record : medicalRecords) {
-                    System.out.println();
-                    System.out.println("Firstname             : " + record.getFirstName());
-                    System.out.println("Middlename            : " + record.getMiddleName());
-                    System.out.println("Lastname              : " + record.getLastName());
-                    System.out.println("Age                   : " + record.getAge());
-                    System.out.println("Gender                : " + record.getGender());
-                    System.out.println("Symptoms              : " + record.getSymptoms());
-                    System.out.println("Temperature Readings  : " + record.getTemperatureReadings());
-                    System.out.println("Visit Date            : " + record.getVisitDate());
-                    System.out.println("Treatment             : " + record.getTreatment());
+                    StudentMedicalRecordFacadeImpl studentMedical = new StudentMedicalRecordFacadeImpl();
+                    List<Student> medicalRecords = studentMedical.readAllStudentMedicalRecords();
+                    if (medicalRecords.isEmpty()) {
+                        LOGGER.info("Failed to Student Medical Record ");
+                        System.out.println("No record Found ");
+                        return;
+                    }
 
-                    System.out.println();
-                }
-                break;
+                    for (Student record : medicalRecords) {
+                        System.out.println();
+                        System.out.println("Firstname             : " + record.getFirstName());
+                        System.out.println("Middlename            : " + record.getMiddleName());
+                        System.out.println("Lastname              : " + record.getLastName());
+                        System.out.println("Age                   : " + record.getAge());
+                        System.out.println("Gender                : " + record.getGender());
+                        System.out.println("Symptoms              : " + record.getSymptoms());
+                        System.out.println("Temperature Readings  : " + record.getTemperatureReadings());
+                        System.out.println("Visit Date            : " + record.getVisitDate());
+                        System.out.println("Treatment             : " + record.getTreatment());
+
+                        System.out.println();
+
+                        LOGGER.info("Retrieving Read Student Medical Record Successfully");
+                        LOGGER.info("Program Successfully Ended");
+                    }
+
+                } catch (RuntimeException e) {
+                    LOGGER.error("Runtime Exception Occurred " + e.getMessage());
+                    System.out.println("Error retrieving Medical Record : " + e.getMessage());
+                    }
+                    break;
+
             }
 
-            case 8: {
+                case 8: {
                 Scanner sc = new Scanner(System.in);
                 StudentMedicalRecordFacadeImpl studentMedicalRecordFacade = new StudentMedicalRecordFacadeImpl();
 
