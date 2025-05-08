@@ -32,4 +32,6 @@ public interface MedicineInventoryDao {
 * @return (true) if the medicine item is available and (false) otherwise (not found).
 */
     boolean isAvailable(String itemName);
+
+    boolean addMedicine(Medicine medicine);
 }

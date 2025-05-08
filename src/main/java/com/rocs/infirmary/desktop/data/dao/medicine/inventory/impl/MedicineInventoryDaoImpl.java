@@ -124,6 +124,26 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
         return false;
     }
 
+    @Override
+    public boolean addMedicine(Medicine medicine) {
+        QueryConstants queryConstants = new QueryConstants();
+        String sql = queryConstants.addMedicine();
+
+        try (Connection con = ConnectionHelper.getConnection();
+             PreparedStatement stmt = con.prepareStatement(sql)) {
+
+            stmt.setString(1, medicine.getMedicineId());
+            stmt.setString(2, medicine.getItemName());
+            stmt.setString(3, medicine.getDescription());
+            stmt.setTimestamp(4, medicine.getExpirationDate());
+
+            return stmt.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            System.out.println("Error inserting medicine: " + e.getMessage());
+            return false;
+        }
+    }
 }
 
 

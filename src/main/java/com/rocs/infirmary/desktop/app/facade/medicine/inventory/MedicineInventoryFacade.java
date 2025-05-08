@@ -34,4 +34,6 @@ public interface MedicineInventoryFacade {
      */
 
     boolean IsAvailable(String itemName);
+
+    boolean addMedicine(Medicine newMedicine);
 }

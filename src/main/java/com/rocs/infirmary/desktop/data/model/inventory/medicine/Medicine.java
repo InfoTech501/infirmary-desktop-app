@@ -43,5 +43,7 @@ public class Medicine extends Inventory{
         this.expirationDate = expirationDate;
     }
 
+
+
 }
 

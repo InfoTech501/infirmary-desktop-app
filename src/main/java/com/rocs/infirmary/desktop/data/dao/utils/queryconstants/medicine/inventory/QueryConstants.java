@@ -11,10 +11,14 @@ public class QueryConstants {
 
     private final String FILTER_MEDICINE_DELETED_QUERY = "SELECT * FROM MEDICINE WHERE IS_AVAILABLE = 1 AND ITEM_NAME = ?";
 
+    private final String ADD_MEDICINE_TO_INVENTORY = "INSERT INTO MEDICINE (MEDICINE_ID, ITEM_NAME, DESCRIPTION, EXPIRATION_DATE) VALUES (?, ?, ?, ?)";
+
     public String getDeleteMedicineQuery() {return DELETE_MEDICINE_BY_ITEM_NAME_QUERY;}
 
     public String getLIST_ALL_MEDICINE_INVENTORY_QUERY(){return  LIST_ALL_MEDICINE_INVENTORY_QUERY;}
 
     public String filterDeletedMedicine() {return FILTER_MEDICINE_DELETED_QUERY;}
+
+    public String addMedicine() {return ADD_MEDICINE_TO_INVENTORY;}
 
 }
