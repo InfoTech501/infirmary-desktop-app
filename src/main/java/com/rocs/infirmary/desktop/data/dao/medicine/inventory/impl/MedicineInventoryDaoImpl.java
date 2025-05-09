@@ -135,14 +135,17 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
             stmt.setString(1, medicine.getMedicineId());
             stmt.setString(2, medicine.getItemName());
             stmt.setString(3, medicine.getDescription());
-            stmt.setTimestamp(4, medicine.getExpirationDate());
+            stmt.setTimestamp(4, new java.sql.Timestamp(medicine.getExpirationDate().getTime()));
+            stmt.setInt(5, 1);
+            int affectedRow = stmt.executeUpdate();
 
-            return stmt.executeUpdate() > 0;
+            return affectedRow > 0;
 
         } catch (SQLException e) {
-            System.out.println("Error inserting medicine: " + e.getMessage());
-            return false;
+            System.out.println("Medicine ID already exist");
         }
+
+        return false;
     }
 }
 

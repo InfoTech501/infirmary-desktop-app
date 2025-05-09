@@ -436,15 +436,25 @@ public class InfirmarySystemApplication {
 
                     System.out.println("Enter Medicine Name: ");
                     String itemName = scanner.nextLine();
-                    String medicineId = generateMedicineId(itemName);
-                    System.out.println("Generated Medicine ID: " + medicineId);
 
                     System.out.println("Enter Medicine Description: ");
                     String itemDescription = scanner.nextLine();
 
-                    Date expirationDate = getValidFutureDate(scanner, dateFormat, "Enter Expiration Date (yyyy-MM-dd): ");
+                    Date expirationDate = getValidInputDate(scanner, dateFormat, "Enter Expiration Date (yyyy-MM-dd): ");
+
+                    String[] words = itemName.trim().split(" ");
+                    String medicineID = "";
+
+                    if (words.length == 1) {
+                            medicineID += itemName.substring(0, 2).toUpperCase();
+                    } else {
+                        for (String word : words) {
+                                medicineID += Character.toUpperCase(word.charAt(0));
+                        }
+                    }
 
                     Medicine newMedicine = new Medicine();
+                    newMedicine.setMedicineId(medicineID);
                     newMedicine.setItemName(itemName);
                     newMedicine.setDescription(itemDescription);
                     newMedicine.setExpirationDate(new java.sql.Timestamp(expirationDate.getTime()));
@@ -511,25 +521,6 @@ public class InfirmarySystemApplication {
 
                 if (date.after(new Date())) {
                     System.err.println("Please enter a present or past date.");
-                    continue;
-                }
-                return date;
-
-            } catch (ParseException e) {
-                System.err.println("Invalid date format, use yyyy-MM-dd.");
-            }
-        }
-    }
-
-    private static Date getValidFutureDate(Scanner scanner, SimpleDateFormat dateFormat, String prompt) {
-        while (true) {
-            try {
-                System.out.print(prompt);
-                String input = scanner.nextLine().trim();
-                Date date = dateFormat.parse(input);
-
-                if (date.before(new Date())) {
-                    System.err.println("Please enter a future date.");
                     continue;
                 }
                 return date;
@@ -610,23 +601,5 @@ public class InfirmarySystemApplication {
                 }
             }
         }
-    public static String generateMedicineId(String itemName) {
-        try {
-            String[] words = itemName.trim().split(" ");
-            String medicineID = "";
 
-            if (words.length == 1) {
-                medicineID += itemName.substring(0, 2).toUpperCase();
-            } else {
-                for (String word : words) {
-                    medicineID += Character.toUpperCase(word.charAt(0));
-                }
-            }
-            return medicineID;
-
-        } catch (StringIndexOutOfBoundsException e) {
-            System.out.println("No item Found");
-            return itemName;
-        }
-    }
 }
