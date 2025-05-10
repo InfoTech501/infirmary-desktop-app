@@ -48,6 +48,7 @@ public class InfirmarySystemApplication {
         System.out.println("8 - Delete Student Medical Record");
         System.out.println("9 - Delete Medicine");
         System.out.println("10 - Update Student Medical Record");
+        System.out.println("11 - Add New Medicine");
 
 
 
@@ -56,7 +57,7 @@ public class InfirmarySystemApplication {
             try {
                 System.out.println("Enter your choice: ");
                 choice = scanner.nextInt();
-                if (choice >= 1 && choice <= 10) {
+                if (choice >= 1 && choice <= 11) {
                     break;
                 } else {
                     System.out.println("Invalid Choice. Please select a valid option. ");
@@ -408,7 +409,7 @@ public class InfirmarySystemApplication {
                 StudentMedicalRecordFacade studentMedicalRecordFacade = new StudentMedicalRecordFacadeImpl();
                 try {
 
-                    String LRN = getValidLRN(scanner,"Enter a Student LRN to update : ");
+                    String LRN = getValidLRN(scanner, "Enter a Student LRN to update : ");
 
                     Student student = studentMedicalRecordFacade.findMedicalInformationByLRN(Long.parseLong((LRN)));
 
@@ -424,7 +425,7 @@ public class InfirmarySystemApplication {
                     String temperatureReadings = scanner.nextLine();
 
 
-                    Date visitDate = getValidInputDate(scanner, dateFormat,"Visit Date ( yyyy-MM-dd ):");
+                    Date visitDate = getValidInputDate(scanner, dateFormat, "Visit Date ( yyyy-MM-dd ):");
 
                     System.out.println("Treatment (Enter to skip) : ");
                     String treatment = scanner.nextLine();
@@ -439,13 +440,57 @@ public class InfirmarySystemApplication {
                     }
 
                 } catch (RuntimeException e) {
-                    System.out.println("Runtime Exception Occurred:"+ e.getMessage());
+                    System.out.println("Runtime Exception Occurred:" + e.getMessage());
                 }
-            }
             break;
         }
+            case 11: {
+                scanner.nextLine();
+                MedicineInventoryFacade medicineInventoryFacade = new MedicineInventoryFacadeImpl();
 
+                try {
+                    System.out.println("Add New Medicine");
+
+                    System.out.println("Enter Medicine Name: ");
+                    String itemName = scanner.nextLine();
+
+                    System.out.println("Enter Medicine Description: ");
+                    String itemDescription = scanner.nextLine();
+
+                    Date expirationDate = getValidInputDate(scanner, dateFormat, "Enter Expiration Date (yyyy-MM-dd): ");
+
+                    String[] words = itemName.trim().split(" ");
+                    String medicineID = "";
+
+                    if (words.length == 1) {
+                            medicineID += itemName.substring(0, 2).toUpperCase();
+                    } else {
+                        for (String word : words) {
+                                medicineID += Character.toUpperCase(word.charAt(0));
+                        }
+                    }
+
+                    Medicine newMedicine = new Medicine();
+                    newMedicine.setMedicineId(medicineID);
+                    newMedicine.setItemName(itemName);
+                    newMedicine.setDescription(itemDescription);
+                    newMedicine.setExpirationDate(new java.sql.Timestamp(expirationDate.getTime()));
+
+                    boolean success = medicineInventoryFacade.addMedicine(newMedicine);
+
+                    if (success) {
+                        System.out.println("Medicine added successfully.");
+                    } else {
+                        System.out.println("Failed to add medicine.");
+                    }
+                } catch (Exception e) {
+                    System.out.println("Error occurred while adding medicine: " + e.getMessage());
+                }
+                break;
+            }
     }
+
+}
 
     private static void displayCommonAilmentsReport(List<CommonAilmentsReport> reports, Date startDate, Date endDate, String gradeLevel, String section) {
         if (reports == null || reports.isEmpty()) {
