@@ -51,9 +51,7 @@ public class InfirmarySystemApplication {
         System.out.println("9 - Delete Medicine");
         System.out.println("10 - Update Student Medical Record");
         System.out.println("11 - Add New Medicine");
-        System.out.println("11 - View Student Health Profiles");
-
-
+        System.out.println("12 - View Student Health Profiles");
 
         int choice = 0;
         while (true) {
@@ -488,9 +486,6 @@ public class InfirmarySystemApplication {
                     System.out.println("Error occurred while adding medicine: " + e.getMessage());
                 }
                 break;
-            }
-    }
-
             }case 12:{
                 try {
                     StudentHealthProfileFacade studentHealthProfileFacade = new StudentHealthProfileFacadeImpl();
