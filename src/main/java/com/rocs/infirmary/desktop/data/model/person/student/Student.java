@@ -20,7 +20,24 @@ public class Student extends Person {
     private int nurseInChargeId;
     private int setMedicalRecordId ;
     private int getMedicaRecordStatus;
+    private String gradeLevel;
+    private String studentAdviser;
 
+    public String getStudentAdviser() {
+        return studentAdviser;
+    }
+
+    public void setStudentAdviser(String studentAdviser) {
+        this.studentAdviser = studentAdviser;
+    }
+
+    public String getGradeLevel() {
+        return gradeLevel;
+    }
+
+    public void setGradeLevel(String gradeLevel) {
+        this.gradeLevel = gradeLevel;
+    }
 
     public void setStudentId(int studentId) {
         this.studentId = studentId;
