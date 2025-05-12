@@ -298,6 +298,7 @@ public class InfirmarySystemApplication {
 
                     StudentMedicalRecordFacadeImpl studentMedical = new StudentMedicalRecordFacadeImpl();
                     List<Student> medicalRecords = studentMedical.readAllStudentMedicalRecords();
+                   try{
                     if (medicalRecords.isEmpty()) {
                         LOGGER.info("Failed to Student Medical Record ");
                         System.out.println("No record Found ");
@@ -489,6 +490,7 @@ public class InfirmarySystemApplication {
                 break;
             }
     }
+
             }case 12:{
                 try {
                     StudentHealthProfileFacade studentHealthProfileFacade = new StudentHealthProfileFacadeImpl();
