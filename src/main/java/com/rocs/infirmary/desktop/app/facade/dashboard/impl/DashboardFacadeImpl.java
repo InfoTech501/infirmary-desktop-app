@@ -35,6 +35,7 @@ public class DashboardFacadeImpl implements DashboardFacade {
     public List<CommonAilmentsReport> generateCommonAilmentReport(Date startDate, Date endDate, String gradeLevel, String section) {
         logger.info("Entering generateCommonAilmentReport with startDate: {}, endDate: {}, gradeLevel: {}, section: {}", startDate, endDate, gradeLevel, section);
         List<CommonAilmentsReport> report = this.dashboard.getCommonAilmentReport(startDate, endDate, gradeLevel, section);
+        logger.warn(report.isEmpty() ?  "CommonAilment Report is Empty" : " Common Ailment Generated Successfully :  {}", report );
         logger.info("Exiting generateCommonAilmentReport with {} records found.", report.size());
         return report;
     }
@@ -43,6 +44,7 @@ public class DashboardFacadeImpl implements DashboardFacade {
     public List<FrequentVisitReport> generateFrequentVisitReport(Date startDate, Date endDate, String gradeLevel) {
         logger.info("Entering generateFrequentVisitReport with startDate: {}, endDate: {}, gradeLevel: {}", startDate, endDate, gradeLevel);
         List<FrequentVisitReport> frequentVisitReportList = this.dashboard.getFrequentVisitReports(gradeLevel, startDate, endDate);
+        logger.warn(frequentVisitReportList.isEmpty() ? "Frequent Visit Report is Empty" : " Frequent Visit Report {}", frequentVisitReportList);
         logger.info("Exiting generateFrequentVisitReport with {} records found.", frequentVisitReportList.size());
         return frequentVisitReportList;
     }
@@ -51,6 +53,7 @@ public class DashboardFacadeImpl implements DashboardFacade {
     public List<MedicationTrendReport> generateMedicationReport(Date startDate, Date endDate) {
         logger.info("Entering generateMedicationReport with startDate: {}, endDate: {}", startDate, endDate);
         List<MedicationTrendReport> medicationTrendReportList = dashboard.getMedicationTrendReport(startDate, endDate);
+        logger.warn(medicationTrendReportList.isEmpty() ? "MedicationTrend Report is Empty  " : " MedicationTrend Report Generated Successfully {}",medicationTrendReportList);
         logger.info("Exiting generateMedicationReport with {} records found.", medicationTrendReportList.size());
         return medicationTrendReportList;
     }

@@ -26,9 +26,9 @@ public class MedicineInventoryFacadeImpl implements MedicineInventoryFacade {
     }
     @Override
     public boolean deleteMedicineByItemName(String itemName) {
-        LOGGER.warn("Entering deleteMedicineByItemName with itemName: {}", itemName);
+        LOGGER.info("Entering deleteMedicineByItemName with itemName: {}", itemName);
         boolean isDeleted = medicineInventoryDao.deleteMedicineByItemName(itemName);
-        LOGGER.warn("Exiting deleteMedicineByItemName with result: {}", isDeleted);
+        LOGGER.warn("Exiting deleteMedicineByItemName : This action cannot be undone Medicine: {}: ", itemName);
         return isDeleted;
     }
 
