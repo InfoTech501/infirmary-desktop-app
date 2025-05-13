@@ -514,6 +514,12 @@ public class InfirmarySystemApplication {
                                 System.out.println("Student Health Profile");
                                 for (Student student:studentListProfile){
                                     System.out.println("Name          : " + student.getFirstName()+" "+student.getLastName());
+                                    System.out.println("Contact info.");
+                                    System.out.println("Contact Number     :"+student.getContactNumber());
+                                    System.out.println("Email Address      :"+student.getEmail());
+                                    System.out.println("Address            :"+student.getAddress());
+                                    System.out.println();
+                                    System.out.println("Recent Clinic Visit");
                                     System.out.println("Symptoms           : " + student.getSymptoms());
                                     System.out.println("Temperature        : " + student.getTemperatureReadings());
                                     System.out.println("Treatment          : " + student.getTreatment());

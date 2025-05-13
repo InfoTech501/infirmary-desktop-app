@@ -52,7 +52,7 @@ public class QueryConstants {
             "JOIN SECTION ON student.SECTION_SECTION_ID = section.SECTION_ID\n" +
             "JOIN Person nurse ON mr.nurse_in_charge_id = nurse.id\n" +
             "LEFT JOIN PERSON adviser ON section.ADVISER_ID = adviser.ID";
-    private final String SELECT_STUDENT_HEALTH_PROFILE_BY_LRN = "SELECT p.first_name, p.middle_name,p.last_name,mr.symptoms,mr.temperature_readings,visit_date,nurse.first_name as NURSE_IN_CHARGE,mr.treatment\n" +
+    private final String SELECT_STUDENT_HEALTH_PROFILE_BY_LRN = "SELECT p.first_name, p.middle_name,p.last_name,p.contact_number,p.email,p.address,mr.symptoms,mr.temperature_readings,visit_date,nurse.first_name as NURSE_IN_CHARGE,mr.treatment\n" +
             "FROM MEDICAL_RECORD mr\n" +
             "JOIN PERSON p ON mr.STUDENT_ID = p.ID\n" +
             "JOIN STUDENT ON mr.STUDENT_ID = student.ID\n" +
