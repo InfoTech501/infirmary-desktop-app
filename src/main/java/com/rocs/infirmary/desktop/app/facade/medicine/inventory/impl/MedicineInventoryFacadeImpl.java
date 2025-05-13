@@ -15,34 +15,38 @@ import java.util.List;
 public class MedicineInventoryFacadeImpl implements MedicineInventoryFacade {
 
     private MedicineInventoryDao medicineInventoryDao = new MedicineInventoryDaoImpl();
-    private static final Logger logger = LoggerFactory.getLogger(MedicineInventoryFacadeImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MedicineInventoryFacadeImpl.class);
 
     @Override
     public List<Medicine> findAllMedicine() {
-        logger.info("Entering findAllMedicine");
+        LOGGER.info("Entering findAllMedicine");
         List<Medicine> medicines = this.medicineInventoryDao.getAllMedicine();
-        logger.info("Exiting findAllMedicine with {} medicines found.", medicines.size());
+        LOGGER.info("Exiting findAllMedicine with {} medicines found.", medicines.size());
         return medicines;
     }
     @Override
     public boolean deleteMedicineByItemName(String itemName) {
-        logger.warn("Entering deleteMedicineByItemName with itemName: {}", itemName);
+        LOGGER.warn("Entering deleteMedicineByItemName with itemName: {}", itemName);
         boolean isDeleted = medicineInventoryDao.deleteMedicineByItemName(itemName);
-        logger.warn("Exiting deleteMedicineByItemName with result: {}", isDeleted);
+        LOGGER.warn("Exiting deleteMedicineByItemName with result: {}", isDeleted);
         return isDeleted;
     }
 
     @Override
     public boolean IsAvailable(String itemName) {
-        logger.debug("Entering IsAvailable with itemName: {}", itemName);
+        LOGGER.debug("Entering IsAvailable with itemName: {}", itemName);
         boolean available = medicineInventoryDao.isAvailable(itemName);
-        logger.debug("Exiting IsAvailable with result: {}", available);
+        LOGGER.debug("Exiting IsAvailable with result: {}", available);
         return available;
     }
 
     @Override
     public boolean addMedicine(Medicine medicine) {
-        return medicineInventoryDao.addMedicine(medicine);
+        LOGGER.info("Accessing Add Medicine ");
+        boolean addedMedicine = medicineInventoryDao.addMedicine(medicine);
+        LOGGER.info("Exiting Add Medicine with Result :  {} ", addedMedicine );
+        return addedMedicine;
+
     }
 
 }

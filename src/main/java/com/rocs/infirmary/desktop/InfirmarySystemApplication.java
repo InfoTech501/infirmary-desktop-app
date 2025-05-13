@@ -509,7 +509,7 @@ public class InfirmarySystemApplication {
                             List<Student>studentListProfile = studentHealthProfileFacade.getStudentHealthProfileByLRN(LRN);
                             if (studentListProfile == null) {
                                 System.out.println("No student Profile found.");
-                                return;
+                                return; 
                             }else{
                                 System.out.println("Student Health Profile");
                                 for (Student student:studentListProfile){
