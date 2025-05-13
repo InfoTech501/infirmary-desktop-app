@@ -22,6 +22,15 @@ public class Student extends Person {
     private int getMedicaRecordStatus;
     private String gradeLevel;
     private String studentAdviser;
+    private String nurseInCharge;
+
+    public String getNurseInCharge() {
+        return nurseInCharge;
+    }
+
+    public void setNurseInCharge(String nurseInCharge) {
+        this.nurseInCharge = nurseInCharge;
+    }
 
     public String getStudentAdviser() {
         return studentAdviser;

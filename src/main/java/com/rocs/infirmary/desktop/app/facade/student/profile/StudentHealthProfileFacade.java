@@ -6,5 +6,6 @@ import java.util.List;
 
 public interface StudentHealthProfileFacade {
     List<Student> getAllStudentHealthProfile();
+    List<Student> getStudentHealthProfileByLRN(Long LRN);
 
 }

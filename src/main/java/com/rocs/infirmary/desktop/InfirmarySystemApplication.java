@@ -490,16 +490,42 @@ public class InfirmarySystemApplication {
                 try {
                     StudentHealthProfileFacade studentHealthProfileFacade = new StudentHealthProfileFacadeImpl();
                     List<Student>studentList = studentHealthProfileFacade.getAllStudentHealthProfile();
-                    System.out.println("Student Health Profiles");
-                    for(Student student:studentList){
-                        System.out.println("LRN               :"+student.getLrn());
-                        System.out.println("Fist Name         : "+student.getFirstName());
-                        System.out.println("Middle Name       : "+student.getMiddleName());
-                        System.out.println("Last Name         : "+student.getLastName());
-                        System.out.println("Grade and section :"+student.getGradeLevel()+" "+student.getSection());
-                        System.out.println("Adviser           :"+student.getStudentAdviser());
-                        System.out.println();
+                    if (studentList == null) {
+                        System.out.println("No student found.");
+                        return;
                     }
+                    System.out.println("Student Health Profiles");
+                        for (Student student : studentList) {
+                            System.out.println("LRN                :" + student.getLrn());
+                            System.out.println("Fist Name          : " + student.getFirstName());
+                            System.out.println("Middle Name        : " + student.getMiddleName());
+                            System.out.println("Last Name          : " + student.getLastName());
+                            System.out.println("Grade and section  :" + student.getGradeLevel() + " " + student.getSection());
+                            System.out.println("Adviser            :" + student.getStudentAdviser() + "\n");
+                        }
+                        try {
+                            System.out.print("Enter lrn to view detailed health profile: ");
+                            long LRN = scanner.nextLong();
+                            List<Student>studentListProfile = studentHealthProfileFacade.getStudentHealthProfileByLRN(LRN);
+                            if (studentListProfile == null) {
+                                System.out.println("No student Profile found.");
+                                return;
+                            }else{
+                                System.out.println("Student Health Profile");
+                                for (Student student:studentListProfile){
+                                    System.out.println("Name          : " + student.getFirstName()+" "+student.getLastName());
+                                    System.out.println("Symptoms           : " + student.getSymptoms());
+                                    System.out.println("Temperature        : " + student.getTemperatureReadings());
+                                    System.out.println("Treatment          : " + student.getTreatment());
+                                    System.out.println("Visit date         : " + student.getVisitDate());
+                                    System.out.println("Nurse in Charge    : " + student.getNurseInCharge()+"\n");
+                                }
+                            }
+
+                        }catch (InputMismatchException e){
+                            System.out.println("Error: the LRN you entered is not valid. Please enter only numbers.");
+                            scanner.nextLine();
+                        }
                 }catch (NullPointerException np){
                     LOGGER.error("List containing the retrieved data is empty: {}",np.getMessage());
                 }

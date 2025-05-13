@@ -18,4 +18,10 @@ public class StudentHealthProfileFacadeImpl implements StudentHealthProfileFacad
         LOGGER.warn("getting all student health profiles might return empty");
         return studentList;
     }
+
+    @Override
+    public List<Student> getStudentHealthProfileByLRN(Long LRN) {
+        List<Student> studentListProfile = studentHealthProfileDao.findStudentHealthProfileByLrn(LRN);
+        return studentListProfile;
+    }
 }

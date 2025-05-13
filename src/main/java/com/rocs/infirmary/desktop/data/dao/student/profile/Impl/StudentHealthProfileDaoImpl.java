@@ -44,7 +44,8 @@ public class StudentHealthProfileDaoImpl implements StudentHealthProfileDao {
                         studentMedicalRecord.getLastName(),
                         studentMedicalRecord.getSection(),
                         studentMedicalRecord.getGradeLevel(),
-                        studentMedicalRecord.getStudentAdviser());
+                        studentMedicalRecord.getStudentAdviser()
+                );
 
                 studentList.add(studentMedicalRecord);
             }
@@ -55,5 +56,32 @@ public class StudentHealthProfileDaoImpl implements StudentHealthProfileDao {
         }
 
         return studentList;
+    }
+
+    @Override
+    public List<Student> findStudentHealthProfileByLrn(Long LRN) {
+        List<Student> studentListProfile = new ArrayList<>();
+        try (Connection con = ConnectionHelper.getConnection()) {
+            QueryConstants queryConstants = new QueryConstants();
+            String query = queryConstants.selectStudentHealthProfileByLrn();
+            PreparedStatement stmt = con.prepareStatement(query);
+            stmt.setLong(1,LRN);
+            ResultSet resultSet = stmt.executeQuery();
+            while (resultSet.next()){
+                Student studentMedicalRecord = new Student();
+                studentMedicalRecord.setFirstName(resultSet.getString("first_name"));
+                studentMedicalRecord.setMiddleName(resultSet.getString("middle_name"));
+                studentMedicalRecord.setLastName(resultSet.getString("last_name"));
+                studentMedicalRecord.setSymptoms(resultSet.getString("symptoms"));
+                studentMedicalRecord.setTemperatureReadings(resultSet.getString("temperature_readings"));
+                studentMedicalRecord.setTreatment(resultSet.getString("treatment"));
+                studentMedicalRecord.setVisitDate(resultSet.getTimestamp("visit_date"));
+                studentMedicalRecord.setNurseInCharge(resultSet.getString("nurse_in_charge"));
+                studentListProfile.add(studentMedicalRecord);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return studentListProfile;
     }
 }

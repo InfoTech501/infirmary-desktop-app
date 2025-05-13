@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface StudentHealthProfileDao {
     List<Student> findAllStudentHealthProfile();
+    List<Student> findStudentHealthProfileByLrn(Long LRN);
 }
