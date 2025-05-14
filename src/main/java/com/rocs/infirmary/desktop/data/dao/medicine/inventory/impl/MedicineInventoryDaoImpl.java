@@ -3,13 +3,14 @@ import com.rocs.infirmary.desktop.data.dao.medicine.inventory.MedicineInventoryD
 import com.rocs.infirmary.desktop.data.connection.ConnectionHelper;
 import com.rocs.infirmary.desktop.data.dao.utils.queryconstants.medicine.inventory.QueryConstants;
 import com.rocs.infirmary.desktop.data.model.inventory.medicine.Medicine;
+import org.junit.platform.commons.logging.LoggerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.*;
 import java.util.List;
 import java.util.ArrayList;
-
+import java.util.logging.Logger;
 
 
 /**
@@ -102,6 +103,7 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
 
     }
 
+
     @Override
     public boolean isAvailable(String itemName) {
         LOGGER.info("availability check started");
@@ -124,6 +126,16 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
         return false;
     }
 
+
+/**
+ * Adds a new medicine record to the database.
+ *
+ * This method inserts a new row into the medicine inventory table using the provided
+ * Medicine object. It sets the values for medicine ID, item name, description,
+ * expiration date, and a default availability status (set to 1, indicating available).
+ * Includes method for calling the query constants and connection helper.
+ *
+ */
     @Override
     public boolean addMedicine(Medicine medicine) {
         QueryConstants queryConstants = new QueryConstants();

@@ -23,7 +23,7 @@ import java.util.List;
  * The DashboardDaoImpl class implements the DashboardDao interface
  * It includes methods for notification of stock level of medicine and reports on common ailments, frequent visit, and medication trend.
  */
-public class DashboardReportsImpl implements DashboardReports {
+public class    DashboardReportsImpl implements DashboardReports {
     private static Logger LOGGER = LoggerFactory.getLogger(DashboardReportsImpl.class);
     @Override
     public List<LowStockReport> getAllLowStockMedicine() {
