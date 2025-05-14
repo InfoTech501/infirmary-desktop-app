@@ -3,6 +3,7 @@ package com.rocs.infirmary.desktop.app.facade.medicine.inventory.impl;
 import com.rocs.infirmary.desktop.data.dao.medicine.inventory.MedicineInventoryDao;
 import com.rocs.infirmary.desktop.app.facade.medicine.inventory.MedicineInventoryFacade;
 import com.rocs.infirmary.desktop.data.dao.medicine.inventory.impl.MedicineInventoryDaoImpl;
+import com.rocs.infirmary.desktop.data.model.inventory.Inventory;
 import com.rocs.infirmary.desktop.data.model.inventory.medicine.Medicine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,5 +49,25 @@ public class MedicineInventoryFacadeImpl implements MedicineInventoryFacade {
         return addedMedicine;
 
     }
+
+    @Override
+    public boolean addInventory(Inventory inventory) {
+        LOGGER.info("Accessing Add Inventory");
+        boolean addedInventory = medicineInventoryDao.addInventory(inventory);
+        LOGGER.info("Exiting Add Medicine with Result :  {} ", addedInventory );
+
+        return addedInventory;
+
+    }
+
+    @Override
+    public List<Medicine> getOnlyMedicine() {
+        LOGGER.info("Accessing Get Medicine ");
+         List <Medicine> getMedicine = medicineInventoryDao.getOnlyMedicine();
+        LOGGER.info("Exiting Get Medicine with Result {} ", getMedicine);
+        return getMedicine;
+
+    }
+
 
 }

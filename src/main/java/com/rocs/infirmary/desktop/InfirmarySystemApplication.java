@@ -8,6 +8,7 @@ import com.rocs.infirmary.desktop.app.facade.student.profile.Impl.StudentHealthP
 import com.rocs.infirmary.desktop.app.facade.student.profile.StudentHealthProfileFacade;
 import com.rocs.infirmary.desktop.app.facade.student.record.StudentMedicalRecordFacade;
 import com.rocs.infirmary.desktop.app.facade.student.record.impl.StudentMedicalRecordFacadeImpl;
+import com.rocs.infirmary.desktop.data.model.inventory.Inventory;
 import com.rocs.infirmary.desktop.data.model.inventory.medicine.Medicine;
 import com.rocs.infirmary.desktop.data.model.person.Person;
 import com.rocs.infirmary.desktop.data.model.person.student.Student;
@@ -52,13 +53,14 @@ public class InfirmarySystemApplication {
         System.out.println("10 - Update Student Medical Record");
         System.out.println("11 - Add New Medicine");
         System.out.println("12 - View Student Health Profiles");
+        System.out.println("13 - Create Inventory");
 
         int choice = 0;
         while (true) {
             try {
                 System.out.println("Enter your choice: ");
                 choice = scanner.nextInt();
-                if (choice >= 1 && choice <= 12) {
+                if (choice >= 1 && choice <= 13) {
                     break;
                 } else {
                     System.out.println("Invalid Choice. Please select a valid option. ");
@@ -509,7 +511,7 @@ public class InfirmarySystemApplication {
                             List<Student>studentListProfile = studentHealthProfileFacade.getStudentHealthProfileByLRN(LRN);
                             if (studentListProfile == null) {
                                 System.out.println("No student Profile found.");
-                                return; 
+                                return;
                             }else{
                                 System.out.println("Student Health Profile");
                                 for (Student student:studentListProfile){
@@ -535,7 +537,82 @@ public class InfirmarySystemApplication {
                 }catch (NullPointerException np){
                     LOGGER.error("List containing the retrieved data is empty: {}",np.getMessage());
                 }
+
+            } case 13: {
+                LOGGER.info("Accessing Create Inventory ");
+
+                MedicineInventoryFacade medicineInventoryFacade = new MedicineInventoryFacadeImpl();
+                List<Medicine> medicineList = medicineInventoryFacade.getOnlyMedicine();
+
+                try {
+                    System.out.println("List of Medicine");
+                    int count = 1;
+                    for (Medicine medicine : medicineList) {
+                        System.out.println(count++ + ". " + medicine.getItemName());
+                    }
+                    System.out.println("Choose from the List : ");
+                    int choose = scanner.nextInt();
+
+                    if (choose >= 1 && choose <= medicineList.size()) {
+                        Medicine selectedItem = medicineList.get(choose - 1);
+
+
+                        System.out.println("Choose a Item Type : ");
+                        System.out.println("1 - Medicine");
+                        System.out.println("2 - Bandage");
+                        String itemtype = "";
+
+                        int selectedItemType = scanner.nextInt();
+
+                            switch (selectedItemType) {
+                                case 1: {
+                                    itemtype = "Medicine";
+                                    break;
+                                }
+                                case 2: {
+                                    itemtype = "Bandage";
+                                    break;
+                                }
+
+                                default:
+
+                                    System.out.println("No item type found ");
+                                    LOGGER.warn("No item type found");
+                                    return;
+
+                            }
+
+                        System.out.println("Enter a Quantity : ");
+                        int quantity = scanner.nextInt();
+
+                        Inventory inventory = new Inventory();
+                        inventory.setMedicineId(selectedItem.getMedicineId());
+                        inventory.setItemType(itemtype);
+                        inventory.setQuantity(quantity);
+
+                        boolean success = medicineInventoryFacade.addInventory(inventory);
+                        if (success) {
+                            System.out.println("Added to Inventory");
+                            LOGGER.info("Successfully Added to the Inventory");
+                        } else {
+                            System.out.println("Failed to Add");
+                            LOGGER.info("Failed to Add to the Inventory");
+                        }
+
+
+                    } else  {
+                        System.out.println("Not in the Medicine List");
+                        LOGGER.warn("No Medicine found in the List");
+                    }
+                } catch (InputMismatchException e) {
+                    LOGGER.error("Input Mismatch Occurred {}", e.getMessage());
+                }catch (NullPointerException e) {
+                    LOGGER.error("Null Pointer Occurred{}", e.getMessage());
+                }
+
             }
+
+
             break;
         }
 

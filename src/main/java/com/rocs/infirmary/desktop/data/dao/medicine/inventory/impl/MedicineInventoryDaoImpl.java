@@ -2,6 +2,7 @@ package com.rocs.infirmary.desktop.data.dao.medicine.inventory.impl;
 import com.rocs.infirmary.desktop.data.dao.medicine.inventory.MedicineInventoryDao;
 import com.rocs.infirmary.desktop.data.connection.ConnectionHelper;
 import com.rocs.infirmary.desktop.data.dao.utils.queryconstants.medicine.inventory.QueryConstants;
+import com.rocs.infirmary.desktop.data.model.inventory.Inventory;
 import com.rocs.infirmary.desktop.data.model.inventory.medicine.Medicine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -135,7 +136,7 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
             stmt.setString(1, medicine.getMedicineId());
             stmt.setString(2, medicine.getItemName());
             stmt.setString(3, medicine.getDescription());
-            stmt.setTimestamp(4, new java.sql.Timestamp(medicine.getExpirationDate().getTime()));
+            stmt.setTimestamp(4, new Timestamp(medicine.getExpirationDate().getTime()));
             stmt.setInt(5, 1);
             int affectedRow = stmt.executeUpdate();
 
@@ -147,7 +148,79 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
 
         return false;
     }
-}
+
+    @Override
+    public boolean addInventory(Inventory inventory) {
+        LOGGER.info("Accessing Add Inventory DAO");
+        QueryConstants queryConstants = new QueryConstants();
+
+        try {
+            Connection con = ConnectionHelper.getConnection();
+            String sql = queryConstants.addMedicineToInventory();
+            LOGGER.info("Query is use : {}", sql);
+
+            PreparedStatement stmt = con.prepareStatement(sql);
+
+            stmt.setString(1,inventory.getMedicineId());
+            stmt.setString(2,inventory.getItemType());
+            stmt.setInt(3,inventory.getQuantity());
+
+            LOGGER.info("Retrieved Data : "+" \n"
+            +  "Medicine ID : " + inventory.getMedicineId()+ "\n"
+            +   "ItemType   : " + inventory.getItemType() + "\n"
+            +    "Quantity  : " + inventory.getQuantity());
+
+             int affectedRows =  stmt.executeUpdate();
+             return affectedRows > 0;
+
+        } catch (SQLException e) {
+             LOGGER.error("SQL Exception Occurred {}", e.getMessage());
+        }
+        return false;
+    }
+
+
+    public List <Medicine> getOnlyMedicine() {
+        LOGGER.info("Accessing Get Medicine ");
+        List<Medicine> medicineList = new ArrayList<>();
+        Medicine medicine;
+        try (Connection con = ConnectionHelper.getConnection()) {
+
+            QueryConstants queryConstants = new QueryConstants();
+            String sql = queryConstants.getAllMedicine();
+            LOGGER.info("Query is use : {}", sql);
+            PreparedStatement stmt = con.prepareStatement(sql);
+
+           ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                medicine = new Medicine();
+                medicine.setMedicineId(rs.getString("MEDICINE_ID"));
+                medicine.setItemName(rs.getString("ITEM_NAME"));
+                medicineList.add(medicine);
+
+                LOGGER.info("Retrieved Data : "+" \n"
+                        +  "Medicine ID : " + medicine.getMedicineId()+ "\n"
+                        +   "ItemName   : " + medicine.getItemName());
+
+
+            }
+        } catch (SQLException e) {
+               e.printStackTrace();
+            LOGGER.error("SQL Exception Occurred {}", e.getMessage());
+        }
+
+        LOGGER.info("Data Retrieved Successfully");
+       return medicineList;
+        }
+    }
+
+
+
+
+
+
+
 
 
 
