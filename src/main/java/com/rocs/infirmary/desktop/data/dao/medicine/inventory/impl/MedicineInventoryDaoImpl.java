@@ -3,20 +3,28 @@ import com.rocs.infirmary.desktop.data.dao.medicine.inventory.MedicineInventoryD
 import com.rocs.infirmary.desktop.data.connection.ConnectionHelper;
 import com.rocs.infirmary.desktop.data.dao.utils.queryconstants.medicine.inventory.QueryConstants;
 import com.rocs.infirmary.desktop.data.model.inventory.medicine.Medicine;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.*;
 import java.util.List;
 import java.util.ArrayList;
 
 
+
 /**
  * The MedicineInventoryDaoImpl class is an implementation of the MedicineInventoryDao interface.
  * This class includes methods for setting values of both medicine and inventory objects.
  * Includes method for calling the query constants and connection helper.
+ *
+ * Includes method for deleting Medicine by ItemName and method for checking if medicine
+ * is not deleted (available) from the database.
  */
 public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
+    private static final Logger LOGGER = LoggerFactory.getLogger(MedicineInventoryDaoImpl.class);
     @Override
     public List<Medicine> getAllMedicine() {
+        LOGGER.info("get all medicine started");
         List<Medicine> MedicineInventoryList = new ArrayList<>();
 
 
@@ -28,7 +36,7 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
         try (Connection con = ConnectionHelper.getConnection();
              PreparedStatement stmt = con.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
-
+            LOGGER.info("Query in use"+sql);
 
             while (rs.next()) {
 
@@ -42,17 +50,104 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
                 medicine.setDescription(rs.getString("DESCRIPTION"));
                 medicine.setExpirationDate(rs.getTimestamp("EXPIRATION_DATE"));
 
-
+                LOGGER.info("Data retrieved: "+"\n"
+                        +"Inventory ID: "+medicine.getInventoryId()+"\n"
+                        +"Medicine  ID: "+medicine.getMedicineId()+"\n"
+                        +"Item type   : "+medicine.getItemType()+"\n"
+                        +"Quantity    : "+medicine.getQuantity()+"\n"
+                        +"Item Name   : "+medicine.getItemName()+"\n"
+                        +"Description : "+medicine.getDescription()+"\n"
+                        +"Expiration  : "+medicine.getExpirationDate()
+                );
 
                 MedicineInventoryList.add(medicine);
             }
 
         } catch (SQLException e) {
+            LOGGER.error("SQLException Occurred: " + e.getMessage());
             System.out.println("An SQL Exception occurred: " + e.getMessage());
         }
-
+        LOGGER.info("Data retrieved successfully");
         return  MedicineInventoryList;
     }
+
+    @Override
+    public boolean deleteMedicineByItemName(String itemName) {
+        LOGGER.info("Delete medicine started");
+        try (Connection con = ConnectionHelper.getConnection()) {
+            QueryConstants queryConstants = new QueryConstants();
+
+            String sql = queryConstants.getDeleteMedicineQuery();
+            PreparedStatement stmt = con.prepareStatement(sql);
+            LOGGER.info("Query in use"+sql);
+            LOGGER.info("data inserted: "+"Item Name: "+itemName);
+            if(isAvailable(itemName)) {
+
+                stmt.setString(1,itemName);
+
+                int affectedRows = stmt.executeUpdate();
+                LOGGER.info(itemName+" successfully deleted");
+                return affectedRows > 0;
+
+            } else {
+                LOGGER.info(itemName+" Failed to delete");
+                return false;
+            }
+
+
+        }catch (SQLException e) {
+            LOGGER.error("SqlException Occurred: "+e.getMessage());
+            throw new RuntimeException();
+        }
+
+    }
+
+    @Override
+    public boolean isAvailable(String itemName) {
+        LOGGER.info("availability check started");
+        try(Connection con = ConnectionHelper.getConnection()){
+            QueryConstants queryConstants = new QueryConstants();
+
+            String sql = queryConstants.filterDeletedMedicine();
+            PreparedStatement stmt = con.prepareStatement(sql);
+
+            stmt.setString(1,itemName);
+
+           ResultSet rs =  stmt.executeQuery();
+           return rs.next();
+
+        }catch (SQLException e ) {
+            LOGGER.error("SqlException Occurred: "+e.getMessage());
+            System.out.println("SQL error " + e.getMessage());
+        }
+        LOGGER.info("availability check ended successfully");
+        return false;
+    }
+
+    @Override
+    public boolean addMedicine(Medicine medicine) {
+        QueryConstants queryConstants = new QueryConstants();
+        String sql = queryConstants.addMedicine();
+
+        try (Connection con = ConnectionHelper.getConnection();
+             PreparedStatement stmt = con.prepareStatement(sql)) {
+
+            stmt.setString(1, medicine.getMedicineId());
+            stmt.setString(2, medicine.getItemName());
+            stmt.setString(3, medicine.getDescription());
+            stmt.setTimestamp(4, new java.sql.Timestamp(medicine.getExpirationDate().getTime()));
+            stmt.setInt(5, 1);
+            int affectedRow = stmt.executeUpdate();
+
+            return affectedRow > 0;
+
+        } catch (SQLException e) {
+            System.out.println("Medicine ID already exist");
+        }
+
+        return false;
+    }
 }
+
 
 

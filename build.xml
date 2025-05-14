@@ -2,6 +2,7 @@
          default="build"
          xmlns:ivy="antlib:org.apache.ivy.ant">
     <property file="build.properties"/>
+    <property file="version.properties"/>
 
     <property name="build.dir" location="build"/>
     <property name="classes.dir" location="${build.dir}/classes"/>
@@ -42,7 +43,11 @@
     <!--    compile    -->
     <target name="compile" depends="init" description="Compiles the java project.">
         <echo>Compiling...</echo>
-        <javac srcdir="${src.dir}" destdir="${classes.dir}" includeantruntime="false" debug="true"/>
+        <javac srcdir="${src.dir}" destdir="${classes.dir}" includeantruntime="false" debug="true">
+            <classpath>
+                <path refid="compile.path"/>
+            </classpath>
+        </javac>
     </target>
 
     <target name="compile-tests" depends="compile">
@@ -103,18 +108,30 @@
 
     <!--    build JAR   -->
     <target name="build-jar" description="Creates a jar file for the project">
-        <jar destfile="${dist.dir}/${dist.app.name}"
+        <jar destfile="${dist.dir}/${dist.app.name}-${version}.jar"
              basedir="${classes.dir}">
             <manifest>
                 <attribute name="Main-Class"
                            value="com.rocs.infirmary.desktop.InfirmarySystemApplication"/>
+                <attribute name="Implementation-Version" value="${version}"/>
             </manifest>
         </jar>
+
+        <copy file="${dist.dir}/${project.name}-${version}.jar"
+              tofile="${dist.dir}/${dist.app.name}.jar"/>
+    </target>
+
+    <target name="update-version" description="Updates the version in ivy.xml">
+        <echo>Updating version to ${version}</echo>
+        <replaceregexp file="ivy.xml"
+                       match='revision="[^"]*"'
+                       replace='revision="${version}"'
+                       byline="true"/>
     </target>
 
     <!--    run JAR    -->
     <target name="run" description="Run the application">
-        <java jar="${dist.dir}/${dist.app.name}" fork="true"/>
+        <java jar="${dist.dir}/${dist.app.name}.jar" fork="true"/>
     </target>
 
     <!--    resolve     -->
@@ -123,4 +140,6 @@
         <ivy:resolve />
         <ivy:retrieve/>
     </target>
+
+
 </project>

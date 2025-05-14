@@ -1,0 +1,32 @@
+name: Tags and Release
+
+on:
+  workflow_run:
+    workflows: ["Java CI"]
+    branches: [ master ]
+    types: [ completed ]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Effect only on new commits
+        run: |
+          BOUNDARY_COMMIT=$(git rev-list -n 1 --before="2025-04-09" master)
+          echo "BOUNDARY_COMMIT=$BOUNDARY_COMMIT" >> $GITHUB_ENV
+
+      - name: Release Please
+        uses: googleapis/release-please-action@v4
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+          release-type: simple
+          last-release-sha: ${{ steps.boundary.outputs.boundary_commit }}
+
