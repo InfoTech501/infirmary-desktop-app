@@ -35,6 +35,12 @@ public interface MedicineInventoryFacade {
 
     boolean IsAvailable(String itemName);
 
+    /**
+     * Adds a new medicine to the inventory.
+     *
+     * @param newMedicine The name of the specific medicine to add.
+     * @return (true) if the medicine was successfully added, (false) otherwise.
+     */
 
     boolean addMedicine(Medicine newMedicine);
 }
