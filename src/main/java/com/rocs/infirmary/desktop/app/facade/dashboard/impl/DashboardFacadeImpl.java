@@ -12,12 +12,12 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * The DashboardFacadeImpl class is an implementation of the DashboardFacade interface.
  * It provides methods for managing reports and notification.
  */
+
 public class  DashboardFacadeImpl implements DashboardFacade {
 
     /** The data access object for Dashboard. */
