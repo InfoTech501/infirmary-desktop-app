@@ -4,11 +4,9 @@ import com.rocs.infirmary.desktop.data.dao.medicine.inventory.MedicineInventoryD
 import com.rocs.infirmary.desktop.app.facade.medicine.inventory.MedicineInventoryFacade;
 import com.rocs.infirmary.desktop.data.dao.medicine.inventory.impl.MedicineInventoryDaoImpl;
 import com.rocs.infirmary.desktop.data.model.inventory.medicine.Medicine;
-import org.junit.platform.commons.logging.LoggerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.List;
-import java.util.logging.Logger;
 
 
 /**
