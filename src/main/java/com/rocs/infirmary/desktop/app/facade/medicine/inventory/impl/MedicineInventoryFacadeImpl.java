@@ -62,9 +62,9 @@ public class MedicineInventoryFacadeImpl implements MedicineInventoryFacade {
 
     @Override
     public List<Medicine> getOnlyMedicine() {
-        LOGGER.info("Accessing Get Medicine ");
+        LOGGER.info("Accessing Facade Get Medicine ");
          List <Medicine> getMedicine = medicineInventoryDao.getOnlyMedicine();
-        LOGGER.info("Exiting Get Medicine with Result {} ", getMedicine);
+        LOGGER.info("Exiting Facade Get Medicine ");
         return getMedicine;
 
     }

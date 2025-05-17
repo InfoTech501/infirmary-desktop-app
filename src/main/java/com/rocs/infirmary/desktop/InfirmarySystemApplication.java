@@ -20,7 +20,7 @@ import com.rocs.infirmary.desktop.data.model.report.visit.FrequentVisitReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.SQLOutput;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.InputMismatchException;
 
-import static org.slf4j.LoggerFactory.*;
+
 
 
 public class InfirmarySystemApplication {
@@ -590,6 +590,14 @@ public class InfirmarySystemApplication {
                         inventory.setItemType(itemtype);
                         inventory.setQuantity(quantity);
 
+                        LOGGER.info("Data Retrieved : {}",  "\n"
+                                + "Medicine ID : {}", selectedItem.getMedicineId() +"\n"
+                                + "Item Type   : {}", itemtype +"\n"
+                                + "Quantity    : {}", quantity +"\n"
+
+
+                        );
+
                         boolean success = medicineInventoryFacade.addInventory(inventory);
                         if (success) {
                             System.out.println("Added to Inventory");
@@ -599,15 +607,13 @@ public class InfirmarySystemApplication {
                             LOGGER.info("Failed to Add to the Inventory");
                         }
 
-
                     } else  {
                         System.out.println("Not in the Medicine List");
                         LOGGER.warn("No Medicine found in the List");
                     }
                 } catch (InputMismatchException e) {
-                    LOGGER.error("Input Mismatch Occurred {}", e.getMessage());
-                }catch (NullPointerException e) {
-                    LOGGER.error("Null Pointer Occurred{}", e.getMessage());
+                    System.out.println("Please Input a Number");
+                    LOGGER.error("Please Input a Number {}", e.getMessage());
                 }
 
             }

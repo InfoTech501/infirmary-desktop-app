@@ -199,11 +199,6 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
                 medicine.setItemName(rs.getString("ITEM_NAME"));
                 medicineList.add(medicine);
 
-                LOGGER.info("Retrieved Data : "+" \n"
-                        +  "Medicine ID : " + medicine.getMedicineId()+ "\n"
-                        +   "ItemName   : " + medicine.getItemName());
-
-
             }
         } catch (SQLException e) {
                e.printStackTrace();
