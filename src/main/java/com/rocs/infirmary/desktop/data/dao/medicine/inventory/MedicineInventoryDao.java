@@ -1,5 +1,6 @@
 package com.rocs.infirmary.desktop.data.dao.medicine.inventory;
 
+import com.rocs.infirmary.desktop.data.model.inventory.Inventory;
 import com.rocs.infirmary.desktop.data.model.inventory.medicine.Medicine;
 import java.util.List;
 
@@ -40,4 +41,9 @@ public interface MedicineInventoryDao {
  * @return (true) if the medicine was successfully added, (false) otherwise.
  */
     boolean addMedicine(Medicine medicine);
+
+    boolean addInventory(Inventory inventory);
+
+    List <Medicine> getOnlyMedicine();
+
 }

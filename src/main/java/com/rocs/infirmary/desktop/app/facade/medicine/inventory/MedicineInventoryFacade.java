@@ -1,5 +1,6 @@
 package com.rocs.infirmary.desktop.app.facade.medicine.inventory;
 
+import com.rocs.infirmary.desktop.data.model.inventory.Inventory;
 import com.rocs.infirmary.desktop.data.model.inventory.medicine.Medicine;
 import java.util.List;
 
@@ -43,4 +44,8 @@ public interface MedicineInventoryFacade {
      */
 
     boolean addMedicine(Medicine newMedicine);
+
+    boolean addInventory(Inventory inventory);
+
+    List <Medicine> getOnlyMedicine();
 }
