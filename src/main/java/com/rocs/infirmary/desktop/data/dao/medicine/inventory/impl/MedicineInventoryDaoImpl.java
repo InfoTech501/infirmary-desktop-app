@@ -150,37 +150,39 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
     }
 
     @Override
-    public boolean addInventory(Inventory inventory) {
+    public boolean addInventory(String medicineId , String itemType, int quantity  ) {
         LOGGER.info("Accessing Add Inventory DAO");
         QueryConstants queryConstants = new QueryConstants();
 
         try {
             Connection con = ConnectionHelper.getConnection();
             String sql = queryConstants.addMedicineToInventory();
-            LOGGER.info("Query is use : {}", sql);
+            LOGGER.info("query is use : {}", sql);
 
             PreparedStatement stmt = con.prepareStatement(sql);
 
-            stmt.setString(1,inventory.getMedicineId());
-            stmt.setString(2,inventory.getItemType());
-            stmt.setInt(3,inventory.getQuantity());
+            stmt.setString(1,medicineId);
+            stmt.setString(2,itemType);
+            stmt.setInt(3,quantity);
 
             LOGGER.info("Retrieved Data : "+" \n"
-            +  "Medicine ID : " + inventory.getMedicineId()+ "\n"
-            +   "ItemType   : " + inventory.getItemType() + "\n"
-            +    "Quantity  : " + inventory.getQuantity());
+            +  "Medicine ID : " + medicineId +  "\n"
+            +   "ItemType   : " +itemType+ "\n"
+            +    "Quantity  : " +  quantity
+            );
 
              int affectedRows =  stmt.executeUpdate();
              return affectedRows > 0;
 
         } catch (SQLException e) {
+            e.printStackTrace();
              LOGGER.error("SQL Exception Occurred {}", e.getMessage());
         }
         return false;
     }
 
 
-    public List <Medicine> getOnlyMedicine() {
+    public List <Medicine> findMedicine() {
         LOGGER.info("Accessing Get Medicine ");
         List<Medicine> medicineList = new ArrayList<>();
         Medicine medicine;
@@ -199,9 +201,10 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
                 medicine.setItemName(rs.getString("ITEM_NAME"));
                 medicineList.add(medicine);
 
+
+
             }
         } catch (SQLException e) {
-               e.printStackTrace();
             LOGGER.error("SQL Exception Occurred {}", e.getMessage());
         }
 

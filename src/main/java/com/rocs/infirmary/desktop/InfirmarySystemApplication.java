@@ -542,7 +542,7 @@ public class InfirmarySystemApplication {
                 LOGGER.info("Accessing Create Inventory ");
 
                 MedicineInventoryFacade medicineInventoryFacade = new MedicineInventoryFacadeImpl();
-                List<Medicine> medicineList = medicineInventoryFacade.getOnlyMedicine();
+                List<Medicine> medicineList = medicineInventoryFacade.getMedicine();
 
                 try {
                     System.out.println("List of Medicine");
@@ -553,9 +553,12 @@ public class InfirmarySystemApplication {
                     System.out.println("Choose from the List : ");
                     int choose = scanner.nextInt();
 
-                    if (choose >= 1 && choose <= medicineList.size()) {
-                        Medicine selectedItem = medicineList.get(choose - 1);
 
+
+                    if (choose >= 1 && choose <= medicineList.size()) {
+
+                        Medicine selectedItem = medicineList.get(choose - 1);
+                        String medicineID = selectedItem.getMedicineId();
 
                         System.out.println("Choose a Item Type : ");
                         System.out.println("1 - Medicine");
@@ -575,9 +578,8 @@ public class InfirmarySystemApplication {
                                 }
 
                                 default:
+                                    System.out.println("Invalid Input");
 
-                                    System.out.println("No item type found ");
-                                    LOGGER.warn("No item type found");
                                     return;
 
                             }
@@ -585,20 +587,15 @@ public class InfirmarySystemApplication {
                         System.out.println("Enter a Quantity : ");
                         int quantity = scanner.nextInt();
 
-                        Inventory inventory = new Inventory();
-                        inventory.setMedicineId(selectedItem.getMedicineId());
-                        inventory.setItemType(itemtype);
-                        inventory.setQuantity(quantity);
-
                         LOGGER.info("Data Retrieved : {}",  "\n"
-                                + "Medicine ID : {}", selectedItem.getMedicineId() +"\n"
+                                + "Medicine ID : {}", medicineID  +"\n"
                                 + "Item Type   : {}", itemtype +"\n"
                                 + "Quantity    : {}", quantity +"\n"
 
 
                         );
 
-                        boolean success = medicineInventoryFacade.addInventory(inventory);
+                        boolean success = medicineInventoryFacade.addInventory(medicineID,itemtype,quantity);
                         if (success) {
                             System.out.println("Added to Inventory");
                             LOGGER.info("Successfully Added to the Inventory");
