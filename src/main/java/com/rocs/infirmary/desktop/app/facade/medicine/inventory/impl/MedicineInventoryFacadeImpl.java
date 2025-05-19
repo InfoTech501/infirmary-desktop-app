@@ -16,48 +16,48 @@ import java.util.List;
 public class MedicineInventoryFacadeImpl implements MedicineInventoryFacade {
 
     private MedicineInventoryDao medicineInventoryDao = new MedicineInventoryDaoImpl();
-    private static final Logger LOGGER = LoggerFactory.getLogger(MedicineInventoryFacadeImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(MedicineInventoryFacadeImpl.class);
 
     @Override
     public List<Medicine> findAllMedicine() {
-        LOGGER.info("Entering findAllMedicine");
+        logger.info("Entering findAllMedicine");
         List<Medicine> medicines = this.medicineInventoryDao.getAllMedicine();
-        LOGGER.info("Exiting findAllMedicine with {} medicines found.", medicines.size());
+        logger.info("Exiting findAllMedicine with {} medicines found.", medicines.size());
         return medicines;
     }
     @Override
     public boolean deleteMedicineByItemName(String itemName) {
-        LOGGER.info("Entering deleteMedicineByItemName with itemName: {}", itemName);
+        logger.info("Entering deleteMedicineByItemName with itemName: {}", itemName);
         boolean isDeleted = medicineInventoryDao.deleteMedicineByItemName(itemName);
-        LOGGER.warn("Exiting deleteMedicineByItemName : This action cannot be undone Medicine: {}: ", itemName);
+        logger.warn("Exiting deleteMedicineByItemName : This action cannot be undone Medicine: {}: ", itemName);
         return isDeleted;
     }
 
     @Override
     public boolean IsAvailable(String itemName) {
-        LOGGER.debug("Entering IsAvailable with itemName: {}", itemName);
+        logger.debug("Entering IsAvailable with itemName: {}", itemName);
         boolean available = medicineInventoryDao.isAvailable(itemName);
-        LOGGER.debug("Exiting IsAvailable with result: {}", available);
+        logger.debug("Exiting IsAvailable with result: {}", available);
         return available;
     }
 
     @Override
     public boolean addMedicine(Medicine medicine) {
-        LOGGER.info("Accessing Add Medicine ");
+        logger.info("Accessing Add Medicine ");
         return this.medicineInventoryDao.addMedicine(medicine);
     }
 
     @Override
     public boolean addInventory(String medicineId , String itemType, int quantity ) {
-        LOGGER.info("Accessing Add Inventory");
+        logger.info("Accessing Add Inventory");
         return this.medicineInventoryDao.addInventory(medicineId,itemType,quantity);
      }
 
     @Override
     public List<Medicine> getMedicine(){
-        LOGGER.info("Accessing Facade Get Medicine ");
+        logger.info("Accessing Facade Get Medicine ");
          List <Medicine> MedicineList = medicineInventoryDao.findMedicine();
-        LOGGER.info("Exiting Facade Get Medicine ");
+        logger.info("Exiting Facade Get Medicine ");
         return MedicineList;
 
     }
