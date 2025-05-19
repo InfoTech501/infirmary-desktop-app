@@ -11,7 +11,7 @@ public class QueryConstants {
 
     private final String FILTER_MEDICINE_DELETED_QUERY = "SELECT * FROM MEDICINE WHERE IS_AVAILABLE = 1 AND ITEM_NAME = ?";
 
-    private final String ADD_MEDICINE_TO_INVENTORY = "INSERT INTO MEDICINE (MEDICINE_ID, ITEM_NAME, DESCRIPTION, EXPIRATION_DATE, IS_AVAILABLE) VALUES (?, ?, ?, ?, ?)";
+    private final String  ADD_MEDICINE_TO_INVENTORY_QUERY  = "INSERT INTO MEDICINE (MEDICINE_ID, ITEM_NAME, DESCRIPTION, EXPIRATION_DATE, IS_AVAILABLE) VALUES (?, ?, ?, ?, ?)";
 
     private final String GET_ALL_MEDICINE_QUERY = "SELECT MEDICINE_ID, ITEM_NAME FROM MEDICINE";
 
@@ -29,6 +29,6 @@ public class QueryConstants {
 
     public String filterDeletedMedicine() {return FILTER_MEDICINE_DELETED_QUERY;}
 
-    public String addMedicine() {return ADD_MEDICINE_TO_INVENTORY;}
+    public String addMedicine() {return  ADD_MEDICINE_TO_INVENTORY_QUERY ;}
 
 }

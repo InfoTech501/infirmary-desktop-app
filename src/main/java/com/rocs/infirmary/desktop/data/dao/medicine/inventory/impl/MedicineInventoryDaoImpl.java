@@ -200,7 +200,7 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
 
             QueryConstants queryConstants = new QueryConstants();
             String sql = queryConstants.getAllMedicine();
-            LOGGER.info("Query is use : {}", sql);
+            LOGGER.info("query in use : {}", sql);
             PreparedStatement stmt = con.prepareStatement(sql);
 
            ResultSet rs = stmt.executeQuery();
