@@ -34,6 +34,12 @@ public interface MedicineInventoryDao {
 */
     boolean isAvailable(String itemName);
 
+/**
+ * Adds a new medicine to the inventory.
+ *
+ * @param medicine The name of the specific medicine to add.
+ * @return (true) if the medicine was successfully added, (false) otherwise.
+ */
     boolean addMedicine(Medicine medicine);
 
     boolean addInventory(String medicineId , String itemType, int quantity );

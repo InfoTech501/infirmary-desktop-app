@@ -458,7 +458,22 @@ public class InfirmarySystemApplication {
                     System.out.println("Enter Medicine Description: ");
                     String itemDescription = scanner.nextLine();
 
-                    Date expirationDate = getValidInputDate(scanner, dateFormat, "Enter Expiration Date (yyyy-MM-dd): ");
+                    Date expirationDate;
+                    while (true) {
+                        try {
+                            System.out.print("Enter Expiration Date (yyyy-MM-dd): ");
+                            String input = scanner.nextLine().trim();
+                            expirationDate = dateFormat.parse(input);
+
+                            if (expirationDate.before(new Date())) {
+                                System.err.println("Please enter a future date.");
+                                continue;
+                            }
+                            break;
+                        } catch (ParseException e) {
+                            System.err.println("Invalid date format, use yyyy-MM-dd.");
+                        }
+                    }
 
                     String[] words = itemName.trim().split(" ");
                     String medicineID = "";
@@ -511,7 +526,7 @@ public class InfirmarySystemApplication {
                             List<Student>studentListProfile = studentHealthProfileFacade.getStudentHealthProfileByLRN(LRN);
                             if (studentListProfile == null) {
                                 System.out.println("No student Profile found.");
-                                return;
+                                return; 
                             }else{
                                 System.out.println("Student Health Profile");
                                 for (Student student:studentListProfile){

@@ -103,6 +103,7 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
 
     }
 
+
     @Override
     public boolean isAvailable(String itemName) {
         LOGGER.info("availability check started");
@@ -125,6 +126,16 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
         return false;
     }
 
+
+/**
+ * Adds a new medicine record to the database.
+ *
+ * This method inserts a new row into the medicine inventory table using the provided
+ * Medicine object. It sets the values for medicine ID, item name, description,
+ * expiration date, and a default availability status (set to 1, indicating available).
+ * Includes method for calling the query constants and connection helper.
+ *
+ */
     @Override
     public boolean addMedicine(Medicine medicine) {
         QueryConstants queryConstants = new QueryConstants();
