@@ -557,7 +557,7 @@ public class InfirmarySystemApplication {
                 LOGGER.info("Accessing Create Inventory ");
 
                 MedicineInventoryFacade medicineInventoryFacade = new MedicineInventoryFacadeImpl();
-                List<Medicine> medicineList = medicineInventoryFacade.getMedicine();
+                List<Medicine> medicineList = medicineInventoryFacade.findAllMedicine();
 
                 try {
                     System.out.println("List of Medicine");
@@ -567,8 +567,6 @@ public class InfirmarySystemApplication {
                     }
                     System.out.println("Choose from the List : ");
                     int choose = scanner.nextInt();
-
-
 
                     if (choose >= 1 && choose <= medicineList.size()) {
 
@@ -596,7 +594,6 @@ public class InfirmarySystemApplication {
                                     System.out.println("Invalid Input");
 
                                     return;
-
                             }
 
                         System.out.println("Enter a Quantity : ");
@@ -606,7 +603,6 @@ public class InfirmarySystemApplication {
                                 + "Medicine ID : {}", medicineID  +"\n"
                                 + "Item Type   : {}", itemtype +"\n"
                                 + "Quantity    : {}", quantity +"\n"
-
 
                         );
 
@@ -620,7 +616,7 @@ public class InfirmarySystemApplication {
                         }
 
                     } else  {
-                        System.out.println("Not in the Medicine List");
+                        System.out.println("No Medicine found in the List");
                         LOGGER.warn("No Medicine found in the List");
                     }
                 } catch (InputMismatchException e) {
@@ -629,7 +625,6 @@ public class InfirmarySystemApplication {
                 }
 
             }
-
 
             break;
         }

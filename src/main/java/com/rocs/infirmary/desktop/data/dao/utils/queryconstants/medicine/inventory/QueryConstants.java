@@ -13,19 +13,14 @@ public class QueryConstants {
 
     private final String  ADD_MEDICINE_TO_INVENTORY_QUERY  = "INSERT INTO MEDICINE (MEDICINE_ID, ITEM_NAME, DESCRIPTION, EXPIRATION_DATE, IS_AVAILABLE) VALUES (?, ?, ?, ?, ?)";
 
-    private final String GET_ALL_MEDICINE_QUERY = "SELECT MEDICINE_ID, ITEM_NAME FROM MEDICINE";
-
     private final String ADD_MEDICINE_TO_MAIN_INVENTORY_QUERY = "INSERT INTO INVENTORY (MEDICINE_ID , ITEM_TYPE, QUANTITY) VALUES (?,?,?)";
 
 
     public String getDeleteMedicineQuery() {return DELETE_MEDICINE_BY_ITEM_NAME_QUERY;}
 
-
     public String addMedicineToInventory() {return ADD_MEDICINE_TO_MAIN_INVENTORY_QUERY;}
 
     public String getLIST_ALL_MEDICINE_INVENTORY_QUERY(){return  LIST_ALL_MEDICINE_INVENTORY_QUERY;}
-
-    public  String getAllMedicine() {return GET_ALL_MEDICINE_QUERY;}
 
     public String filterDeletedMedicine() {return FILTER_MEDICINE_DELETED_QUERY;}
 

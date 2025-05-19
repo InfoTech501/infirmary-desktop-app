@@ -47,5 +47,4 @@ public interface MedicineInventoryFacade {
 
     boolean addInventory(String medicineId , String itemType, int quantity );
 
-    List <Medicine> getMedicine();
 }
