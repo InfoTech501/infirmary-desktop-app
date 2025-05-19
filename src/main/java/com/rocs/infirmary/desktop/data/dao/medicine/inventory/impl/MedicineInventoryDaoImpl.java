@@ -150,14 +150,14 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
     }
 
     @Override
-    public boolean addInventory(String medicineId , String itemType, int quantity  ) {
+    public boolean addInventory(String medicineId , String itemType, int quantity) {
         LOGGER.info("Accessing Add Inventory DAO");
         QueryConstants queryConstants = new QueryConstants();
 
         try {
             Connection con = ConnectionHelper.getConnection();
             String sql = queryConstants.addMedicineToInventory();
-            LOGGER.info("query is use : {}", sql);
+            LOGGER.info("query in use : {}", sql);
 
             PreparedStatement stmt = con.prepareStatement(sql);
 
@@ -175,7 +175,6 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
              return affectedRows > 0;
 
         } catch (SQLException e) {
-            e.printStackTrace();
              LOGGER.error("SQL Exception Occurred {}", e.getMessage());
         }
         return false;

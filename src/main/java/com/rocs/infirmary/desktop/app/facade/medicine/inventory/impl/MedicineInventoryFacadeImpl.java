@@ -44,21 +44,14 @@ public class MedicineInventoryFacadeImpl implements MedicineInventoryFacade {
     @Override
     public boolean addMedicine(Medicine medicine) {
         LOGGER.info("Accessing Add Medicine ");
-        boolean addedMedicine = medicineInventoryDao.addMedicine(medicine);
-        LOGGER.info("Exiting Add Medicine with Result :  {} ", addedMedicine );
-        return addedMedicine;
-
+        return this.medicineInventoryDao.addMedicine(medicine);
     }
 
     @Override
     public boolean addInventory(String medicineId , String itemType, int quantity ) {
         LOGGER.info("Accessing Add Inventory");
-        boolean addedInventory = medicineInventoryDao.addInventory(medicineId,itemType,quantity);
-        LOGGER.info("Exiting Add Medicine with Result :  {} ", addedInventory );
-
-        return addedInventory;
-
-    }
+        return this.medicineInventoryDao.addInventory(medicineId,itemType,quantity);
+     }
 
     @Override
     public List<Medicine> getMedicine(){
