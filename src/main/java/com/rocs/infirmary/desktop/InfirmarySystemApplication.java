@@ -556,7 +556,7 @@ public class InfirmarySystemApplication {
                 LOGGER.info("Accessing Create Inventory ");
 
                 MedicineInventoryFacade medicineInventoryFacade = new MedicineInventoryFacadeImpl();
-                List<Medicine> medicineList = medicineInventoryFacade.listAllMedicines();
+                List<Medicine> medicineList = medicineInventoryFacade. findAllMedicineFromMedicineTable();
 
                 try {
                     System.out.println("List of Medicine");

@@ -53,7 +53,7 @@ public class MedicineInventoryFacadeImpl implements MedicineInventoryFacade {
         return this.medicineInventoryDao.addInventory(medicineId, itemType, quantity);
     }
     @Override
-    public List<Medicine> listAllMedicines() {
+    public List<Medicine>  findAllMedicineFromMedicineTable() {
         LOGGER.info("Accessing Get Medicine");
         return this.medicineInventoryDao.findAllMedicine();
     }
