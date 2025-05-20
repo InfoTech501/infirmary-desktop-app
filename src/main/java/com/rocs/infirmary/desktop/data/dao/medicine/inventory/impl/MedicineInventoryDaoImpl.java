@@ -4,6 +4,7 @@ import com.rocs.infirmary.desktop.data.connection.ConnectionHelper;
 import com.rocs.infirmary.desktop.data.dao.utils.queryconstants.medicine.inventory.QueryConstants;
 import com.rocs.infirmary.desktop.data.model.inventory.Inventory;
 import com.rocs.infirmary.desktop.data.model.inventory.medicine.Medicine;
+import oracle.jdbc.proxy.annotation.Pre;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -189,7 +190,38 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
         }
         return false;
     }
+
+    @Override
+    public List<Medicine> findAllMedicine() {
+        LOGGER.info("Accessing Find Medicine");
+        List<Medicine> medicineList = new ArrayList<>();
+
+        try (Connection con = ConnectionHelper.getConnection()) {
+            QueryConstants queryConstants = new QueryConstants();
+            String sql = queryConstants.retrieveAllMedicine();
+            PreparedStatement stmt = con.prepareStatement(sql);
+            LOGGER.info("Query in use  : {}",sql);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Medicine medicine = new Medicine();
+                medicine.setMedicineId(rs.getString("MEDICINE_ID"));
+                medicine.setItemName(rs.getString("ITEM_NAME"));
+                medicineList.add(medicine);
+            }
+
+        } catch (SQLException e) {
+            LOGGER.info("SQL Exception Occurred " + e.getMessage());
+        }
+        LOGGER.info("Retrieved Successfully");
+        return medicineList;
+    }
+
+
 }
+
+
+
 
 
 

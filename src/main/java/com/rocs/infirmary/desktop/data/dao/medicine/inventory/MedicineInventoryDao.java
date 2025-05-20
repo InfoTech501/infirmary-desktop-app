@@ -44,6 +44,8 @@ public interface MedicineInventoryDao {
 
     boolean addInventory(String medicineId , String itemType, int quantity );
 
+    List <Medicine> findAllMedicine();
+
 
 
 }
