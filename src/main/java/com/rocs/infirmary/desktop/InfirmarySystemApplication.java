@@ -8,7 +8,6 @@ import com.rocs.infirmary.desktop.app.facade.student.profile.Impl.StudentHealthP
 import com.rocs.infirmary.desktop.app.facade.student.profile.StudentHealthProfileFacade;
 import com.rocs.infirmary.desktop.app.facade.student.record.StudentMedicalRecordFacade;
 import com.rocs.infirmary.desktop.app.facade.student.record.impl.StudentMedicalRecordFacadeImpl;
-import com.rocs.infirmary.desktop.data.model.inventory.Inventory;
 import com.rocs.infirmary.desktop.data.model.inventory.medicine.Medicine;
 import com.rocs.infirmary.desktop.data.model.person.Person;
 import com.rocs.infirmary.desktop.data.model.person.student.Student;
@@ -625,7 +624,6 @@ public class InfirmarySystemApplication {
                 }
 
             }
-
             break;
         }
 

@@ -2,9 +2,7 @@ package com.rocs.infirmary.desktop.data.dao.medicine.inventory.impl;
 import com.rocs.infirmary.desktop.data.dao.medicine.inventory.MedicineInventoryDao;
 import com.rocs.infirmary.desktop.data.connection.ConnectionHelper;
 import com.rocs.infirmary.desktop.data.dao.utils.queryconstants.medicine.inventory.QueryConstants;
-import com.rocs.infirmary.desktop.data.model.inventory.Inventory;
 import com.rocs.infirmary.desktop.data.model.inventory.medicine.Medicine;
-import oracle.jdbc.proxy.annotation.Pre;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -52,14 +50,14 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
                 medicine.setDescription(rs.getString("DESCRIPTION"));
                 medicine.setExpirationDate(rs.getTimestamp("EXPIRATION_DATE"));
 
-                LOGGER.info("Data retrieved: " + "\n"
-                        + "Inventory ID: " + medicine.getInventoryId() + "\n"
-                        + "Medicine  ID: " + medicine.getMedicineId() + "\n"
-                        + "Item type   : " + medicine.getItemType() + "\n"
-                        + "Quantity    : " + medicine.getQuantity() + "\n"
-                        + "Item Name   : " + medicine.getItemName() + "\n"
-                        + "Description : " + medicine.getDescription() + "\n"
-                        + "Expiration  : " + medicine.getExpirationDate()
+                LOGGER.info("Data retrieved: "+"\n"
+                        +"Inventory ID: "+medicine.getInventoryId()+"\n"
+                        +"Medicine  ID: "+medicine.getMedicineId()+"\n"
+                        +"Item type   : "+medicine.getItemType()+"\n"
+                        +"Quantity    : "+medicine.getQuantity()+"\n"
+                        +"Item Name   : "+medicine.getItemName()+"\n"
+                        +"Description : "+medicine.getDescription()+"\n"
+                        +"Expiration  : "+medicine.getExpirationDate()
                 );
 
                 MedicineInventoryList.add(medicine);
@@ -70,7 +68,7 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
             System.out.println("An SQL Exception occurred: " + e.getMessage());
         }
         LOGGER.info("Data retrieved successfully");
-        return MedicineInventoryList;
+        return  MedicineInventoryList;
     }
 
     @Override
@@ -81,24 +79,24 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
 
             String sql = queryConstants.getDeleteMedicineQuery();
             PreparedStatement stmt = con.prepareStatement(sql);
-            LOGGER.info("Query in use" + sql);
-            LOGGER.info("data inserted: " + "Item Name: " + itemName);
-            if (isAvailable(itemName)) {
+            LOGGER.info("Query in use"+sql);
+            LOGGER.info("data inserted: "+"Item Name: "+itemName);
+            if(isAvailable(itemName)) {
 
-                stmt.setString(1, itemName);
+                stmt.setString(1,itemName);
 
                 int affectedRows = stmt.executeUpdate();
-                LOGGER.info(itemName + " successfully deleted");
+                LOGGER.info(itemName+" successfully deleted");
                 return affectedRows > 0;
 
             } else {
-                LOGGER.info(itemName + " Failed to delete");
+                LOGGER.info(itemName+" Failed to delete");
                 return false;
             }
 
 
-        } catch (SQLException e) {
-            LOGGER.error("SqlException Occurred: " + e.getMessage());
+        }catch (SQLException e) {
+            LOGGER.error("SqlException Occurred: "+e.getMessage());
             throw new RuntimeException();
         }
 
@@ -108,19 +106,19 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
     @Override
     public boolean isAvailable(String itemName) {
         LOGGER.info("availability check started");
-        try (Connection con = ConnectionHelper.getConnection()) {
+        try(Connection con = ConnectionHelper.getConnection()){
             QueryConstants queryConstants = new QueryConstants();
 
             String sql = queryConstants.filterDeletedMedicine();
             PreparedStatement stmt = con.prepareStatement(sql);
 
-            stmt.setString(1, itemName);
+            stmt.setString(1,itemName);
 
-            ResultSet rs = stmt.executeQuery();
-            return rs.next();
+           ResultSet rs =  stmt.executeQuery();
+           return rs.next();
 
-        } catch (SQLException e) {
-            LOGGER.error("SqlException Occurred: " + e.getMessage());
+        }catch (SQLException e ) {
+            LOGGER.error("SqlException Occurred: "+e.getMessage());
             System.out.println("SQL error " + e.getMessage());
         }
         LOGGER.info("availability check ended successfully");
@@ -128,14 +126,15 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
     }
 
 
-    /**
-     * Adds a new medicine record to the database.
-     * <p>
-     * This method inserts a new row into the medicine inventory table using the provided
-     * Medicine object. It sets the values for medicine ID, item name, description,
-     * expiration date, and a default availability status (set to 1, indicating available).
-     * Includes method for calling the query constants and connection helper.
-     */
+/**
+ * Adds a new medicine record to the database.
+ *
+ * This method inserts a new row into the medicine inventory table using the provided
+ * Medicine object. It sets the values for medicine ID, item name, description,
+ * expiration date, and a default availability status (set to 1, indicating available).
+ * Includes method for calling the query constants and connection helper.
+ *
+ */
     @Override
     public boolean addMedicine(Medicine medicine) {
         QueryConstants queryConstants = new QueryConstants();
@@ -147,7 +146,7 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
             stmt.setString(1, medicine.getMedicineId());
             stmt.setString(2, medicine.getItemName());
             stmt.setString(3, medicine.getDescription());
-            stmt.setTimestamp(4, new Timestamp(medicine.getExpirationDate().getTime()));
+            stmt.setTimestamp(4, new java.sql.Timestamp(medicine.getExpirationDate().getTime()));
             stmt.setInt(5, 1);
             int affectedRow = stmt.executeUpdate();
 
@@ -219,18 +218,6 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
 
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
