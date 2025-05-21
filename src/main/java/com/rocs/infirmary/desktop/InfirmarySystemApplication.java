@@ -22,12 +22,7 @@ import org.slf4j.LoggerFactory;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Scanner;
-import java.util.InputMismatchException;
-
-
+import java.util.*;
 
 
 public class InfirmarySystemApplication {
@@ -53,13 +48,14 @@ public class InfirmarySystemApplication {
         System.out.println("11 - Add New Medicine");
         System.out.println("12 - View Student Health Profiles");
         System.out.println("13 - Create Inventory");
+        System.out.println("14 - Update Inventory");
 
         int choice = 0;
         while (true) {
             try {
                 System.out.println("Enter your choice: ");
                 choice = scanner.nextInt();
-                if (choice >= 1 && choice <= 13) {
+                if (choice >= 1 && choice <= 14) {
                     break;
                 } else {
                     System.out.println("Invalid Choice. Please select a valid option. ");
@@ -622,6 +618,79 @@ public class InfirmarySystemApplication {
                     System.out.println("Please Input a Number");
                     LOGGER.error("Please Input a Number {}", e.getMessage());
                 }
+
+            } case 14 : {
+                LOGGER.info("Accessing Update Inventory");
+
+                MedicineInventoryFacade medicineInventoryFacade = new MedicineInventoryFacadeImpl();
+                List <Medicine> invetoryList = medicineInventoryFacade.findAllMedicine();
+                try {
+                    int count = 1;
+                    System.out.println("Inventory List:");
+                    for (Medicine medicine : invetoryList) {
+                        System.out.println(count++ + ".    "+ medicine.getMedicineId()+ "   " +   medicine.getItemType() + ":  "  +  medicine.getQuantity());
+                    }
+                    System.out.println("Choose from the List to Update");
+                    int choose = scanner.nextInt();
+
+                    if (choose >= 1 && choose <= invetoryList.size()) ;
+                    {
+                        Medicine selectedID = invetoryList.get(choose - 1);
+                        int inventoryID = selectedID.getInventoryId();
+
+                        System.out.println("Choose ItemType : ");
+                        System.out.println("1 - Medicine");
+                        System.out.println("2 - Bandage");
+                        System.out.println("3 - Skip");
+                        int selectedItemType = scanner.nextInt();
+                        String itemType = null;
+
+                        switch (selectedItemType) {
+                            case 1:
+                                itemType = "Medicine";
+                                break;
+                            case 2:
+                                itemType = "Bandage";
+                                break;
+                            case 3 :
+                                break;
+
+                            default:
+                                System.out.println("Invalid choice.");
+                                LOGGER.warn("Invalid item type choice: " + selectedItemType);
+                                return;
+                        }
+
+                        System.out.println("Enter Quantity : (Press 0 to skip Update) ");
+                        int quantity = scanner.nextInt();
+
+
+                        boolean success = medicineInventoryFacade.updateInventory(itemType, quantity, inventoryID);
+                        LOGGER.info("Date Retrieved : " + " \n"
+                                + "ItemType : " + itemType + "\n"
+                                + "Quantity : " + quantity + "\n"
+                                + "Inventory ID : " + inventoryID + "\n"
+
+                        );
+                        if (success) {
+                            System.out.println("Updated Successfully");
+                            LOGGER.info("Successfully Updated");
+                        } else {
+                            System.out.println("Nothing to Update");
+                            LOGGER.info("Nothing to Updated");
+                        }
+
+                    }
+                }catch (RuntimeException ex) {
+                    LOGGER.error("Runtime Exception Occurred " + ex);
+                    throw new RuntimeException();
+                }
+
+
+
+
+
+
 
             }
             break;

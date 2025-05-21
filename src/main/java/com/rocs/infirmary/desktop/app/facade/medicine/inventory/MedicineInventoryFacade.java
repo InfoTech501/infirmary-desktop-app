@@ -49,4 +49,6 @@ public interface MedicineInventoryFacade {
 
     List<Medicine> findAllMedicineFromMedicineTable();
 
+    boolean updateInventory(String itemType, int quantity, int inventoryID);
+
 }

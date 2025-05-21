@@ -45,6 +45,7 @@ public interface MedicineInventoryDao {
 
     List <Medicine> findAllMedicine();
 
+    boolean updateInventory(String itemType, int quantity, int inventoryID);
 
 
 }

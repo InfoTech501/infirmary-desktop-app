@@ -16,6 +16,11 @@ public class QueryConstants {
     private final String ADD_MEDICINE_TO_MAIN_INVENTORY_QUERY = "INSERT INTO INVENTORY (MEDICINE_ID , ITEM_TYPE, QUANTITY) VALUES (?,?,?)";
 
     private final String GET_ALL_MEDICINE_QUERY = "SELECT MEDICINE_ID ,ITEM_NAME FROM MEDICINE";
+
+    private final String UPDATE_ITEM_TYPE_ON_INVENTORY_QUERY = "UPDATE INVENTORY SET ITEM_TYPE = ? WHERE INVENTORY_ID = ? " ;
+
+    private final String UPDATE_QUANTITY_ON_INVENTORY_QUERY = "UPDATE INVENTORY SET QUANTITY = ? WHERE INVENTORY_ID = ? " ;
+
     public String getDeleteMedicineQuery() {return DELETE_MEDICINE_BY_ITEM_NAME_QUERY;}
 
     public String addMedicineToInventory() {return ADD_MEDICINE_TO_MAIN_INVENTORY_QUERY;}
@@ -27,4 +32,9 @@ public class QueryConstants {
     public String addMedicine() {return  ADD_MEDICINE_TO_INVENTORY_QUERY ;}
 
     public String retrieveAllMedicine() {return GET_ALL_MEDICINE_QUERY;}
+
+    public String updateItemTypeOnInventory() {return UPDATE_ITEM_TYPE_ON_INVENTORY_QUERY;}
+
+    public String updateQuantityOnInventory(){return UPDATE_QUANTITY_ON_INVENTORY_QUERY;}
 }
+

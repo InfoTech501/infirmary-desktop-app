@@ -216,6 +216,59 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
         return medicineList;
     }
 
+    @Override
+    public boolean updateInventory(String itemType, int quantity, int inventoryID) {
+        LOGGER.info("Accessing Update Inventory");
+        boolean updateSuccess = false;
+        try (Connection con = ConnectionHelper.getConnection()) {
+            QueryConstants queryConstants = new QueryConstants();
+
+            if (itemType != null) {
+                String sql = queryConstants.updateItemTypeOnInventory();
+                try (PreparedStatement stmt = con.prepareStatement(sql)){
+                    LOGGER.info("Query : " + sql);
+                    stmt.setString(1, itemType);
+                    stmt.setInt(2, inventoryID);
+
+                    LOGGER.info(" Retrieved ItemType  : " + itemType);
+
+                    int affectedRows = stmt.executeUpdate();
+                    updateSuccess =  affectedRows > 0;
+
+                } catch (SQLException ex) {
+                    LOGGER.error("SQL Error while updating itemType: ", ex);
+                    throw new RuntimeException(ex);
+                }
+            }
+
+            if (quantity != 0 ) {
+                String sql = queryConstants.updateQuantityOnInventory();
+                LOGGER.info("Query: " + sql);
+
+                try (PreparedStatement stmt = con.prepareStatement(sql)) {
+                    stmt.setInt(1, quantity);
+                    stmt.setInt(2, inventoryID);
+
+                    LOGGER.info(" Retrieved Quantity  : " + quantity);
+
+                    int affectedRows = stmt.executeUpdate();
+
+                    updateSuccess = affectedRows > 0;
+
+
+                } catch (SQLException ex) {
+                    LOGGER.error("SQL Error while updating quantity: ", ex);
+                    throw new RuntimeException(ex);
+                }
+
+            }
+        }catch (SQLException ex ){
+            LOGGER.error("SQL Exception: ", ex);
+            throw new RuntimeException(ex);
+        }
+        return updateSuccess;
+    }
+
 
 }
 
