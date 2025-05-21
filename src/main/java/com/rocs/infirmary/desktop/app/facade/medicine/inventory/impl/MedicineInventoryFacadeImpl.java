@@ -24,6 +24,7 @@ public class MedicineInventoryFacadeImpl implements MedicineInventoryFacade {
         LOGGER.info("Exiting findAllMedicine with {} medicines found.", medicines.size());
         return medicines;
     }
+
     @Override
     public boolean deleteMedicineByItemName(String itemName) {
         LOGGER.info("Entering deleteMedicineByItemName with itemName: {}", itemName);
@@ -60,7 +61,7 @@ public class MedicineInventoryFacadeImpl implements MedicineInventoryFacade {
 
     @Override
     public boolean updateInventory(String itemType, int quantity, int inventoryID) {
-        LOGGER.info("Accessing Get Medicine");
+        LOGGER.info("Accessing Update Inventory");
         return this.medicineInventoryDao.updateInventory(itemType,quantity,inventoryID);
     }
 

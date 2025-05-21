@@ -37,4 +37,3 @@ public class QueryConstants {
 
     public String updateQuantityOnInventory(){return UPDATE_QUANTITY_ON_INVENTORY_QUERY;}
 }
-
