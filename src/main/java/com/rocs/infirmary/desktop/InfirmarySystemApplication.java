@@ -624,6 +624,76 @@ public class InfirmarySystemApplication {
                 }
 
             }
+            {
+                LOGGER.info("Entered Case 14: View all student health profiles");
+
+                try {
+                    StudentHealthProfileFacade studentHealthProfileFacade = new StudentHealthProfileFacadeImpl();
+                    LOGGER.info("Attempting to retrieve all student health profiles");
+
+                    List<Student> studentList = studentHealthProfileFacade.getAllStudentHealthProfile();
+
+                    if (studentList == null || studentList.isEmpty()) {
+                        LOGGER.warn("No student records found in the health profile list.");
+                        System.out.println("No student found.");
+                        return;
+                    }
+
+                    System.out.println("Student Health Profiles");
+                    for (Student student : studentList) {
+                        LOGGER.info("Displaying brief profile for student LRN: {}", student.getLrn());
+                        System.out.println("LRN                : " + student.getLrn());
+                        System.out.println("First Name         : " + student.getFirstName());
+                        System.out.println("Middle Name        : " + student.getMiddleName());
+                        System.out.println("Last Name          : " + student.getLastName());
+                        System.out.println("Grade and Section  : " + student.getGradeLevel() + " " + student.getSection());
+                        System.out.println("Adviser            : " + student.getStudentAdviser() + "\n");
+                    }
+
+                    try {
+                        System.out.print("Enter LRN to view detailed health profile: ");
+                        long LRN = scanner.nextLong();
+                        scanner.nextLine();
+                        LOGGER.info("User entered LRN: {}", LRN);
+
+                        List<Student> studentListProfile = studentHealthProfileFacade.getStudentHealthProfileByLRN(LRN);
+
+                        if (studentListProfile == null || studentListProfile.isEmpty()) {
+                            LOGGER.warn("No health profile found for LRN: {}", LRN);
+                            System.out.println("No student profile found.");
+                            return;
+                        }
+
+                        LOGGER.info("Displaying full health profile for LRN: {}", LRN);
+                        System.out.println("Student Health Profile");
+                        for (Student student : studentListProfile) {
+                            System.out.println("Name                : " + student.getFirstName() + " " + student.getLastName());
+                            System.out.println("Contact Info:");
+                            System.out.println("  Contact Number    : " + student.getContactNumber());
+                            System.out.println("  Email Address     : " + student.getEmail());
+                            System.out.println("  Address           : " + student.getAddress());
+                            System.out.println();
+                            System.out.println("Recent Clinic Visit");
+                            System.out.println("  Symptoms          : " + student.getSymptoms());
+                            System.out.println("  Temperature       : " + student.getTemperatureReadings());
+                            System.out.println("  Treatment         : " + student.getTreatment());
+                            System.out.println("  Visit Date        : " + student.getVisitDate());
+                            System.out.println("  Nurse in Charge   : " + student.getNurseInCharge() + "\n");
+                        }
+
+                    } catch (InputMismatchException e) {
+                        LOGGER.error("Invalid LRN input. Expected a number. Error: {}", e.getMessage());
+                        System.out.println("Error: the LRN you entered is not valid. Please enter only numbers.");
+                        scanner.nextLine(); // clear invalid input
+                    }
+
+                } catch (Exception e) {
+                    LOGGER.error("Unexpected exception occurred in Case 14: {}", e.getMessage(), e);
+                }
+
+                LOGGER.info("Exiting Case 14: Finished viewing student health profiles");
+
+            }
             break;
         }
 
