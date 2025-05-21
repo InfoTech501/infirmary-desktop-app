@@ -1,5 +1,6 @@
 package com.rocs.infirmary.desktop.data.dao.medicine.inventory;
 
+import com.rocs.infirmary.desktop.data.model.inventory.Inventory;
 import com.rocs.infirmary.desktop.data.model.inventory.medicine.Medicine;
 import java.util.List;
 
@@ -45,6 +46,7 @@ public interface MedicineInventoryDao {
 
     List <Medicine> findAllMedicine();
 
+    boolean updateInventory(String itemType, int quantity, int inventoryID);
 
 
 }
