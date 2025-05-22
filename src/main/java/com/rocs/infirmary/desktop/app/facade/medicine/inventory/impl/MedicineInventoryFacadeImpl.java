@@ -58,5 +58,11 @@ public class MedicineInventoryFacadeImpl implements MedicineInventoryFacade {
         return this.medicineInventoryDao.findAllMedicine();
     }
 
+    @Override
+    public boolean deleteInventory(int inventoryID) {
+        LOGGER.info("Accessing Delete Inventory");
+        return this.medicineInventoryDao.deleteInventory(inventoryID);
+    }
+
 
 }

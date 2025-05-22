@@ -20,6 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -54,6 +55,7 @@ public class InfirmarySystemApplication {
         System.out.println("11 - Add New Medicine");
         System.out.println("12 - View Student Health Profiles");
         System.out.println("13 - Create Inventory");
+        System.out.println("14 - Delete Inventory");
         System.out.println("0 -Exit");
 
 
@@ -61,7 +63,7 @@ public class InfirmarySystemApplication {
             try {
                 System.out.println("Enter your choice: ");
                 choice = scanner.nextInt();
-                if (choice >= 0 && choice <= 13) {
+                if (choice >= 0 && choice <= 14) {
                     break;
                 } else {
                     System.out.println("Invalid Choice. Please select a valid option. ");
@@ -493,7 +495,7 @@ public class InfirmarySystemApplication {
                     newMedicine.setMedicineId(medicineID);
                     newMedicine.setItemName(itemName);
                     newMedicine.setDescription(itemDescription);
-                    newMedicine.setExpirationDate(new java.sql.Timestamp(expirationDate.getTime()));
+                    newMedicine.setExpirationDate(new Timestamp(expirationDate.getTime()));
 
                     boolean success = medicineInventoryFacade.addMedicine(newMedicine);
 
@@ -626,7 +628,65 @@ public class InfirmarySystemApplication {
                     LOGGER.error("Please Input a Number {}", e.getMessage());
                 }
 
+
+
+
+
+
                 break;
+            } case 14 : {
+
+                System.out.println("Welcome to Delete Inventory ");
+                LOGGER.info("Accessing Delete Inventory ");
+                try {
+
+                    MedicineInventoryFacade medicineInventoryFacade = new MedicineInventoryFacadeImpl();
+                    List<Medicine> inventoryList = medicineInventoryFacade.findAllMedicine();
+
+
+                    System.out.println("Inventory List ");
+                    int count = 1;
+                    for (Medicine medicine : inventoryList) {
+                        System.out.println(count++ + "." + medicine.getMedicineId() + " " + medicine.getItemType() + " " + medicine.getQuantity());
+                    }
+
+                    System.out.println("Choose from the List to Delete");
+                    int choose = scanner.nextInt();
+
+
+                    if (choose >= 1 && choose <= inventoryList.size()) {
+                        Medicine selected = inventoryList.get(choose - 1);
+                        int inventoryId = selected.getInventoryId();
+                        LOGGER.info("Item to be Deleted : " + inventoryId);
+
+                             System.out.println("Are you sure you want to Delete the Inventory : This cannot be undone ");
+                             System.out.println("1 - Yes");
+                             System.out.println("2 - No ");
+                             int confirmation = scanner.nextInt();
+
+
+                             if (confirmation == 1 ) {
+                                 medicineInventoryFacade.deleteInventory(inventoryId);
+                                 LOGGER.info("Successfully Deleted");
+                                 System.out.println("Successfully Deleted");
+                                 return;
+                             }else if (confirmation == 2 ) {
+                                 System.out.println("Canceled Deletion");
+                                 LOGGER.info("Canceled Deletion");
+                                 return;
+
+                             }
+                         }
+                }catch (RuntimeException e ) {
+                    e.printStackTrace();
+                    throw new RuntimeException();
+                }
+
+
+
+
+
+
             }
 
         }
