@@ -72,7 +72,7 @@ public class InfirmarySystemApplication {
             }
         }
         if (choice == 0) {
-            LOGGER.info("User chose to exit the application.");
+            LOGGER.info("User Choose to Exit the Application.");
             System.out.println("Exiting Infirmary System Application. Goodbye!");
             break;
         }
