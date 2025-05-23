@@ -455,12 +455,27 @@ public class InfirmarySystemApplication {
                 try {
                     System.out.println("Add New Medicine");
 
+                    String itemName;
+                    while (true){
                     System.out.println("Enter Medicine Name: ");
-                    String itemName = scanner.nextLine();
-
-                    System.out.println("Enter Medicine Description: ");
-                    String itemDescription = scanner.nextLine();
-
+                    itemName = scanner.nextLine();
+                    if (itemName.matches("^[a-zA-Z\\\\s]+$")){
+                        break;
+                    }
+                    else {
+                        System.out.println("Invalid input: Medicine Name must be a string ");
+                    }
+                    }
+                    String itemDescription;
+                    while (true) {
+                        System.out.println("Enter Medicine Description: ");
+                        itemDescription = scanner.nextLine();
+                        if (itemDescription.matches("^[a-zA-Z0-9\\s,.'\"()/-]+$")) {
+                            break;
+                        } else {
+                            System.out.println("Invalid input: Medicine Description must be a string ");
+                        }
+                    }
                     Date expirationDate;
                     while (true) {
                         try {
@@ -485,7 +500,9 @@ public class InfirmarySystemApplication {
                         medicineID += itemName.substring(0, 2).toUpperCase();
                     } else {
                         for (String word : words) {
-                            medicineID += Character.toUpperCase(word.charAt(0));
+                            if (!word.isEmpty()){
+                                medicineID += Character.toUpperCase(word.charAt(0));
+                            }
                         }
                     }
 
