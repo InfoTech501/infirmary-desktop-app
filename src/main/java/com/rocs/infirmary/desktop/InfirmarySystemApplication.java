@@ -380,15 +380,20 @@ public class InfirmarySystemApplication {
             case 9: {
                 try {
                     scanner.nextLine();
-
                     MedicineInventoryFacade medicineInventoryFacade = new MedicineInventoryFacadeImpl();
                     System.out.println("Delete Medicine By Item Name : ");
                     String itemName = scanner.nextLine().trim();
 
                     if (itemName.isEmpty()) {
                         System.out.println("No data Detected");
-                    } else if (!medicineInventoryFacade.IsAvailable(itemName)) {
+                    }
+                    if (itemName.matches("\\+d")){
+                        System.out.println("Invalid input: Medicine must be a string");
+                        break;
+                    }
+                    if (!medicineInventoryFacade.IsAvailable(itemName)) {
                         System.out.println("This medicine " + itemName + " " + "does not exist");
+                        break;
                     }
                     String confirmationMessage = "Are you sure you want to delete this Medicine Item? \n This action cannot be undone. ";
                     int confirmation = InfirmarySystemApplication.getUserConfirmation(scanner, confirmationMessage);
@@ -402,7 +407,7 @@ public class InfirmarySystemApplication {
                     }
 
                 } catch (RuntimeException e) {
-                    throw new RuntimeException(e);
+                    System.err.println("an unexpected error occurred:"+ e.getMessage());
                 }
                 break;
             }
