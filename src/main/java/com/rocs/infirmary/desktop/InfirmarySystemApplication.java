@@ -389,7 +389,7 @@ public class InfirmarySystemApplication {
                     if (itemName.isEmpty()) {
                         System.out.println("No data Detected");
                     }
-                  else if (itemName.matches("\\+d")){
+                  else if (itemName.matches("\\d+")){
                         System.out.println("Invalid input: Medicine must be a string");
                         break;
                     } else if (!medicineInventoryFacade.IsAvailable(itemName)) {
