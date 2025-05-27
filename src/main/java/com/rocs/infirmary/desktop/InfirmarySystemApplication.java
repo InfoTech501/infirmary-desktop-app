@@ -408,7 +408,7 @@ public class InfirmarySystemApplication {
                         }
                     }
                 } catch (RuntimeException e) {
-                    System.err.println("an unexpected error occurred:"+ e.getMessage());
+                    throw new RuntimeException(e);
                 }
                 break;
             }
