@@ -461,7 +461,7 @@ public class InfirmarySystemApplication {
                     while (true){
                     System.out.println("Enter Medicine Name: ");
                     itemName = scanner.nextLine();
-                    if (itemName.matches("^[a-zA-Z\\\\s]+$")){
+                    if (itemName.matches("^[a-zA-Z\\s]+$")){
                         break;
                     }
                     else {
@@ -472,7 +472,7 @@ public class InfirmarySystemApplication {
                     while (true) {
                         System.out.println("Enter Medicine Description: ");
                         itemDescription = scanner.nextLine();
-                        if (itemDescription.matches("\\d+") && itemDescription.matches("^[a-zA-Z0-9\\s,.'\"()/-]+$")) {
+                        if (itemDescription.matches("^[a-zA-Z\\s,.'-]+$")){
                             break;
                         } else {
                             System.out.println("Invalid input: Medicine Description must be a string ");
