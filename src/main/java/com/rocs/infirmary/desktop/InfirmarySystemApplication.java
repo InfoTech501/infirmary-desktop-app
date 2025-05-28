@@ -242,10 +242,9 @@ public class InfirmarySystemApplication {
 
             }
             case 5: {
-                LOGGER.info("User Access the Check Low Stock Medicine");
+                LOGGER.info(" User Access the Check Low Stock Medicine ");
                 try {
                     List<LowStockReport> lowStockItems = dashboardFacade.findAllLowStockMedicine();
-
                     for (LowStockReport medicineInventory : lowStockItems) {
                         System.out.println("Medicine Name: " + medicineInventory.getDescription());
                         System.out.println("Current Stock Level: " + medicineInventory.getQuantityAvailable());
@@ -254,24 +253,12 @@ public class InfirmarySystemApplication {
 
                     LOGGER.info("Alerting Check Low Stock Medicine Successfully");
                     LOGGER.info("Program Successfully Ended");
-
-                } catch (IndexOutOfBoundsException e) {
-                    LOGGER.error("IndexOutOfBoundsException while processing low stock items: ", e);
-                    System.out.println("An internal error occurred while accessing inventory data. Please try again.");
-
                 } catch (RuntimeException e) {
-                    LOGGER.error("RuntimeException while checking low stock items: ", e);
-                    System.out.println("An internal error occurred while adding the medicine. Please try again.");
-
-                } catch (Exception e) {
-                    LOGGER.error("Unexpected exception: ", e);
-                    System.out.println("An unexpected error occurred. Please try again.");
+                    LOGGER.error(" RuntimeException " + e);
+                    System.out.println("Error checking low stock items: " + e.getMessage());
                 }
                 break;
             }
-
-
-
             case 6: {
                 LOGGER.info(" User Access View Medicine Inventory List ");
                 MedicineInventoryFacade inventoryFacade = new MedicineInventoryFacadeImpl();
@@ -407,6 +394,11 @@ public class InfirmarySystemApplication {
                     } else {
                         System.out.println("Cancel the deletion. ");
                     }
+
+                } catch (IndexOutOfBoundsException e) {
+                    LOGGER.error("IndexOutOfBoundsException while deleting medicine: ", e);
+                    System.out.println("An internal error occurred while adding the medicine. Please try again.");
+
 
                 } catch (RuntimeException e) {
                     throw new RuntimeException(e);
