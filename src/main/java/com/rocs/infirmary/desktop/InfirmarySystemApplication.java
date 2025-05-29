@@ -458,26 +458,27 @@ public class InfirmarySystemApplication {
                     System.out.println("Add New Medicine");
 
                     String itemName;
-                    while (true){
-                    System.out.println("Enter Medicine Name: ");
-                    itemName = scanner.nextLine();
-                    if (itemName.matches("^[a-zA-Z\\s]+$")){
-                        break;
+                    while (true) {
+                        System.out.println("Enter Medicine Name: ");
+                        itemName = scanner.nextLine();
+                        if (itemName.matches("^[a-zA-Z\\s]+$")) {
+                            break;
+                        } else {
+                            System.out.println("Invalid input: Medicine Name must be a string.");
+                        }
                     }
-                    else {
-                        System.out.println("Invalid input: Medicine Name must be a string ");
-                    }
-                    }
+
                     String itemDescription;
                     while (true) {
                         System.out.println("Enter Medicine Description: ");
                         itemDescription = scanner.nextLine();
-                        if (itemDescription.matches("^[a-zA-Z\\s,.'-]+$")){
+                        if (itemDescription.matches("^[a-zA-Z\\s,.'-]+$")) {
                             break;
                         } else {
-                            System.out.println("Invalid input: Medicine Description must be a string ");
+                            System.out.println("Invalid input: Medicine Description must be a string.");
                         }
                     }
+
                     Date expirationDate;
                     while (true) {
                         try {
@@ -498,14 +499,20 @@ public class InfirmarySystemApplication {
                     String[] words = itemName.trim().split(" ");
                     String medicineID = "";
 
-                    if (words.length == 1) {
-                        medicineID += itemName.substring(0, 2).toUpperCase();
-                    } else {
-                        for (String word : words) {
-                            if (!word.isEmpty()){
-                                medicineID += Character.toUpperCase(word.charAt(0));
+                    try {
+                        if (words.length == 1) {
+                            // Catch possible StringIndexOutOfBoundsException
+                            medicineID += itemName.substring(0, 2).toUpperCase();
+                        } else {
+                            for (String word : words) {
+                                if (!word.isEmpty()) {
+                                    medicineID += Character.toUpperCase(word.charAt(0));
+                                }
                             }
                         }
+                    } catch (IndexOutOfBoundsException e) {
+                        System.out.println("An internal error occurred while adding the medicine. Please try again.");
+                        break;
                     }
 
                     Medicine newMedicine = new Medicine();
@@ -521,9 +528,12 @@ public class InfirmarySystemApplication {
                     } else {
                         System.out.println("Failed to add medicine.");
                     }
+                } catch (IndexOutOfBoundsException e) {
+                    System.out.println("An internal error occurred while adding the medicine. Please try again.");
                 } catch (Exception e) {
-                    System.out.println("Error occurred while adding medicine: " + e.getMessage());
+                    System.out.println("An internal error occurred while adding the medicine. Please try again.");
                 }
+
                 break;
             }
             case 12: {
