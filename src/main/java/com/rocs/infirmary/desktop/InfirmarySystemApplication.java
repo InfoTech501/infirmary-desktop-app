@@ -499,20 +499,14 @@ public class InfirmarySystemApplication {
                     String[] words = itemName.trim().split(" ");
                     String medicineID = "";
 
-                    try {
-                        if (words.length == 1) {
-
-                            medicineID += itemName.substring(0, 2).toUpperCase();
-                        } else {
-                            for (String word : words) {
-                                if (!word.isEmpty()) {
-                                    medicineID += Character.toUpperCase(word.charAt(0));
-                                }
+                    if (words.length == 1) {
+                        medicineID += itemName.substring(0, 2).toUpperCase();
+                    } else {
+                        for (String word : words) {
+                            if (!word.isEmpty()) {
+                                medicineID += Character.toUpperCase(word.charAt(0));
                             }
                         }
-                    } catch (IndexOutOfBoundsException e) {
-                        System.out.println("An internal error occurred while adding the medicine. Please try again.");
-                        break;
                     }
 
                     Medicine newMedicine = new Medicine();
@@ -528,6 +522,7 @@ public class InfirmarySystemApplication {
                     } else {
                         System.out.println("Failed to add medicine.");
                     }
+
                 } catch (IndexOutOfBoundsException e) {
                     System.out.println("An internal error occurred while adding the medicine. Please try again.");
                 } catch (Exception e) {
@@ -536,6 +531,7 @@ public class InfirmarySystemApplication {
 
                 break;
             }
+
             case 12: {
                 try {
                     StudentHealthProfileFacade studentHealthProfileFacade = new StudentHealthProfileFacadeImpl();
