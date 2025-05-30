@@ -49,4 +49,6 @@ public interface MedicineInventoryFacade {
 
     List<Medicine> findAllMedicineFromMedicineTable();
 
+    boolean deleteInventory(int InventoryID);
+
 }
