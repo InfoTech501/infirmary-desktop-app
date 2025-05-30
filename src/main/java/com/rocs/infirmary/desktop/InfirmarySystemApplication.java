@@ -501,7 +501,7 @@ public class InfirmarySystemApplication {
 
                     try {
                         if (words.length == 1) {
-                            // Catch possible StringIndexOutOfBoundsException
+
                             medicineID += itemName.substring(0, 2).toUpperCase();
                         } else {
                             for (String word : words) {
