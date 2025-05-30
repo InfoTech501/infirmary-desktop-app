@@ -1,8 +1,7 @@
-
 package com.rocs.infirmary.desktop.data.dao.student.record.impl;
 
 import com.rocs.infirmary.desktop.data.connection.ConnectionHelper;
-import com.rocs.infirmary.desktop.data.model.person.student.Student;
+import com.rocs.infirmary.desktop.data.dao.student.record.StudentMedicalRecordDao;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,34 +14,27 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.sql.*;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class StudentMedicalRecordDaoImplTest {
 
     @Mock
-    private PreparedStatement preparedStatement;
+    private Connection connection;
 
     @Mock
-    private ResultSet resultSet;
+    private PreparedStatement preparedStatement;
 
     private static MockedStatic<ConnectionHelper> connectionHelper;
-
-    private StudentMedicalRecordDaoImpl studentMedicalRecordDao;
-
-    private Connection connection;
 
     @BeforeEach
     void setUp() throws SQLException {
         connectionHelper = Mockito.mockStatic(ConnectionHelper.class);
-        connection = mock(Connection.class);
         connectionHelper.when(ConnectionHelper::getConnection).thenReturn(connection);
-
         when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
-        when(preparedStatement.executeQuery()).thenReturn(resultSet);
-
-        studentMedicalRecordDao = new StudentMedicalRecordDaoImpl();
     }
 
     @AfterEach
@@ -51,40 +43,32 @@ class StudentMedicalRecordDaoImplTest {
     }
 
     @Test
-    void testGetMedicalInformationByLRN() throws SQLException {
-        long testLRN = 93152648294L;
+    public void testUpdateStudentMedicalRecord() throws SQLException {
+        when(preparedStatement.executeUpdate()).thenReturn(1);
+        String symptoms = "Headache";
+        String temperatureReadings = "38°C";
+        Date visitDate = java.sql.Date.valueOf("2001-04-01");
+        String treatment = "Paracetamol";
+        long LRN = 1234567890L;
 
-        when(resultSet.next()).thenReturn(true).thenReturn(false);
-        when(resultSet.getInt("student_id")).thenReturn(1);
-        when(resultSet.getLong("LRN")).thenReturn(testLRN);
-        when(resultSet.getString("first_name")).thenReturn("John");
-        when(resultSet.getString("middle_name")).thenReturn(null);
-        when(resultSet.getString("last_name")).thenReturn("Doe");
-        when(resultSet.getInt("age")).thenReturn(18);
-        when(resultSet.getString("gender")).thenReturn("MALE");
-        when(resultSet.getString("symptoms")).thenReturn("Severe headache");
-        when(resultSet.getString("temperature_readings")).thenReturn("37.5°C");
-        when(resultSet.getDate("visit_date")).thenReturn(Date.valueOf("2000-01-02"));
-        when(resultSet.getString("treatment")).thenReturn("Prescribed pain reliever");
+        StudentMedicalRecordDao studentDao = new StudentMedicalRecordDaoImpl();
 
-        Student result = studentMedicalRecordDao.getMedicalInformationByLRN(testLRN);
+        boolean result = studentDao.updateStudentMedicalRecord(symptoms, temperatureReadings, visitDate, treatment, LRN);
+        assertTrue(result);
+        verify(connection, atLeastOnce()).prepareStatement(anyString());
+        verify(preparedStatement, atLeastOnce()).setString(anyInt(), anyString());
+        verify(preparedStatement, atLeastOnce()).setTimestamp(anyInt(), any());
+        verify(preparedStatement, atLeastOnce()).setLong(anyInt(), eq(LRN));
+        verify(preparedStatement, atLeastOnce()).executeUpdate();
 
-        verify(connection, times(1)).prepareStatement(anyString());
-        verify(preparedStatement, times(1)).setLong(1, testLRN);
-        verify(preparedStatement, times(1)).executeQuery();
+        boolean noUpdateResult = studentDao.updateStudentMedicalRecord(null, null, null, null, LRN);
+        assertFalse(noUpdateResult);
 
-        assertNotNull(result);
-        assertEquals(1, result.getStudentId());
-        assertEquals(testLRN, result.getLrn());
-        assertEquals("John", result.getFirstName());
-        assertNull(result.getMiddleName());
-        assertEquals("Doe", result.getLastName());
-        assertEquals(18, result.getAge());
-        assertEquals("MALE", result.getGender());
-        assertEquals("Severe headache", result.getSymptoms());
-        assertEquals("37.5°C", result.getTemperatureReadings());
-        assertEquals("Prescribed pain reliever", result.getTreatment());
+        boolean partialUpdateResult = studentDao.updateStudentMedicalRecord("Fever", null, null, null, LRN);
+        assertTrue(partialUpdateResult);
+
+        when(preparedStatement.executeUpdate()).thenThrow(new SQLException("Error"));
+        boolean errorResult = studentDao.updateStudentMedicalRecord("Cough", null, null, null, LRN);
+        assertFalse(errorResult);
     }
 }
-
-
