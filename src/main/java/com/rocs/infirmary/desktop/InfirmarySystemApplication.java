@@ -390,12 +390,12 @@ public class InfirmarySystemApplication {
                         System.out.println("No data Detected");
                         break;
                     }
-                   if (itemName.matches("\\d+")) {
-                       System.out.println("Invalid input: Medicine must be a string");
+                    else if (itemName.matches("\\d+")) {
+                       System.out.println("Invalid input: Medicine Name must be a string");
                        break;
                    }
-                        if (itemName.matches(".*[a-zA-Z].*")){
-                            System.out.println("Invalid input: Medicine must be a string");
+                      else if (!itemName.matches(".*[a-zA-Z].*")){
+                            System.out.println("Invalid input: Medicine Name must be a string");
                             break;
 
                     } else if (!medicineInventoryFacade.IsAvailable(itemName)) {
@@ -403,6 +403,7 @@ public class InfirmarySystemApplication {
                         break;
 
                     }
+                      else {
                         String confirmationMessage = "Are you sure you want to delete this Medicine Item? \n This action cannot be undone. ";
                         int confirmation = InfirmarySystemApplication.getUserConfirmation(scanner, confirmationMessage);
 
@@ -413,6 +414,7 @@ public class InfirmarySystemApplication {
                         } else {
                             System.out.println("Cancel the deletion. ");
 
+                        }
                     }
                 } catch (RuntimeException e) {
                     throw new RuntimeException(e);
