@@ -658,9 +658,6 @@ public class InfirmarySystemApplication {
 
 
 
-
-
-
                 break;
             } case 14 : {
 
@@ -681,8 +678,13 @@ public class InfirmarySystemApplication {
                     System.out.println("Choose from the List to Delete");
                     int choose = scanner.nextInt();
 
+                     if (choose > inventoryList.size()) {
+                         System.out.println("Invalid choice. Please select a valid option");
+                         LOGGER.info("Invalid choice: Selection is not in the inventory list. ");
+                         break;
+                     }
 
-                    if (choose >= 1 && choose <= inventoryList.size()) {
+                    if (choose >= 1) {
                         Medicine selected = inventoryList.get(choose - 1);
                         int inventoryId = selected.getInventoryId();
                         LOGGER.info("Item to be Deleted : " + inventoryId);
@@ -697,26 +699,20 @@ public class InfirmarySystemApplication {
                                  medicineInventoryFacade.deleteInventory(inventoryId);
                                  LOGGER.info("Successfully Deleted");
                                  System.out.println("Successfully Deleted");
-                                 return;
+                                  break;
                              }else if (confirmation == 2 ) {
                                  System.out.println("Canceled Deletion");
                                  LOGGER.info("Canceled Deletion");
-                                 return;
+                                 break;
 
                              }
                          }
+
                 }catch (RuntimeException e ) {
-                    e.printStackTrace();
                     throw new RuntimeException();
                 }
-
-
-
-
-
-
             }
-
+            break;
         }
     }while (choice != 0);
         scanner.close();
