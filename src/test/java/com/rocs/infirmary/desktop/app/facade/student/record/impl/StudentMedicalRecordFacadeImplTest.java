@@ -8,9 +8,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.ArgumentMatchers.anyLong;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -20,29 +23,42 @@ public class StudentMedicalRecordFacadeImplTest {
     private StudentMedicalRecordFacadeImpl facade;
 
     @Mock
-    private StudentMedicalRecordDao mockDao;
+    private StudentMedicalRecordDao studentMedicalRecordDao;
 
-    private Student mockStudent;
+    private Student testStudent;
+    private List<Student> studentList;
 
     @BeforeEach
-    void setUp() {
-        mockStudent = new Student();
-        mockStudent.setLrn(93152648294L);
-        mockStudent.setFirstName("John");
-        mockStudent.setLastName("Doe");
-        when(facade.findMedicalInformationByLRN(anyLong())).thenReturn(mockStudent);
+    public void setUp() {
+        testStudent = new Student();
+        testStudent.setLrn(93152648294L);
+        testStudent.setFirstName("John");
+        testStudent.setLastName("Doe");
+
+        studentList = new ArrayList<>();
+        studentList.add(testStudent);
     }
 
     @Test
-    void testFindMedicalInformationByLRN() {
-        long testLRN = 93152648294L;
-        Student result = facade.findMedicalInformationByLRN(testLRN);
+    public void testFindMedicalInformationByLRN() {
+        when(facade.findMedicalInformationByLRN(anyLong())).thenReturn(testStudent);
+        Student result = facade.findMedicalInformationByLRN(93152648294L);
 
         assertNotNull(result);
         assertEquals(93152648294L, result.getLrn());
         assertEquals("John", result.getFirstName());
         assertEquals("Doe", result.getLastName());
+
         verify(facade, times(1)).findMedicalInformationByLRN(anyLong());
     }
-}
 
+
+    @Test
+    public void testUpdateStudentMedicalRecord() {
+        when(facade.updateStudentMedicalRecord(anyString(), anyString(), any(Date.class), anyString(), anyLong())).thenReturn(true);
+        boolean result = facade.updateStudentMedicalRecord("Cough", "37.5", new Date(), "Cough syrup", 93152648294L);
+
+        assertTrue(result);
+        verify(facade, times(1)).updateStudentMedicalRecord(anyString(), anyString(), any(Date.class), anyString(), anyLong());
+    }
+}
