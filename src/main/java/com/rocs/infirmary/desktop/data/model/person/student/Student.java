@@ -23,6 +23,7 @@ public class Student extends Person {
     private String gradeLevel;
     private String studentAdviser;
     private String nurseInCharge;
+    private boolean deleted;
 
     public String getNurseInCharge() {
         return nurseInCharge;
@@ -119,6 +120,10 @@ public class Student extends Person {
     public int getMedicalRecordStatus() {
         return getMedicaRecordStatus;
     }
+
+    public boolean isDeleted() {return deleted;}
+
+    public void setDeleted(boolean deleted) {this.deleted = deleted;}
 }
 
 
