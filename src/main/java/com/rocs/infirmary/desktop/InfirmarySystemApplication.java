@@ -546,53 +546,63 @@ public class InfirmarySystemApplication {
             }
 
             case 12: {
+                StudentHealthProfileFacade studentHealthProfileFacade = new StudentHealthProfileFacadeImpl();
                 try {
-                    StudentHealthProfileFacade studentHealthProfileFacade = new StudentHealthProfileFacadeImpl();
-                    List<Student> studentList = studentHealthProfileFacade.getAllStudentHealthProfile();
-                    if (studentList == null) {
+                    List<Student> allStudents = studentHealthProfileFacade.getAllStudentHealthProfile();
+                    if (allStudents == null || allStudents.isEmpty()) {
                         System.out.println("No student found.");
-                    }
-                    System.out.println("Student Health Profiles");
-                    for (Student student : studentList) {
-                        System.out.println("LRN                :" + student.getLrn());
-                        System.out.println("Fist Name          : " + student.getFirstName());
-                        System.out.println("Middle Name        : " + student.getMiddleName());
-                        System.out.println("Last Name          : " + student.getLastName());
-                        System.out.println("Grade and section  :" + student.getGradeLevel() + " " + student.getSection());
-                        System.out.println("Adviser            :" + student.getStudentAdviser() + "\n");
-                    }
-                    try {
-                        System.out.print("Enter lrn to view detailed health profile: ");
-                        long LRN = scanner.nextLong();
-                        List<Student> studentListProfile = studentHealthProfileFacade.getStudentHealthProfileByLRN(LRN);
-                        if (studentListProfile == null) {
-                            System.out.println("No student Profile found.");
-                        } else {
-                            System.out.println("Student Health Profile");
-                            for (Student student : studentListProfile) {
-                                System.out.println("Name          : " + student.getFirstName() + " " + student.getLastName());
-                                System.out.println("Contact info.");
-                                System.out.println("Contact Number     :" + student.getContactNumber());
-                                System.out.println("Email Address      :" + student.getEmail());
-                                System.out.println("Address            :" + student.getAddress());
-                                System.out.println();
-                                System.out.println("Recent Clinic Visit");
-                                System.out.println("Symptoms           : " + student.getSymptoms());
-                                System.out.println("Temperature        : " + student.getTemperatureReadings());
-                                System.out.println("Treatment          : " + student.getTreatment());
-                                System.out.println("Visit date         : " + student.getVisitDate());
-                                System.out.println("Nurse in Charge    : " + student.getNurseInCharge() + "\n");
+                    } else {
+                        System.out.println("\n--- All Active Student Health Profiles ---");
+                        boolean activeStudentsFound = false;
+                        for (Student student : allStudents) {
+                            if (!student.isDeleted()) {
+                                activeStudentsFound = true;
+                                System.out.println("LRN                : " + student.getLrn());
+                                System.out.println("First Name         : " + student.getFirstName());
+                                System.out.println("Middle Name        : " + student.getMiddleName());
+                                System.out.println("Last Name          : " + student.getLastName());
+                                System.out.println("Grade and Section  : " + student.getGradeLevel() + " " + student.getSection());
+                                System.out.println("Adviser            : " + student.getStudentAdviser() + "\n");
                             }
                         }
-
-                    } catch (InputMismatchException e) {
-                        System.out.println("Error: the LRN you entered is not valid. Please enter only numbers.");
-                        scanner.nextLine();
+                        if (!activeStudentsFound) {
+                            System.out.println("No active student health profiles to display.");
+                        }
                     }
-                } catch (NullPointerException np) {
-                    LOGGER.error("List containing the retrieved data is empty: {}", np.getMessage());
-                }
 
+                    String lrnString = getValidLRN(scanner, "Enter LRN to view detailed health profile:");
+                    long lrnToRetrieve = Long.parseLong(lrnString);
+
+                    List<Student> studentProfileList = studentHealthProfileFacade.getStudentHealthProfileByLRN(lrnToRetrieve);
+
+                    if (studentProfileList == null || studentProfileList.isEmpty()) {
+                        System.out.println("No student profile found for the given LRN.");
+                    } else {
+                        Student studentToDisplay = studentProfileList.get(0);
+                        if (studentToDisplay.isDeleted()) {
+                            System.out.println("This record has been deleted and cannot be accessed.");
+                        } else {
+
+                            System.out.println("\n--- Detailed Student Health Profile ---");
+                            System.out.println("Name               : " + studentToDisplay.getFirstName() + " " + studentToDisplay.getLastName());
+                            System.out.println("Contact Info.");
+                            System.out.println("Contact Number     : " + studentToDisplay.getContactNumber());
+                            System.out.println("Email Address      : " + studentToDisplay.getEmail());
+                            System.out.println("Address            : " + studentToDisplay.getAddress());
+                            System.out.println();
+                            System.out.println("Recent Clinic Visit");
+                            System.out.println("Symptoms           : " + studentToDisplay.getSymptoms());
+                            System.out.println("Temperature        : " + studentToDisplay.getTemperatureReadings());
+                            System.out.println("Treatment          : " + studentToDisplay.getTreatment());
+                            System.out.println("Visit Date         : " + studentToDisplay.getVisitDate());
+                            System.out.println("Nurse in Charge    : " + studentToDisplay.getNurseInCharge() + "\n");
+                        }
+                    }
+
+                } catch (Exception e) {
+                    LOGGER.error("An unexpected error occurred during health profile retrieval: {}", e.getMessage(), e);
+                    System.out.println("An unexpected error occurred. Please contact support.");
+                }
             }
             case 13: {
                 LOGGER.info("Accessing Create Inventory ");
