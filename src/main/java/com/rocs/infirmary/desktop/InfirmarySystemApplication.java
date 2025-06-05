@@ -20,6 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -35,11 +36,12 @@ public class InfirmarySystemApplication {
     private static Logger LOGGER =  LoggerFactory.getLogger(InfirmarySystemApplication.class);
 
     public static void main(String[] args) {
-
-
         Scanner scanner = new Scanner(System.in);
         System.out.println("Welcome to Infirmary System Application");
-        System.out.println("Please select which report:");
+        int choice;
+
+        do{
+        System.out.println("\nPlease select which report:");
         System.out.println("1 - Common Ailments Report");
         System.out.println("2 - Medication Trend Report");
         System.out.println("3 - Retrieve Student Medical Record");
@@ -53,13 +55,15 @@ public class InfirmarySystemApplication {
         System.out.println("11 - Add New Medicine");
         System.out.println("12 - View Student Health Profiles");
         System.out.println("13 - Create Inventory");
+        System.out.println("14 - Delete Inventory");
+        System.out.println("0 -Exit");
 
-        int choice = 0;
+
         while (true) {
             try {
                 System.out.println("Enter your choice: ");
                 choice = scanner.nextInt();
-                if (choice >= 1 && choice <= 13) {
+                if (choice >= 0 && choice <= 14) {
                     break;
                 } else {
                     System.out.println("Invalid Choice. Please select a valid option. ");
@@ -68,6 +72,11 @@ public class InfirmarySystemApplication {
                 System.out.println("Invalid input. Please enter a number.");
                 scanner.nextLine();
             }
+        }
+        if (choice == 0) {
+            LOGGER.info("User Choose to Exit the Application.");
+            System.out.println("Exiting Infirmary System Application. Goodbye!");
+            break;
         }
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -127,7 +136,7 @@ public class InfirmarySystemApplication {
                     if (medicationTrendReportList == null || medicationTrendReportList.isEmpty()) {
                         LOGGER.info("No data found for the selected criteria);");
                         System.out.println("No data available for the selected criteria.");
-                        return;
+
                     } else {
                         System.out.println("\nMedication Trend report");
                         System.out.println("Period date: " + displayFormat.format(startDate) + " to " + displayFormat.format(endDate));
@@ -266,42 +275,42 @@ public class InfirmarySystemApplication {
             case 6: {
                 LOGGER.info(" User Access View Medicine Inventory List ");
                 MedicineInventoryFacade inventoryFacade = new MedicineInventoryFacadeImpl();
-               try{
-                List<Medicine> medicineInventoryItems = inventoryFacade.findAllMedicine();
-                if (medicineInventoryItems.isEmpty()) {
-                    LOGGER.info("Medicine Inventory List is empty.");
-                    System.out.println("The list of items is empty.");
-                } else {
-                    System.out.println("Medicine Inventory Retrieval Success"+ medicineInventoryItems.size());
-                    System.out.println("LIST OF ITEMS:");
-                    {
-                        for (Medicine medicine : medicineInventoryItems) {
-                            System.out.println("Name of Medicine:  " + medicine.getItemName() +
-                                    "\nItem Type:    " + medicine.getItemType() +
-                                    "\nDescription:  " + medicine.getDescription() +
-                                    "\nStock Level:  " + medicine.getQuantity() +
-                                    "\nExpiry date:  " + medicine.getExpirationDate() + "\n");
-                        }
+                try {
+                    List<Medicine> medicineInventoryItems = inventoryFacade.findAllMedicine();
+                    if (medicineInventoryItems.isEmpty()) {
+                        LOGGER.info("Medicine Inventory List is empty.");
+                        System.out.println("The list of items is empty.");
+                    } else {
+                        System.out.println("Medicine Inventory Retrieval Success" + medicineInventoryItems.size());
+                        System.out.println("LIST OF ITEMS:");
+                        {
+                            for (Medicine medicine : medicineInventoryItems) {
+                                System.out.println("Name of Medicine:  " + medicine.getItemName() +
+                                        "\nItem Type:    " + medicine.getItemType() +
+                                        "\nDescription:  " + medicine.getDescription() +
+                                        "\nStock Level:  " + medicine.getQuantity() +
+                                        "\nExpiry date:  " + medicine.getExpirationDate() + "\n");
+                            }
 
+                        }
+                        LOGGER.info("Retrieving View Medicine Inventory List Successfully");
+                        LOGGER.info("Program Successfully Ended");
                     }
-                    LOGGER.info("Retrieving View Medicine Inventory List Successfully");
-                    LOGGER.info("Program Successfully Ended");
+                } catch (RuntimeException e) {
+                    LOGGER.error(" RuntimeException " + e);
+                    System.out.println("Error retrieving medicine inventory: " + e.getMessage());
                 }
-               }catch (RuntimeException e) {
-                   LOGGER.error(" RuntimeException " + e);
-                   System.out.println("Error retrieving medicine inventory: " + e.getMessage());
-               }
                 break;
             }
             case 7: {
 
-                    StudentMedicalRecordFacadeImpl studentMedical = new StudentMedicalRecordFacadeImpl();
-                    List<Student> medicalRecords = studentMedical.readAllStudentMedicalRecords();
-                   try{
+                StudentMedicalRecordFacadeImpl studentMedical = new StudentMedicalRecordFacadeImpl();
+                List<Student> medicalRecords = studentMedical.readAllStudentMedicalRecords();
+                try {
                     if (medicalRecords.isEmpty()) {
                         LOGGER.info("Failed to Student Medical Record ");
                         System.out.println("No record Found ");
-                        return;
+
                     }
 
                     for (Student record : medicalRecords) {
@@ -325,8 +334,8 @@ public class InfirmarySystemApplication {
                 } catch (RuntimeException e) {
                     LOGGER.error("Runtime Exception Occurred " + e.getMessage());
                     System.out.println("Error retrieving Medical Record : " + e.getMessage());
-                    }
-                    break;
+                }
+                break;
 
             }
 
@@ -373,30 +382,40 @@ public class InfirmarySystemApplication {
             case 9: {
                 try {
                     scanner.nextLine();
-
                     MedicineInventoryFacade medicineInventoryFacade = new MedicineInventoryFacadeImpl();
                     System.out.println("Delete Medicine By Item Name : ");
                     String itemName = scanner.nextLine().trim();
 
                     if (itemName.isEmpty()) {
                         System.out.println("No data Detected");
-                        return;
+                        break;
+                    }
+                    else if (itemName.matches("\\d+")) {
+                       System.out.println("Invalid input: Medicine Name must be a string");
+                       break;
+                   }
+                      else if (!itemName.matches(".*[a-zA-Z].*")){
+                            System.out.println("Invalid input: Medicine Name must be a string");
+                            break;
 
                     } else if (!medicineInventoryFacade.IsAvailable(itemName)) {
                         System.out.println("This medicine " + itemName + " " + "does not exist");
-                        return;
+                        break;
+
                     }
-                    String confirmationMessage = "Are you sure you want to delete this Medicine Item? \n This action cannot be undone. ";
-                    int confirmation = InfirmarySystemApplication.getUserConfirmation(scanner, confirmationMessage);
+                      else {
+                        String confirmationMessage = "Are you sure you want to delete this Medicine Item? \n This action cannot be undone. ";
+                        int confirmation = InfirmarySystemApplication.getUserConfirmation(scanner, confirmationMessage);
 
-                    if (confirmation == 1) {
-                        boolean success = medicineInventoryFacade.deleteMedicineByItemName(itemName);
-                        System.out.println(success ? "Successfully Deleted" : "Failed to Delete");
+                        if (confirmation == 1) {
+                            boolean success = medicineInventoryFacade.deleteMedicineByItemName(itemName);
+                            System.out.println(success ? "Successfully Deleted" : "Failed to Delete");
 
-                    } else {
-                        System.out.println("Cancel the deletion. ");
+                        } else {
+                            System.out.println("Cancel the deletion. ");
+
+                        }
                     }
-
                 } catch (RuntimeException e) {
                     throw new RuntimeException(e);
                 }
@@ -409,13 +428,13 @@ public class InfirmarySystemApplication {
                 StudentMedicalRecordFacade studentMedicalRecordFacade = new StudentMedicalRecordFacadeImpl();
                 try {
 
-                    String LRN = getValidLRN(scanner,"Enter a Student LRN to update : ");
+                    String LRN = getValidLRN(scanner, "Enter a Student LRN to update : ");
 
                     Student student = studentMedicalRecordFacade.findMedicalInformationByLRN(Long.parseLong((LRN)));
 
                     if (student == null) {
                         System.out.println("No student found.");
-                        return;
+
                     }
                     System.out.println(" ");
                     System.out.println("Symptoms (Enter to skip): ");
@@ -425,7 +444,7 @@ public class InfirmarySystemApplication {
                     String temperatureReadings = scanner.nextLine();
 
 
-                    Date visitDate = getValidInputDate(scanner, dateFormat,"Visit Date ( yyyy-MM-dd ):");
+                    Date visitDate = getValidInputDate(scanner, dateFormat, "Visit Date ( yyyy-MM-dd ):");
 
                     System.out.println("Treatment (Enter to skip) : ");
                     String treatment = scanner.nextLine();
@@ -440,10 +459,10 @@ public class InfirmarySystemApplication {
                     }
 
                 } catch (RuntimeException e) {
-                    System.out.println("Runtime Exception Occurred:"+ e.getMessage());
+                    System.out.println("Runtime Exception Occurred:" + e.getMessage());
                 }
-            break;
-        }
+                break;
+            }
             case 11: {
                 scanner.nextLine();
                 MedicineInventoryFacade medicineInventoryFacade = new MedicineInventoryFacadeImpl();
@@ -451,11 +470,27 @@ public class InfirmarySystemApplication {
                 try {
                     System.out.println("Add New Medicine");
 
-                    System.out.println("Enter Medicine Name: ");
-                    String itemName = scanner.nextLine();
+                    String itemName;
+                    while (true) {
+                        System.out.println("Enter Medicine Name: ");
+                        itemName = scanner.nextLine();
+                        if (itemName.matches("^[a-zA-Z\\s]+$")) {
+                            break;
+                        } else {
+                            System.out.println("Invalid input: Medicine Name must be a string.");
+                        }
+                    }
 
-                    System.out.println("Enter Medicine Description: ");
-                    String itemDescription = scanner.nextLine();
+                    String itemDescription;
+                    while (true) {
+                        System.out.println("Enter Medicine Description: ");
+                        itemDescription = scanner.nextLine();
+                        if (itemDescription.matches("^[a-zA-Z\\s,.'-]+$")) {
+                            break;
+                        } else {
+                            System.out.println("Invalid input: Medicine Description must be a string.");
+                        }
+                    }
 
                     Date expirationDate;
                     while (true) {
@@ -478,10 +513,12 @@ public class InfirmarySystemApplication {
                     String medicineID = "";
 
                     if (words.length == 1) {
-                            medicineID += itemName.substring(0, 2).toUpperCase();
+                        medicineID += itemName.substring(0, 2).toUpperCase();
                     } else {
                         for (String word : words) {
+                            if (!word.isEmpty()) {
                                 medicineID += Character.toUpperCase(word.charAt(0));
+                            }
                         }
                     }
 
@@ -489,7 +526,7 @@ public class InfirmarySystemApplication {
                     newMedicine.setMedicineId(medicineID);
                     newMedicine.setItemName(itemName);
                     newMedicine.setDescription(itemDescription);
-                    newMedicine.setExpirationDate(new java.sql.Timestamp(expirationDate.getTime()));
+                    newMedicine.setExpirationDate(new Timestamp(expirationDate.getTime()));
 
                     boolean success = medicineInventoryFacade.addMedicine(newMedicine);
 
@@ -498,65 +535,70 @@ public class InfirmarySystemApplication {
                     } else {
                         System.out.println("Failed to add medicine.");
                     }
+
+                } catch (IndexOutOfBoundsException e) {
+                    System.out.println("An internal error occurred while adding the medicine. Please try again.");
                 } catch (Exception e) {
-                    System.out.println("Error occurred while adding medicine: " + e.getMessage());
+                    System.out.println("An internal error occurred while adding the medicine. Please try again.");
                 }
+
                 break;
-            }case 12:{
+            }
+
+            case 12: {
                 try {
                     StudentHealthProfileFacade studentHealthProfileFacade = new StudentHealthProfileFacadeImpl();
-                    List<Student>studentList = studentHealthProfileFacade.getAllStudentHealthProfile();
+                    List<Student> studentList = studentHealthProfileFacade.getAllStudentHealthProfile();
                     if (studentList == null) {
                         System.out.println("No student found.");
-                        return;
                     }
                     System.out.println("Student Health Profiles");
-                        for (Student student : studentList) {
-                            System.out.println("LRN                :" + student.getLrn());
-                            System.out.println("Fist Name          : " + student.getFirstName());
-                            System.out.println("Middle Name        : " + student.getMiddleName());
-                            System.out.println("Last Name          : " + student.getLastName());
-                            System.out.println("Grade and section  :" + student.getGradeLevel() + " " + student.getSection());
-                            System.out.println("Adviser            :" + student.getStudentAdviser() + "\n");
-                        }
-                        try {
-                            System.out.print("Enter lrn to view detailed health profile: ");
-                            long LRN = scanner.nextLong();
-                            List<Student>studentListProfile = studentHealthProfileFacade.getStudentHealthProfileByLRN(LRN);
-                            if (studentListProfile == null) {
-                                System.out.println("No student Profile found.");
-                                return; 
-                            }else{
-                                System.out.println("Student Health Profile");
-                                for (Student student:studentListProfile){
-                                    System.out.println("Name          : " + student.getFirstName()+" "+student.getLastName());
-                                    System.out.println("Contact info.");
-                                    System.out.println("Contact Number     :"+student.getContactNumber());
-                                    System.out.println("Email Address      :"+student.getEmail());
-                                    System.out.println("Address            :"+student.getAddress());
-                                    System.out.println();
-                                    System.out.println("Recent Clinic Visit");
-                                    System.out.println("Symptoms           : " + student.getSymptoms());
-                                    System.out.println("Temperature        : " + student.getTemperatureReadings());
-                                    System.out.println("Treatment          : " + student.getTreatment());
-                                    System.out.println("Visit date         : " + student.getVisitDate());
-                                    System.out.println("Nurse in Charge    : " + student.getNurseInCharge()+"\n");
-                                }
+                    for (Student student : studentList) {
+                        System.out.println("LRN                :" + student.getLrn());
+                        System.out.println("Fist Name          : " + student.getFirstName());
+                        System.out.println("Middle Name        : " + student.getMiddleName());
+                        System.out.println("Last Name          : " + student.getLastName());
+                        System.out.println("Grade and section  :" + student.getGradeLevel() + " " + student.getSection());
+                        System.out.println("Adviser            :" + student.getStudentAdviser() + "\n");
+                    }
+                    try {
+                        System.out.print("Enter lrn to view detailed health profile: ");
+                        long LRN = scanner.nextLong();
+                        List<Student> studentListProfile = studentHealthProfileFacade.getStudentHealthProfileByLRN(LRN);
+                        if (studentListProfile == null) {
+                            System.out.println("No student Profile found.");
+                        } else {
+                            System.out.println("Student Health Profile");
+                            for (Student student : studentListProfile) {
+                                System.out.println("Name          : " + student.getFirstName() + " " + student.getLastName());
+                                System.out.println("Contact info.");
+                                System.out.println("Contact Number     :" + student.getContactNumber());
+                                System.out.println("Email Address      :" + student.getEmail());
+                                System.out.println("Address            :" + student.getAddress());
+                                System.out.println();
+                                System.out.println("Recent Clinic Visit");
+                                System.out.println("Symptoms           : " + student.getSymptoms());
+                                System.out.println("Temperature        : " + student.getTemperatureReadings());
+                                System.out.println("Treatment          : " + student.getTreatment());
+                                System.out.println("Visit date         : " + student.getVisitDate());
+                                System.out.println("Nurse in Charge    : " + student.getNurseInCharge() + "\n");
                             }
-
-                        }catch (InputMismatchException e){
-                            System.out.println("Error: the LRN you entered is not valid. Please enter only numbers.");
-                            scanner.nextLine();
                         }
-                }catch (NullPointerException np){
-                    LOGGER.error("List containing the retrieved data is empty: {}",np.getMessage());
+
+                    } catch (InputMismatchException e) {
+                        System.out.println("Error: the LRN you entered is not valid. Please enter only numbers.");
+                        scanner.nextLine();
+                    }
+                } catch (NullPointerException np) {
+                    LOGGER.error("List containing the retrieved data is empty: {}", np.getMessage());
                 }
 
-            } case 13: {
+            }
+            case 13: {
                 LOGGER.info("Accessing Create Inventory ");
 
                 MedicineInventoryFacade medicineInventoryFacade = new MedicineInventoryFacadeImpl();
-                List<Medicine> medicineList = medicineInventoryFacade. findAllMedicineFromMedicineTable();
+                List<Medicine> medicineList = medicineInventoryFacade.findAllMedicineFromMedicineTable();
 
                 try {
                     System.out.println("List of Medicine");
@@ -579,33 +621,32 @@ public class InfirmarySystemApplication {
 
                         int selectedItemType = scanner.nextInt();
 
-                            switch (selectedItemType) {
-                                case 1: {
-                                    itemtype = "Medicine";
-                                    break;
-                                }
-                                case 2: {
-                                    itemtype = "Bandage";
-                                    break;
-                                }
-
-                                default:
-                                    System.out.println("Invalid Input");
-
-                                    return;
+                        switch (selectedItemType) {
+                            case 1: {
+                                itemtype = "Medicine";
+                                break;
                             }
+                            case 2: {
+                                itemtype = "Bandage";
+                                break;
+                            }
+
+                            default:
+                                System.out.println("Invalid Input");
+
+                        }
 
                         System.out.println("Enter a Quantity : ");
                         int quantity = scanner.nextInt();
 
-                        LOGGER.info("Data Retrieved : {}",  "\n"
-                                + "Medicine ID : {}", medicineID  +"\n"
-                                + "Item Type   : {}", itemtype +"\n"
-                                + "Quantity    : {}", quantity +"\n"
+                        LOGGER.info("Data Retrieved : {}", "\n"
+                                + "Medicine ID : {}", medicineID + "\n"
+                                + "Item Type   : {}", itemtype + "\n"
+                                + "Quantity    : {}", quantity + "\n"
 
                         );
 
-                        boolean success = medicineInventoryFacade.addInventory(medicineID,itemtype,quantity);
+                        boolean success = medicineInventoryFacade.addInventory(medicineID, itemtype, quantity);
                         if (success) {
                             System.out.println("Added to Inventory");
                             LOGGER.info("Successfully Added to the Inventory");
@@ -614,7 +655,7 @@ public class InfirmarySystemApplication {
                             LOGGER.info("Failed to Add to the Inventory");
                         }
 
-                    } else  {
+                    } else {
                         System.out.println("No Medicine found in the List");
                         LOGGER.warn("No Medicine found in the List");
                     }
@@ -623,11 +664,67 @@ public class InfirmarySystemApplication {
                     LOGGER.error("Please Input a Number {}", e.getMessage());
                 }
 
+
+
+                break;
+            } case 14 : {
+
+                System.out.println("Welcome to Delete Inventory ");
+                LOGGER.info("Accessing Delete Inventory ");
+                try {
+
+                    MedicineInventoryFacade medicineInventoryFacade = new MedicineInventoryFacadeImpl();
+                    List<Medicine> inventoryList = medicineInventoryFacade.findAllMedicine();
+
+
+                    System.out.println("Inventory List ");
+                    int count = 1;
+                    for (Medicine medicine : inventoryList) {
+                        System.out.println(count++ + "." + medicine.getMedicineId() + " " + medicine.getItemType() + " " + medicine.getQuantity());
+                    }
+
+                    System.out.println("Choose from the List to Delete");
+                    int choose = scanner.nextInt();
+
+                     if (choose > inventoryList.size()) {
+                         System.out.println("Invalid choice. Please select a valid option");
+                         LOGGER.info("Invalid choice: Selection is not in the inventory list. ");
+                         break;
+                     }
+
+                    if (choose >= 1) {
+                        Medicine selected = inventoryList.get(choose - 1);
+                        int inventoryId = selected.getInventoryId();
+                        LOGGER.info("Item to be Deleted : " + inventoryId);
+
+                             System.out.println("Are you sure you want to Delete the Inventory : This cannot be undone ");
+                             System.out.println("1 - Yes");
+                             System.out.println("2 - No ");
+                             int confirmation = scanner.nextInt();
+
+
+                             if (confirmation == 1 ) {
+                                 medicineInventoryFacade.deleteInventory(inventoryId);
+                                 LOGGER.info("Successfully Deleted");
+                                 System.out.println("Successfully Deleted");
+                                  break;
+                             }else if (confirmation == 2 ) {
+                                 System.out.println("Canceled Deletion");
+                                 LOGGER.info("Canceled Deletion");
+                                 break;
+
+                             }
+                         }
+
+                }catch (RuntimeException e ) {
+                    throw new RuntimeException();
+                }
             }
             break;
         }
-
-}
+    }while (choice != 0);
+        scanner.close();
+    }
 
     private static void displayCommonAilmentsReport(List<CommonAilmentsReport> reports, Date startDate, Date endDate, String gradeLevel, String section) {
         if (reports == null || reports.isEmpty()) {

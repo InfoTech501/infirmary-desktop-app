@@ -14,6 +14,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The StudentHealthProfileDaoImpl class is an implementation of the StudentHealthProfileDao interface.
+ *This includes methods for Retrieving all student health profiles
+ * and Retrieving student health profiles by their unique Learner Reference Number (LRN).
+ */
+
 public class StudentHealthProfileDaoImpl implements StudentHealthProfileDao {
     private static final Logger LOGGER = LoggerFactory.getLogger(StudentHealthProfileDaoImpl.class);
     @Override

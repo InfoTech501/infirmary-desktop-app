@@ -45,6 +45,8 @@ public interface MedicineInventoryDao {
 
     List <Medicine> findAllMedicine();
 
+    boolean deleteInventory(int inventoryID);
+
 
 
 }

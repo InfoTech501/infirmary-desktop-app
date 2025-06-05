@@ -3,9 +3,11 @@ import com.rocs.infirmary.desktop.data.dao.medicine.inventory.MedicineInventoryD
 import com.rocs.infirmary.desktop.data.connection.ConnectionHelper;
 import com.rocs.infirmary.desktop.data.dao.utils.queryconstants.medicine.inventory.QueryConstants;
 import com.rocs.infirmary.desktop.data.model.inventory.medicine.Medicine;
+import oracle.jdbc.proxy.annotation.Pre;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.net.ConnectException;
 import java.sql.*;
 import java.util.List;
 import java.util.ArrayList;
@@ -214,6 +216,28 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
         }
         LOGGER.info("Retrieved Successfully");
         return medicineList;
+    }
+
+    @Override
+    public boolean deleteInventory(int inventoryID) {
+        LOGGER.info("Accessing Delete Inventory on DAO ");
+        try (Connection con = ConnectionHelper.getConnection()) {
+            QueryConstants queryConstants = new QueryConstants();
+            String sql = queryConstants.deleteInventory();
+            LOGGER.info("Query : " + sql);
+
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setInt(1,inventoryID);
+            int affectRows = stmt.executeUpdate();
+
+            LOGGER.info("Deleted Date :   " + inventoryID);
+
+           return affectRows > 0 ;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
 
