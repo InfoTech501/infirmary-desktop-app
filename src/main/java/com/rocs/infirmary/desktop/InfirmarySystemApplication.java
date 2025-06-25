@@ -428,28 +428,44 @@ public class InfirmarySystemApplication {
                 StudentMedicalRecordFacade studentMedicalRecordFacade = new StudentMedicalRecordFacadeImpl();
                 try {
 
+                    System.out.println(" ");
+                    System.out.println("Symptoms (Enter to skip): ");
+                    String symptomInput = scanner.nextLine();
+                    if (isNumeric(symptomInput)){
+                        System.out.println("Invalid input: Symptoms and treatment must be strings.");
+                        break;
+                    }
+                    System.out.println("Treatment (Enter to skip): ");
+                    String treatmentInput = scanner.nextLine();
+                    if (isNumeric(treatmentInput)){
+                        System.out.println("Invalid input: Symptoms and treatment must be strings.");
+                        break;
+                    }
+
                     String LRN = getValidLRN(scanner, "Enter a Student LRN to update : ");
 
                     Student student = studentMedicalRecordFacade.findMedicalInformationByLRN(Long.parseLong((LRN)));
 
                     if (student == null) {
                         System.out.println("No student found.");
-
+                        break;
                     }
-                    System.out.println(" ");
-                    System.out.println("Symptoms (Enter to skip): ");
-                    String symptom = scanner.nextLine();
+                    if ("deleted".equalsIgnoreCase(student.getRecordStatus())){
+                        System.out.println("Error: This record has been deleted and cannot be accessed or modified.");
+                        break;
+                    }
+                    System.out.println("Current Symptoms:" + (student.getSymptoms() !=null ? student.getSymptoms(): ("N/A")));
+                    System.out.println("Current Treatment:" + (student.getTreatment() !=null ? student.getTreatment(): ("N/A")));
 
-                    System.out.println("Temperature Readings (Enter to skip): ");
+                    System.out.println("Temperature Readings (Enter to skp):");
                     String temperatureReadings = scanner.nextLine();
 
-
                     Date visitDate = getValidInputDate(scanner, dateFormat, "Visit Date ( yyyy-MM-dd ):");
+                    boolean success = studentMedicalRecordFacade.updateStudentMedicalRecord(symptomInput.isEmpty() ? student.getSymptoms() : symptomInput,
+                            temperatureReadings, visitDate,
+                            treatmentInput.isEmpty() ? student.getTreatment() : treatmentInput,
+                            Long.parseLong((LRN)));
 
-                    System.out.println("Treatment (Enter to skip) : ");
-                    String treatment = scanner.nextLine();
-
-                    boolean success = studentMedicalRecordFacade.updateStudentMedicalRecord(symptom, temperatureReadings, visitDate, treatment, Long.parseLong((LRN)));
 
                     if (success) {
                         System.out.println("Successfully Updated");
@@ -458,7 +474,11 @@ public class InfirmarySystemApplication {
                         System.out.println("Failed to Update ");
                     }
 
-                } catch (RuntimeException e) {
+                }
+                catch (NumberFormatException e){
+                    System.out.println("Invalid LRN format. Please enter a valid number.");
+                }
+                catch (RuntimeException e) {
                     System.out.println("Runtime Exception Occurred:" + e.getMessage());
                 }
                 break;
@@ -852,5 +872,10 @@ public class InfirmarySystemApplication {
                 }
             }
         }
-
+    private static boolean isNumeric(String str) {
+        if (str == null || str.isEmpty()) {
+            return false;
+        }
+        return str.matches("-?\\d+(\\.\\d+)?");
+    }
 }
