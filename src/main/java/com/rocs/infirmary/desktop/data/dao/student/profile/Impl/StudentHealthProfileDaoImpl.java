@@ -87,6 +87,7 @@ public class StudentHealthProfileDaoImpl implements StudentHealthProfileDao {
                 studentMedicalRecord.setVisitDate(resultSet.getTimestamp("visit_date"));
                 studentMedicalRecord.setNurseInCharge(resultSet.getString("nurse_in_charge"));
                 studentListProfile.add(studentMedicalRecord);
+
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
